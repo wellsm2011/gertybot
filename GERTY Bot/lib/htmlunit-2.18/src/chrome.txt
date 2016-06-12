@@ -1,0 +1,85 @@
+Results :
+
+Failed tests:
+  FocusableElement2Test.focusOnNonFocusableElementShouldNotTriggerDocumentFocus:228->WebTestCase.assertEquals:212 expected:<done[
+focus]> but was:<done[]>
+  HtmlArea2Test.isDisplayedEmptyArea:174->WebTestCase.assertTrue:293 null
+  HtmlRadioButtonInput2Test.onchangeFires2:617->WebTestCase.assertEquals:212 expected:<[foo,change,[]]> but was:<[foo,change,[boo,blur,]]>
+  MalformedHtmlTest.formInTable4:574->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262->WebTestCase.as
+sertEquals:275 expected:<[3, 1a, 1b, , [1], DIV]> but was:<[3, 1a, 1b, , [0], DIV]>
+  MalformedHtmlTest.formInTable9:777->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262->WebTestCase.as
+sertEquals:275 expected:<[3, 1[a, 1b], 1c, 0, TABLE]> but was:<[3, 1[b, 1a], 1c, 0, TABLE]>
+  HttpWebConnection2Test.post:74->WebTestCase.assertEquals:212 expected:<C[onnection: keep-alive
+Content-Length: 48
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:12345
+Referer: http://localhost:12345/
+User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104] Safari/537.36
+> but was:<C[ache-Control: max-age=0
+Connection: keep-alive
+Content-Length: 48
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:12345
+Origin: http://localhost:12345
+Referer: http://localhost:12345/
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71] Safari/537.36
+>
+  Document2Test.activeElement_iframe:363->WebTestCase.assertEquals:262->WebTestCase.assertEquals:275 expected:<...t HTMLBodyElement], [[object HTMLBodyElement], [object HTMLBodyElement]]]> but was:<...t H
+TMLBodyElement], [http://localhost:12345/#, http://localhost:12345/#]]>
+  HTMLDocumentTest.lastModified:633->testLastModified:653->WebDriverTestCase.loadPageWithAlerts2:695->WebDriverTestCase.loadPageWithAlerts2:714->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEqual
+s:262->WebTestCase.assertEquals:275 expected:<[string, [Fri, 16 Oct 2009 13:59:47] GMT]> but was:<[string, [Thu, 27 Nov 2014 13:42:28] GMT]>
+  HTMLFrameElement2Test.onloadOrderRows:411->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262->WebTest
+Case.assertEquals:275 expected:<[[head, bottom], frameset]> but was:<[[bottom, head], frameset]>
+  KeyboardEventTest.which:364->WebTestCase.assertEquals:212 expected:<[keydown:[65,0,65, keypress:65,65,65, keyup:65,0,65], keydown:65,0,65, k...> but was:<[keydown:[16,0,16, keydown:65,0,65, keypress:65,
+65,65, keyup:65,0,65, keyup:16,0,16], keydown:65,0,65, k...>
+  Location2Test.href_postponed:563->WebDriverTestCase.loadPageWithAlerts2:695->WebDriverTestCase.loadPageWithAlerts2:714->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262->WebTestCase.asse
+rtEquals:275 expected:<[1, 2[, 3]]> but was:<[1, 2[]]>
+  Location2Test.replaceLastInHistory:344->WebTestCase.assertEquals:212 expected:<[First Page]> but was:<[http://localhost:12345/]>
+  NavigatorTest.appVersion:76->attribute:236->WebTestCase.assertEquals:262->WebTestCase.assertEquals:275 expected:<[5.0 (Windows NT 6.1[) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104] Safar
+i/537.36]> but was:<[5.0 (Windows NT 6.1[; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71] Safari/537.36]>
+  NavigatorTest.language:252->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262->WebTestCase.assertEqua
+ls:275 expected:<[[en-US]]> but was:<[[de]]>
+  NavigatorTest.platform:135->attribute:236->WebTestCase.assertEquals:262->WebTestCase.assertEquals:275 expected:<[[MacIntel]]> but was:<[[Win32]]>
+  NavigatorTest.taintEnabled:206->attribute:236->WebTestCase.assertEquals:262->WebTestCase.assertEquals:275 expected:<[[false]]> but was:<[[]]>
+  NavigatorTest.userAgent:155->attribute:236->WebTestCase.assertEquals:262->WebTestCase.assertEquals:275 expected:<.../5.0 (Windows NT 6.1[) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104] Sa
+fari/537.36]> but was:<.../5.0 (Windows NT 6.1[; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71] Safari/537.36]>
+  ScreenTest.availHeight:47->testNumericProperty:287->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262
+->WebTestCase.assertEquals:275 expected:<[[768, 768]]> but was:<[[1050, 1050]]>
+  ScreenTest.availWidth:81->testNumericProperty:287->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262-
+>WebTestCase.assertEquals:275 expected:<[1[024, 1024]]> but was:<[1[920, 1920]]>
+  ScreenTest.height:145->testNumericProperty:287->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262->We
+bTestCase.assertEquals:275 expected:<[[768, 768]]> but was:<[[1080, 1080]]>
+  ScreenTest.width:245->testNumericProperty:287->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262->Web
+TestCase.assertEquals:275 expected:<[1[024, 1024]]> but was:<[1[920, 1920]]>
+  XMLHttpRequestCORSTest.preflight_contentTypeWithCharset:197->doPreflightTestAllowedMethods:246->WebDriverTestCase.loadPageWithAlerts2:605->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.ve
+rifyAlerts:644->WebTestCase.assertEquals:262->WebTestCase.assertEquals:275 expected:<...://localhost:12345, [http://localhost:12345, GET, x-pingother, content-type]]> but was:<...://localhost:12345, [null
+, null, null]]>
+  XMLHttpRequestCORSTest.preflight_incorrect_headers:335->WebDriverTestCase.loadPageWithAlerts2:605->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals
+:262->WebTestCase.assertEquals:275 expected:<[[exception, ]4, 200]> but was:<[[]4, 200]>
+  XMLHttpRequestTest.overrideMimeType:678->WebDriverTestCase.loadPageWithAlerts2:581->WebDriverTestCase.loadPageWithAlerts2:623->WebDriverTestCase.verifyAlerts:644->WebTestCase.assertEquals:262->WebTestCa
+se.assertEquals:275 expected:<[true, [false]]> but was:<[true, [exception]]>
+  XMLSerializerTest.htmlAttributes:193->WebTestCase.assertEquals:212 expected:<...on="1.0"32encoding="[UTF-8"?>1310]<html32xmlns="http:/...> but was:<...on="1.0"32encoding="[ISO-8859-1"?>]<html32xmlns="ht
+tp:/...>
+  XMLSerializerTest.nameSpaces:129->WebTestCase.assertEquals:212 expected:<...on="1.0"32encoding="[UTF-8"?>1310<xsl:stylesheet32version="1.0"32xmlns:xsl="http://www.w3.org/1999/XSL/Transform]">103232<xsl:
+templat...> but was:<...on="1.0"32encoding="[ISO-8859-1"?><xsl:stylesheet32xmlns:xsl="http://www.w3.org/1999/XSL/Transform"32version="1.0]">103232<xsl:templat...>
+  JavaScriptEngine2Test.function_object_method:361 WebDriverException expected
+  JQuery182Test.offset__absolute:6362->runTest:112 expected:<...ffset: absolute (0, [178, 178])> but was:<...ffset: absolute (0, [4, 4])>
+
+Tests in error:
+  Window3Test ╗  opener is marked as not implemented with Chrome but already wor...
+  XMLHttpRequestTest.java_encoding:1301 ╗ StringIndexOutOfBounds String index ou...
+  ExtJS22Test.debug_console:165 ╗ WebDriver unknown error: Element is not clicka...
+  Prototype161Test.string:226->PrototypeTestBase.test:100->PrototypeTestBase.testFinished:69 ╗ WebDriver
+  Prototype161Test>WebDriverTestCase.releaseResources:776 ╗ SessionNotFound no s...
+  Prototype161Test.unitTests:243->PrototypeTestBase.test:94 ╗ SessionNotFound no...
+  Prototype161Test>WebDriverTestCase.releaseResources:776 ╗ SessionNotFound no s...
+  Prototype171Test.string:263->PrototypeTestBase.test:100->PrototypeTestBase.testFinished:69 ╗ WebDriver
+  Prototype171Test>WebDriverTestCase.releaseResources:776 ╗ SessionNotFound no s...
+  Prototype171Test.unitTests:272->PrototypeTestBase.test:94 ╗ SessionNotFound no...
+  Prototype171Test>WebDriverTestCase.releaseResources:776 ╗ SessionNotFound no s...
+  TinyMceTest.api:62->test:85 ╗ NoSuchElement no such element
+  (Session info: c...
+  TinyMceTest.basic:74->test:85 ╗ NoSuchElement no such element
+  (Session info:...
+
+Tests run: 8218, Failures: 28, Errors: 13, Skipped: 2

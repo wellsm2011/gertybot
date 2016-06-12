@@ -1,5 +1,6 @@
 package werewolf.net;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collections;
@@ -11,7 +12,6 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 import werewolf.log.WerewolfLogger;
-import werewolf.net.halolz.HalolzContext;
 import werewolf.net.neon.NeonContext;
 
 public final class Utils {
@@ -31,9 +31,9 @@ public final class Utils {
 	}
 
 	private static void readProperties() throws IOException {
-		Properties applicationProps = new Properties();
-		FileInputStream in = new FileInputStream("appProperties");
-		applicationProps.load(in);
+		loginInfo = new Properties();
+		FileInputStream in = new FileInputStream("./local.properties");
+		loginInfo.load(in);
 		in.close();
 	}
 
@@ -43,6 +43,7 @@ public final class Utils {
 				readProperties();
 			return loginInfo.getProperty(key);
 		} catch (IOException ex) {
+			ex.printStackTrace();
 			return null;
 		}
 	}

@@ -1,0 +1,40 @@
+Results :
+
+Failed tests:
+  Document2Test.activeElement_iframe:362->WebTestCase.assertEquals:263->WebTestCase.assertEquals:276 expected:<[[null], http://localhost:1...> but was:<[[[object HTMLBodyElement]], http://localhost:1...>
+  Event2Test.stopPropagationCancelBubble:630->stopPropagation:673->WebTestCase.assertEquals:263->WebTestCase.assertEquals:276 expected:<...w capturing, false, [false, div capturing, false, false, span cap
+turing, false, ]true]> but was:<...w capturing, false, []true]>
+  EventTest.document_input_blur:822->document_input:864->WebTestCase.assertEquals:213 expected:<blur [BODY
+blur ]INPUT> but was:<blur []INPUT>
+  Location2Test.hash:212->checkHash:244->WebDriverTestCase.loadPageWithAlerts2:609->WebDriverTestCase.loadPageWithAlerts2:627->WebDriverTestCase.verifyAlerts:648->WebTestCase.assertEquals:263->WebTestCase
+.assertEquals:276 expected:<[#[<a>foobar</a>]]> but was:<[#[%3Ca%3Efoobar%3C/a%3E]]>
+  XSLTProcessorTest.methods:166->WebDriverTestCase.loadPageWithAlerts2:585->WebDriverTestCase.loadPageWithAlerts2:627->WebDriverTestCase.verifyAlerts:648->WebTestCase.assertEquals:263->WebTestCase.assertE
+quals:276 expected:<[[undefined, undefined, undefined, undefined, undefined, object, undefined, function, function, ]exception]> but was:<[[]exception]>
+  XSLTProcessorTest.type:189->WebDriverTestCase.loadPageWithAlerts2:585->WebDriverTestCase.loadPageWithAlerts2:627->WebDriverTestCase.verifyAlerts:648->WebTestCase.assertEquals:263->WebTestCase.assertEqua
+ls:276 expected:<[[undefined], exception]> but was:<[[object, [object XSLTProcessor]], exception]>
+  HTMLAnchorElement2Test.type:577->WebDriverTestCase.loadPageWithAlerts2:585->WebDriverTestCase.loadPageWithAlerts2:627->WebDriverTestCase.verifyAlerts:648->WebTestCase.assertEquals:263->WebTestCase.asser
+tEquals:276 expected:<...host:12345/second/, [HTMLAnchorElemen]t, [object HTMLAncho...> but was:<...host:12345/second/, [objec]t, [object HTMLAncho...>
+  HTMLDocument2Test.domainMixedCaseNetscape:153->SimpleWebTestCase.loadPageWithAlerts:244->WebTestCase.assertEquals:263->WebTestCase.assertEquals:276 expected:<[[www.gargoylesoftware.com, gargoylesoftware
+.com]]> but was:<[[WWW.GARGOYLESOFTWARE.COM, GaRgOyLeSoFtWaRe.CoM]]>
+  HTMLElement2Test.offsetLeft_PositionLeft_DifferentCombinations:351->WebDriverTestCase.loadPageWithAlerts2:585->WebDriverTestCase.loadPageWithAlerts2:627->WebDriverTestCase.verifyAlerts:648->WebTestCase.
+assertEquals:263->WebTestCase.assertEquals:276 expected:<...it 10, 4 fixed_auto [10, 5 fixed_length 50, 6 fixed_inherit 10], 7 relative_auto 0,...> but was:<...it 10, 4 fixed_auto [28, 5 fixed_length 68,
+6 fixed_inherit 28], 7 relative_auto 0,...>
+  HTMLElement2Test.offsetTopAndLeft_Borders:241->WebDriverTestCase.loadPageWithAlerts2:585->WebDriverTestCase.loadPageWithAlerts2:627->WebDriverTestCase.verifyAlerts:648->WebTestCase.assertEquals:263->Web
+TestCase.assertEquals:276 expected:<[1[5, 15]]> but was:<[1[2, 12]]>
+  HTMLFrameElement2Test.location:185->location:205->WebTestCase.assertEquals:263->WebTestCase.assertEquals:276 expected:<...45/subdir/frame.html[]]> but was:<...45/subdir/frame.html[, http://localhost:123
+45/frame.html]]>
+  HTMLTableCellElementTest.cellWidthHeightWithBorderCollapse:442->WebDriverTestCase.loadPageWithAlerts2:585->WebDriverTestCase.loadPageWithAlerts2:627->WebDriverTestCase.verifyAlerts:648->WebTestCase.asse
+rtEquals:263->WebTestCase.assertEquals:276 expected:<[84,3[0, 84,30, 84,30, 82,30, 82,30, 82,30]]> but was:<[84,3[4, 84,34, 84,34, 83,34, 82,34, 83,34]]>
+  HTMLTableElementTest.innerText:739->WebDriverTestCase.loadPageWithAlerts2:585->WebDriverTestCase.loadPageWithAlerts2:627->WebDriverTestCase.verifyAlerts:648->WebTestCase.assertEquals:263->WebTestCase.as
+sertEquals:276 expected:<[[cell1], [object Text], abc...> but was:<[[
+    cell1
+  ], [object Text], abc...>
+  JQuery182Test.ajax__jQuery_ajax_____JSONP__Cross_Domain:4749->runTest:101 expected:<...SONP, Cross Domain ([0, 24, 2]4)> but was:<...SONP, Cross Domain ([2, 2, ]4)>
+  JQuery182Test.effects__non_px_animation_handles_non_numeric_start___11971_:6287->runTest:101 expected:<...ric start (#11971) ([0, 1, 1])> but was:<...ric start (#11971) ([2, 0, 2])>
+  JQuery182Test.manipulation__clone_form_element___Bug__3879___6655_:3622->runTest:101 expected:<...(Bug #3879, #6655) ([1, 4], 5)> but was:<...(Bug #3879, #6655) ([0, 5], 5)>
+Tests in error:
+  SocksProxyTest.http:51->doHttpTest:69 ╗ Socket Connection refused: connect
+  SocksProxyTest.https:79->doHttpsTest:100 ╗ Socket Connection refused: connect
+  HTMLElement3Test.setActiveAndFocus:397 ╗ Script Exception invoking focus
+
+Tests run: 10803, Failures: 16, Errors: 3, Skipped: 3
