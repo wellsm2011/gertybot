@@ -1,215 +1,241 @@
 package werewolf.net;
 
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-
 import java.io.IOException;
 import java.io.Serializable;
-
 import java.util.LinkedList;
 import java.util.List;
 
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public abstract class ForumThread implements Serializable {
-    @SuppressWarnings("compatibility:613528308914302850")
-    private static final long serialVersionUID = -1204239372191855699L;
+public abstract class ForumThread implements Serializable
+{
+	private static final long		serialVersionUID	= -1204239372191855699L;
 
+	protected LinkedList<ForumPost>	posts				= new LinkedList<ForumPost>();
+	protected LinkedList<ForumPost>	deleted				= new LinkedList<ForumPost>();
+	protected LinkedList<ForumPost>	edited				= new LinkedList<ForumPost>();
 
-    protected LinkedList<ForumPost> posts = new LinkedList<ForumPost>();
-    protected LinkedList<ForumPost> deleted = new LinkedList<ForumPost>();
-    protected LinkedList<ForumPost> edited = new LinkedList<ForumPost>();
+	private boolean					stickied			= false;
+	private boolean					locked				= false;
+	private boolean					editable			= false;
+	private String					threadId;
+	private String					boardId;
+	private String					title				= null;
 
-    private boolean stickied = false;
-    private boolean locked = false;
-    private boolean editable = false;
-    private String  threadId;
-    private String  boardId;
-    private String  title = null;
+	private boolean					initalized			= false;
+	private int						postReadIndex		= 0;
+	private int						pagesParsed			= 0;
 
-    private boolean initalized = false;
-    private int     postReadIndex = 0;
-    private int     pagesParsed = 0;
+	protected ForumThread(String boardId, String threadId)
+	{
+		this.boardId = boardId;
+		this.threadId = threadId;
+	}
 
+	protected ForumThread(String boardId, String threadId, boolean stickied, boolean locked, boolean editable)
+	{
+		this(boardId, threadId);
+		this.stickied = stickied;
+		this.locked = locked;
+		this.editable = editable;
+	}
 
-    protected ForumThread(String boardId, String threadId) {
-        this.boardId = boardId;
-        this.threadId = threadId;
-    }
+	protected ForumThread(String boardId, String threadId, String title)
+	{
+		this(boardId, threadId);
+		this.title = title;
+	}
 
-    protected ForumThread(String boardId, String threadId, String title) {
-        this(boardId, threadId);
-        this.title = title;
-    }
+	protected ForumThread(String boardId, String threadId, String title, boolean stickied, boolean locked, boolean editable)
+	{
+		this(boardId, threadId, stickied, locked, editable);
+		this.title = title;
+	}
 
-    protected ForumThread(String boardId, String threadId, boolean stickied, boolean locked, boolean editable) {
-        this(boardId, threadId);
-        this.stickied = stickied;
-        this.locked = locked;
-        this.editable = editable;
-    }
+	protected void addPost(ForumPost post)
+	{
+		int index = this.getPostIndex(post);
+		if (index >= 0)
+		{
+			if (!post.equalCommands(this.posts.get(index)))
+				this.edited.add(post);
+			this.posts.set(index, post);
+		} else
+			this.posts.add(post);
+	}
 
-    protected ForumThread(String boardId, String threadId, String title, boolean stickied, boolean locked,
-                       boolean editable) {
-        this(boardId, threadId, stickied, locked, editable);
-        this.title = title;
-    }
+	public boolean equals(ForumThread o)
+	{
+		return this.getThreadId().equals(o.getThreadId()) && this.getContext().equals(o.getContext());
+	}
 
-    public boolean isStickied() {
-        return stickied;
-    }
+	public String getBoardId()
+	{
+		return this.boardId;
+	}
 
-    public void setStickied(boolean stickied) {
-        this.stickied = stickied;
-    }
+	public abstract ForumContext getContext();
 
-    public boolean isLocked() {
-        return locked;
-    }
+	public int getPostIndex(ForumPost post)
+	{
+		try
+		{
+			if (!this.initalized)
+				this.refreshAll();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		for (int i = 0; i < this.posts.size(); ++i)
+			if (this.posts.get(i).equals(post))
+				return i;
+		return -1;
+	}
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
+	public List<ForumPost> getPosts() throws IOException
+	{
+		if (!this.initalized)
+			this.refreshAll();
+		return this.posts;
+	}
 
-    public boolean isEditable() {
-        return editable;
-    }
+	public String getThreadId()
+	{
+		return this.threadId;
+	}
 
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
+	public String getTitle() throws IOException
+	{
+		if (this.title == null)
+			this.refreshAll();
+		return this.title;
+	}
 
-    public String getTitle() throws IOException {
-        if (title == null)
-            refreshAll();
-        return title;
-    }
+	public String getUrl() throws IOException
+	{
+		return this.getContext().getThreadUrl(this.boardId, this.threadId);
+	}
 
-    public String getUrl() throws IOException {
-        return getContext().getThreadUrl(boardId, threadId);
-    }
+	public boolean isEditable()
+	{
+		return this.editable;
+	}
 
-    public List<ForumPost> getPosts() throws IOException {
-        if (!initalized)
-            refreshAll();
-        return posts;
-    }
+	public boolean isLocked()
+	{
+		return this.locked;
+	}
 
-    public String getThreadId() {
-        return threadId;
-    }
+	public boolean isStickied()
+	{
+		return this.stickied;
+	}
 
-    public String getBoardId() {
-        return boardId;
-    }
+	protected abstract boolean isValidThreadPage(HtmlPage page);
 
-    public void post(String message) throws IOException {
-        getContext().makePost(getContext().getThreadReplyPage(boardId, threadId), message);
-    }
+	public ForumPost nextPost() throws IOException
+	{
+		if (!this.initalized)
+			this.refreshAll();
+		if (this.postReadIndex >= this.posts.size())
+			return null;
+		return this.posts.get(this.postReadIndex++);
+	}
 
-    public void reset() throws IOException {
-        refreshAll();
-        postReadIndex = 0;
-    }
+	public int pages() throws IOException
+	{
+		if (!this.initalized)
+			this.refreshAll();
+		return (int) Math.ceil(this.posts.size() / 15.0);
+	}
 
-    public void refresh() throws IOException {
-        if (!initalized) {
-            if (title != null && title.length() > 0)
-                System.out.println("Loading new thread (context=" + getContext() + "): " + title);
-            else
-                System.out.println("Loading new thread (context=" + getContext() + ")...");
-        } else
-            System.out.println("Reloading Thread (context=" + getContext() + "): " + title);
-        initalized = true;
+	protected abstract void parsePage(HtmlPage page);
 
-        try {
-            HtmlPage page = getContext().getThreadPage(boardId, threadId, pagesParsed);
-            title = parseThreadTitle(page);
+	protected abstract String parseThreadTitle(HtmlPage page);
 
-            do {
-                parsePage(page);
-                getContext().CLIENT.closeAllWindows();
-                page = getContext().getThreadPage(boardId, threadId, ++pagesParsed);
-            } while (isValidThreadPage(page));
+	public void post(String message) throws IOException
+	{
+		this.getContext().makePost(this.getContext().getThreadReplyPage(this.boardId, this.threadId), message);
+	}
 
-            pagesParsed -= 1;
-            getContext().CLIENT.closeAllWindows();
-        } catch (Exception ex) {
-            initalized = false;
-            throw ex;
-        }
+	public void refresh() throws IOException
+	{
+		if (!this.initalized)
+		{
+			if (this.title != null && this.title.length() > 0)
+				System.out.println("Loading new thread (context=" + this.getContext() + "): " + this.title);
+			else
+				System.out.println("Loading new thread (context=" + this.getContext() + ")...");
+		} else
+			System.out.println("Reloading Thread (context=" + this.getContext() + "): " + this.title);
+		this.initalized = true;
 
-        int commands = 0;
-        for (ForumPost post : posts)
-            commands += post.getCommands().size();
+		try
+		{
+			HtmlPage page = this.getContext().getThreadPage(this.boardId, this.threadId, this.pagesParsed);
+			this.title = this.parseThreadTitle(page);
 
-        System.out.println("Thread loaded (context=" + getContext() + "): " + title + ". " + posts.size() +
-                           " posts and " + commands + " commands found.");
-    }
+			do
+			{
+				this.parsePage(page);
+				// TODO: Find replacement for depricated function.
+				this.getContext().CLIENT.closeAllWindows();
+				page = this.getContext().getThreadPage(this.boardId, this.threadId, ++this.pagesParsed);
+			} while (this.isValidThreadPage(page));
 
-    public void refreshAll() throws IOException {
-        pagesParsed = 1;
-        refresh();
-    }
+			this.pagesParsed -= 1;
+			this.getContext().CLIENT.closeAllWindows();
+		} catch (Exception ex)
+		{
+			this.initalized = false;
+			throw ex;
+		}
 
-    protected abstract void parsePage(HtmlPage page);
+		int commands = 0;
+		for (ForumPost post : this.posts)
+			commands += post.getCommands().size();
 
-    protected abstract String parseThreadTitle(HtmlPage page);
+		System.out.println("Thread loaded (context=" + this.getContext() + "): " + this.title + ". " + this.posts.size() + " posts and " + commands + " commands found.");
+	}
 
-    protected abstract boolean isValidThreadPage(HtmlPage page);
+	public void refreshAll() throws IOException
+	{
+		this.pagesParsed = 1;
+		this.refresh();
+	}
 
-    protected void addPost(ForumPost post) {
-        int index = getPostIndex(post);
-        if (index >= 0) {
-            if (!post.equalCommands(posts.get(index)))
-                this.edited.add(post);
-            posts.set(index, post);
-        } else
-            posts.add(post);
-    }
+	public void reset() throws IOException
+	{
+		this.refreshAll();
+		this.postReadIndex = 0;
+	}
 
-    public int getPostIndex(ForumPost post) {
-        try {
-            if (!initalized)
-                refreshAll();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < posts.size(); ++i) {
-            if (posts.get(i).equals(post))
-                return i;
-        }
-        return -1;
-    }
+	public void setEditable(boolean editable)
+	{
+		this.editable = editable;
+	}
 
-    public ForumPost nextPost() throws IOException {
-        if (!initalized)
-            refreshAll();
-        if (postReadIndex >= posts.size())
-            return null;
-        return posts.get(postReadIndex++);
-    }
+	public void setLocked(boolean locked)
+	{
+		this.locked = locked;
+	}
 
-    public int pages() throws IOException {
-        if (!initalized)
-            refreshAll();
-        return (int)Math.ceil(posts.size() / 15.0);
-    }
+	public void setStickied(boolean stickied)
+	{
+		this.stickied = stickied;
+	}
 
-    public abstract ForumContext getContext();
+	@Override
+	public String toString()
+	{
+		String status = "";
+		if (this.stickied)
+			status += ", stickied=true";
+		if (this.locked)
+			status += ", locked=true";
 
-    public boolean equals(ForumThread o) {
-        return getThreadId().equals(o.getThreadId()) && getContext().equals(o.getContext());
-    }
-
-    @Override
-    public String toString() {
-        String status = "";
-        if (stickied)
-            status += ", stickied=true";
-        if (locked)
-            status += ", locked=true";
-
-        if (title.length() > 0)
-            return "[id=" + threadId + ", title=" + title + status + "]";
-        return "[id=" + threadId + ", title=unparsed]";
-    }
+		if (this.title.length() > 0)
+			return "[id=" + this.threadId + ", title=" + this.title + status + "]";
+		return "[id=" + this.threadId + ", title=unparsed]";
+	}
 }
