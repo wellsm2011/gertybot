@@ -19,11 +19,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
 
 public class NeonInbox extends ForumInbox
 {
-	public static void main(String... cheese)
-	{
-		return;
-	}
-
 	public NeonInbox(String folderName)
 	{
 		super(folderName);

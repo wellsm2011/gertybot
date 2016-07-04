@@ -15,7 +15,7 @@ import org.w3c.css.sac.CSSException;
 import org.w3c.css.sac.CSSParseException;
 import org.w3c.css.sac.ErrorHandler;
 
-import werewolf.game.WerewolfGame;
+import werewolf.game.WerewolfGame_OLD;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.IncorrectnessListener;
@@ -70,9 +70,9 @@ public abstract class ForumContext implements Serializable, Runnable
 			ThreadManager manager = iter.next().manager;
 			if (!threads.contains(manager.getThread()))
 				iter.remove();
-			else if (manager instanceof WerewolfGame)
+			else if (manager instanceof WerewolfGame_OLD)
 			{
-				WerewolfGame game = (WerewolfGame) manager;
+				WerewolfGame_OLD game = (WerewolfGame_OLD) manager;
 				hosts.add(game.getHost());
 				ForumUser cohost = game.getCohost();
 				if (cohost != null)
@@ -91,7 +91,7 @@ public abstract class ForumContext implements Serializable, Runnable
 				}
 			if (!found)
 			{
-				WerewolfGame game = new WerewolfGame(thread);
+				WerewolfGame_OLD game = new WerewolfGame_OLD(thread);
 				hosts.add(game.getHost());
 				ForumUser cohost = game.getCohost();
 				if (cohost != null)
@@ -102,40 +102,21 @@ public abstract class ForumContext implements Serializable, Runnable
 	}
 
 	public final WebClient			CLIENT				= new WebClient(BrowserVersion.FIREFOX_38);
-	public final ForumLogin			LOGIN_USER;
-	public final String				DOMAIN;
-	public final ForumUserDatabase	USERS				= new ForumUserDatabase(this);
-	public final GameRecord			RECORD;
-	public final HostingSignups		SIGNUPS;
-	public final int				POLL_INTERVAL;
-	// Seconds between HTML page requests and submissions.
 	public final double				REQUEST_INTERVAL	= 2;
 	// Seconds between posts and PM submissions.
-	public final double				POST_INTERVAL		= 60;
-	public final String				RULES_URL;
+	public final double				POST_INTERVAL		= 45;
 
-	public final ForumInbox			PM_MANAGER;
+	//
 	private long					lastPageRequest		= System.currentTimeMillis() - (long) (this.REQUEST_INTERVAL * 500);
-
 	private long					lastPostSubmission	= System.currentTimeMillis() - (long) (this.POST_INTERVAL * 500);
 
-	public ForumContext(int u, String username, String password, String domain, GameRecord record, HostingSignups signups, ForumInbox pmManager, int pollInterval, String rulesUrl)
+	public ForumContext()
 	{
-		this.LOGIN_USER = new ForumLogin(u, username, password, this);
-		this.DOMAIN = domain;
-		this.RECORD = record;
-		this.SIGNUPS = signups;
-		this.POLL_INTERVAL = pollInterval;
-		this.RULES_URL = rulesUrl;
-		this.PM_MANAGER = pmManager;
-		Utils.CONTEXTS.add(this);
 		this.disableLogging();
-		System.out.println("Context Created:\n      User=" + this.LOGIN_USER + "\n      Domain=" + this.DOMAIN);
+		System.out.println("Context Created:\n      User=" + this.getLogin() + "\n      Domain=" + getDomain());
 	}
 
 	public abstract boolean allowExpectedLynch();
-
-	public abstract boolean allowPMs();
 
 	private void checkLock(long nextUnlock)
 	{
@@ -607,7 +588,7 @@ public abstract class ForumContext implements Serializable, Runnable
 						}
 						games.add(wrapper);
 
-						long sleepTime = this.POLL_INTERVAL * 60 * 1000 - (System.currentTimeMillis() - initTime);
+						long sleepTime = this.getPollInterval() * 60 * 1000 - (System.currentTimeMillis() - initTime);
 						if (sleepTime > 0)
 							Thread.sleep(sleepTime);
 					} catch (IOException ex)
@@ -624,9 +605,25 @@ public abstract class ForumContext implements Serializable, Runnable
 
 	public abstract String strike(String text);
 
+	public abstract ForumLogin getLogin();
+
+	public abstract String getDomain();
+
+	public abstract GameRecord getRecord();
+
+	public abstract HostingSignups getSignups();
+
+	public abstract ForumInbox getInbox();
+
+	public abstract int getPollInterval();
+
+	public abstract String getRulesUrl();
+	
+	public abstract ForumUserDatabase getUserDatabase();
+
 	@Override
 	public String toString()
 	{
-		return this.DOMAIN;
+		return this.getClass().getName() + "[DOMAIN=" + this.getDomain() + "]";
 	}
 }

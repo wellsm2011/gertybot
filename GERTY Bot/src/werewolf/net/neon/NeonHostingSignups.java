@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import werewolf.Utils;
 import werewolf.net.Command;
 import werewolf.net.ForumPost;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUser;
 import werewolf.net.HostingSignups;
-import werewolf.net.Utils;
 
 public class NeonHostingSignups implements HostingSignups
 {

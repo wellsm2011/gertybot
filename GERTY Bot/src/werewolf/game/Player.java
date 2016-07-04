@@ -16,10 +16,8 @@ public class Player extends ForumUser
 	private int						injured				= 0;
 	private LinkedList<PlayerEvent>	data				= new LinkedList<PlayerEvent>();
 	private PlayerEvent				lastDeath			= null;
-	private LinkedList<Vote>		votesCast			= new LinkedList<Vote>();
-	private int						inactiveVoteRounds	= 0;
-	private int						inactivePostRounds	= 0;
 	private ForumPost				joinPost;
+	private WerewolfGame game;
 
 	/**
 	 * Creates a new player with the given forum user and join post.
@@ -30,13 +28,12 @@ public class Player extends ForumUser
 	 *            The post where the forum user either joined or was added to
 	 *            the game.
 	 */
-	public Player(ForumUser player, ForumPost joinPost, int roundNumber)
+	public Player(ForumUser player, ForumPost joinPost, WerewolfGame game)
 	{
 		super(player);
-		Player.LOGGER.fine("Player created: " + player);
 		this.joinPost = joinPost;
-		for (int i = 1; i < roundNumber; ++i)
-			this.votesCast.add(new Vote(this, StaticUser.INCAPACITATED));
+		Player.LOGGER.fine("Player created: " + player);
+		this.game = game;
 	}
 
 	/**
@@ -46,21 +43,6 @@ public class Player extends ForumUser
 	public void addData(PlayerEvent evt)
 	{
 		this.data.add(evt);
-	}
-
-	/**
-	 * Performs post-round cleanup for this player. Called after the night phase
-	 * each round.
-	 */
-	public void endRound(Vote finalVote)
-	{
-		this.votesCast.add(finalVote);
-		this.injured = Math.max(0, this.injured - 1);
-		if (this.alive)
-		{
-			this.inactiveVoteRounds++;
-			this.inactivePostRounds++;
-		}
 	}
 
 	/**
@@ -107,7 +89,7 @@ public class Player extends ForumUser
 	}
 
 	/**
-	 * @return The post where this player joined.
+	 * @return The post where this player joined or was added to the game.
 	 */
 	public ForumPost getJoinPost()
 	{
@@ -123,56 +105,6 @@ public class Player extends ForumUser
 		if (this.lastDeath == null)
 			return "";
 		return this.lastDeath.makeLink(this.lastDeath.getRound());
-	}
-
-	/**
-	 * @return A BBCode formatted list of all the players this player has voted
-	 *         for this game.
-	 */
-	public String getVotes()
-	{
-		StringBuilder output = new StringBuilder(super.getName() + ": ");
-		boolean firstElement = true;
-
-		for (Vote vote : this.votesCast)
-		{
-			if (!firstElement)
-				output.append(" -> ");
-			String voteStr = vote.getTarget().getName();
-			if (vote.getVoteLink().length() > 0)
-				voteStr = "[url=" + vote.getVoteLink() + "]" + voteStr + "[/url]";
-			if (vote.getTarget() instanceof Player)
-			{
-				Player plr = (Player) vote.getTarget();
-				if (!plr.isAlive())
-				{
-					voteStr = "[color=#FFBF80]" + plr.getContext().strike(voteStr) + "[/color]";
-					voteStr += " " + plr.getLastDeath();
-				}
-			}
-			output.append(voteStr);
-			firstElement = false;
-		}
-
-		return output.toString();
-	}
-
-	/**
-	 * @return The number of rounds since this player last posted. Resets count
-	 *         when the player dies or revives.
-	 */
-	public int inactivePostRounds()
-	{
-		return this.inactivePostRounds;
-	}
-
-	/**
-	 * @return The number of rounds since this player last voted. Returns 0 if
-	 *         the player has voted in the current round.
-	 */
-	public int inactiveVoteRounds()
-	{
-		return this.inactiveVoteRounds;
 	}
 
 	/**
@@ -220,38 +152,20 @@ public class Player extends ForumUser
 	}
 
 	/**
-	 * Signals that this player has made a post. Used when calculating
-	 * inactivity.
-	 */
-	public void madePost()
-	{
-		this.inactivePostRounds = 0;
-	}
-
-	/**
-	 * Signals that this player has made a vote. Used when calculating
-	 * inactivity.
-	 */
-	public void madeVote()
-	{
-		this.inactiveVoteRounds = 0;
-	}
-
-	/**
 	 * Marks this player as replacing the given player, and copies the old
 	 * player's data and status to this player.
 	 *
 	 * @param plr
 	 *            The player that this player is a replacement for.
 	 */
-	public void replacePlr(Player plr)
+	public void replacePlayer(Player plr)
 	{
 		Player.LOGGER.fine("Player replacement: " + this + " for " + plr);
 		this.data = plr.data;
 		this.alive = plr.alive;
-		this.votesCast = plr.votesCast;
 		this.injured = plr.injured;
 		this.lastDeath = plr.lastDeath;
+		this.game = plr.game;
 	}
 
 	/**
@@ -261,14 +175,11 @@ public class Player extends ForumUser
 	 *            The event surrounding this player's death.
 	 * @return False if the player was already alive, true otherwise.
 	 */
-	public boolean revive(PlayerEvent evt)
+	public void revive(PlayerEvent evt)
 	{
 		if (this.alive)
-			return false;
+			throw new IllegalArgumentException("Player already alive.");
 		this.addData(evt);
-		this.inactivePostRounds = 0;
-		this.inactiveVoteRounds = 0;
 		this.alive = true;
-		return true;
 	}
 }

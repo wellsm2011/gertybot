@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import werewolf.net.ForumThread;
 
-public class AmnesiaGame extends WerewolfGame
+public class AmnesiaGame extends WerewolfGame_OLD
 {
 	public AmnesiaGame(ForumThread init) throws IOException
 	{

@@ -143,9 +143,9 @@ public class PrivateMessage implements Comparable<PrivateMessage>
 		this.checkInit();
 		LinkedList<String> list = new LinkedList<>();
 		for (ForumUser user : this.to)
-			if (!user.equals(this.getContext().LOGIN_USER))
+			if (!user.equals(this.getContext().getLogin()))
 				list.add(user.getName());
-		if (!this.from.equals(this.getContext().LOGIN_USER) || list.isEmpty())
+		if (!this.from.equals(this.getContext().getLogin()) || list.isEmpty())
 			list.add(this.from.getName());
 		this.getContext().makePm((String[]) list.toArray(), new String[0], subject, message);
 	}

@@ -8,14 +8,10 @@ import java.util.LinkedList;
 
 public class ForumUserDatabase implements Serializable
 {
-	/**
-	 * 
-	 */
-	private static final long				serialVersionUID	= 1L;
-	private Hashtable<Integer, ForumUser>	users				= new Hashtable<Integer, ForumUser>();
-	private LinkedList<ForumUser>			unknownUsers		= new LinkedList<ForumUser>();
+	private Hashtable<Integer, ForumUser>	users			= new Hashtable<Integer, ForumUser>();
+	private LinkedList<ForumUser>			unknownUsers	= new LinkedList<ForumUser>();
 	public final ForumContext				context;
-	private boolean							initalized			= false;
+	private boolean							initalized		= false;
 
 	public ForumUserDatabase(ForumContext context)
 	{
@@ -48,6 +44,62 @@ public class ForumUserDatabase implements Serializable
 		if (user != null)
 			return user;
 		return this.getUser(name);
+	}
+
+	public <T extends ForumUser> T getUserFromExternalSource(String name, Collection<T> list)
+	{
+		for (T user : list)
+			if (user.getName().equalsIgnoreCase(name))
+				return user;
+
+		T found = null;
+		for (T user : list)
+			if (user.getName().toLowerCase().startsWith(name.toLowerCase()))
+			{
+				if (found != null)
+					return null;
+				found = user;
+			}
+		if (found != null)
+			return found;
+
+		for (T user : list)
+			if (user.getName().toLowerCase().contains(name.toLowerCase()))
+			{
+				if (found != null)
+					return null;
+				found = user;
+			}
+		if (found != null)
+			return found;
+
+		for (T user : list)
+			for (String alias : user.getAliases())
+				if (alias.toLowerCase().contains(name.toLowerCase()))
+				{
+					if (found != null && found != user)
+						return null;
+					found = user;
+				}
+		if (found != null)
+			return found;
+
+		try
+		{
+			int id = Integer.parseInt(name);
+			for (T user : list)
+				if (user.getUserId() == id)
+					return user;
+		} catch (NumberFormatException ex)
+		{
+		}
+		
+		return null;
+	}
+
+	public ForumUser getUserFromExternalSource(String name)
+	{
+		return getUserFromExternalSource(name, this.users.values());
 	}
 
 	public ForumUser getUser(String name)

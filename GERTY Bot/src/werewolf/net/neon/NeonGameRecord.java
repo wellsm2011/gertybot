@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import werewolf.Utils;
 import werewolf.net.ForumPostEditor;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUser;
 import werewolf.net.GameRecord;
-import werewolf.net.Utils;
 
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;

@@ -4,12 +4,19 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import werewolf.Driver;
+import werewolf.Utils;
 import werewolf.net.ForumContext;
+import werewolf.net.ForumInbox;
+import werewolf.net.ForumLogin;
 import werewolf.net.ForumThread;
+import werewolf.net.ForumUserDatabase;
+import werewolf.net.GameRecord;
 import werewolf.net.HostingSignups;
 import werewolf.net.PrivateMessage;
-import werewolf.net.Utils;
 
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -18,9 +25,23 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class NeonContext extends ForumContext
 {
+	private static final Logger			LOGGER				= Logger.getLogger(NeonContext.class.getName());
 	private static final long			serialVersionUID	= -4455454156365061005L;
+	
+	static
+	{
+		NeonContext init = null;
+		try
+		{
+			init = new NeonContext();
+		} catch (NumberFormatException | IOException e)
+		{
+			LOGGER.log(Level.SEVERE, "Error initalizing NeonContext", e);
+		}
+		INSTANCE = init;
+	}
 
-	public static final NeonContext		INSTANCE			= new NeonContext();
+	public static final NeonContext		INSTANCE;
 
 	public static final String			DOMAIN				= "http://www.neondragon.net/";
 	public static final NeonGameRecord	RECORD				= NeonGameRecord.INSTANCE;
@@ -31,15 +52,16 @@ public class NeonContext extends ForumContext
 	public static final int				WEREWOLF_BOARD		= 178;
 	public static final boolean			PARSE_ALL_THREADS	= false;
 
-	private NeonContext()
-	{
-		super(Integer.parseInt(Utils.getProperty("neonId")), Utils.getProperty("neonUsername"), Utils.getProperty("neonPassword"), NeonContext.DOMAIN, NeonGameRecord.INSTANCE, NeonContext.SIGNUPS,
-				new NeonInbox("inbox"), NeonContext.POLL_INTERVAL, NeonContext.RULES_URL);
-	}
+	public static final NeonInbox		INBOX				= new NeonInbox("inbox");
 
-	public NeonContext(int userId, String username, String password)
+	private ForumLogin					login;
+
+	private NeonContext() throws NumberFormatException, IOException
 	{
-		super(userId, username, password, NeonContext.DOMAIN, NeonGameRecord.INSTANCE, NeonContext.SIGNUPS, new NeonInbox("inbox"), NeonContext.POLL_INTERVAL, NeonContext.RULES_URL);
+		int userId = Integer.parseInt(Utils.getProperty("neonId"));
+		String username = Utils.getProperty("neonUsername", "");
+		String password = Utils.getProperty("neonPassword", "");
+		login = new ForumLogin(userId, username, password, this);
 	}
 
 	@Override
@@ -49,16 +71,10 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
-	public boolean allowPMs()
-	{
-		return true;
-	}
-
-	@Override
 	public boolean checkLogin(final HtmlPage page) throws IOException
 	{
-		final String username = this.LOGIN_USER.getName();
-		final String password = this.LOGIN_USER.getPassword();
+		final String username = this.login.getName();
+		final String password = this.login.getPassword();
 		List<?> sidLink = page.getByXPath("//a[contains(@href, 'sid=')]");
 
 		List<?> loginList = page.getByXPath("//table[@id='maintable']/tbody/tr[2]/td/a[text()='Login']");
@@ -66,10 +82,9 @@ public class NeonContext extends ForumContext
 		// Don't try to log in unless not currently logged in.
 		if (loginList.size() > 0)
 		{
-			System.out.println("Logging into Neon server as " + this.LOGIN_USER + "...");
+			LOGGER.info("Logging into Neon server as " + this.login + "...");
 			HtmlAnchor a = (HtmlAnchor) loginList.get(0);
 			String url = a.getAttributesMap().get("href").getValue().replaceAll("^\\.", NeonContext.DOMAIN);
-			System.out.println(url);
 			this.pageRequestLock();
 			HtmlPage page2 = (HtmlPage) this.CLIENT.getPage(url);
 
@@ -85,10 +100,10 @@ public class NeonContext extends ForumContext
 			loginList = page2.getByXPath("//a[contains(text(), 'Logout ')]");
 			if (loginList.size() > 0)
 			{
-				String name = ((HtmlAnchor) loginList.get(0)).asText();
-				System.out.println("Logged in as " + name.replace("Logout ", "") + ".");
+				String name = ((HtmlAnchor) loginList.get(0)).asText().replace("Logout ", "");
+				LOGGER.info("Logged in as " + name + ".");
 			} else
-				System.err.println("Could not extract username from page.");
+				LOGGER.warning("Could not extract username from page.");
 			return false;
 		} else if (sidLink.size() > 1)
 			// Don't want to click that!
@@ -153,11 +168,14 @@ public class NeonContext extends ForumContext
 		LinkedList<PrivateMessage> output = new LinkedList<PrivateMessage>();
 		HtmlPage initialPage = this.getPage(NeonContext.DOMAIN + "ucp.php?i=pm&start=" + page * 25);
 		String baseXPath = "//div[@id='pagecontent']/form/table[last()]/tbody/tr";
-		//Iterator<?> repliedTo = initialPage.getByXPath(baseXPath + "/td[1]/img[last()]").iterator();
+		// Iterator<?> repliedTo = initialPage.getByXPath(baseXPath +
+		// "/td[1]/img[last()]").iterator();
 		Iterator<?> newMessage = initialPage.getByXPath(baseXPath + "/td[1]/img[last()]").iterator();
 		Iterator<?> messageLink = initialPage.getByXPath(baseXPath + "/td[2]/span/a[last()]").iterator();
-		//Iterator<?> senderLink = initialPage.getByXPath(baseXPath + "/td[3]/p/a[last()]").iterator();
-		//Iterator<?> timestamp = initialPage.getByXPath(baseXPath + "/td[1]").iterator();
+		// Iterator<?> senderLink = initialPage.getByXPath(baseXPath +
+		// "/td[3]/p/a[last()]").iterator();
+		// Iterator<?> timestamp = initialPage.getByXPath(baseXPath +
+		// "/td[1]").iterator();
 
 		while (newMessage.hasNext())
 		{
@@ -272,7 +290,7 @@ public class NeonContext extends ForumContext
 			postPage = form.getInputByName("post").click();
 			if (postPage.getUrl().getRef() == null)
 			{
-				System.out.println("NeonContext: Unable to post - trying again...\nURL: " + initialPage.getUrl().toString());
+				LOGGER.warning("NeonContext: Unable to post - trying again...\nURL: " + initialPage.getUrl().toString());
 				try
 				{
 					Thread.sleep(30 * 1000);
@@ -322,5 +340,54 @@ public class NeonContext extends ForumContext
 	public String toString()
 	{
 		return "NeonContext";
+	}
+
+	@Override
+	public ForumLogin getLogin()
+	{
+		return login;
+	}
+
+	@Override
+	public String getDomain()
+	{
+		return DOMAIN;
+	}
+
+	@Override
+	public GameRecord getRecord()
+	{
+		return RECORD;
+	}
+
+	@Override
+	public HostingSignups getSignups()
+	{
+		return SIGNUPS;
+	}
+
+	@Override
+	public ForumInbox getInbox()
+	{
+		return INBOX;
+	}
+
+	@Override
+	public int getPollInterval()
+	{
+		return POLL_INTERVAL;
+	}
+
+	@Override
+	public String getRulesUrl()
+	{
+		return RULES_URL;
+	}
+
+	@Override
+	public ForumUserDatabase getUserDatabase()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -17,7 +17,7 @@ public class ForumUser implements User
 
 	public static ForumUser getUserFor(int u, ForumContext context)
 	{
-		return context.USERS.getUser(u);
+		return context.getUserDatabase().getUser(u);
 	}
 
 	public static ForumUser getUserFor(int u, String name, ForumContext context)
@@ -42,17 +42,17 @@ public class ForumUser implements User
 
 		user = new ForumUser(u, name, context);
 		user.addAlias(name);
-		context.USERS.addUser(user);
+		context.getUserDatabase().addUser(user);
 		return user;
 	}
 
 	public static ForumUser getUserFor(String name, ForumContext context)
 	{
-		ForumUser user = context.USERS.getUser(name);
+		ForumUser user = context.getUserDatabase().getUser(name);
 		if (user == null)
 		{
 			user = new ForumUser(0, name, context);
-			context.USERS.addUser(user);
+			context.getUserDatabase().addUser(user);
 		}
 		return user;
 	}
@@ -112,7 +112,7 @@ public class ForumUser implements User
 
 		try
 		{
-			this.context.RECORD.save();
+			this.context.getRecord().save();
 		} catch (IOException e)
 		{
 			if (!e.getMessage().contains("Cannot modify while initalizing"))
@@ -224,7 +224,7 @@ public class ForumUser implements User
 	}
 
 	/**
-	 * Sets this user's user id. Throws an IllegalArgumentException if the user
+	 * Sets this user's forum id. Throws an IllegalArgumentException if the user
 	 * already has an id.
 	 *
 	 * @param newId
@@ -235,7 +235,7 @@ public class ForumUser implements User
 		if (this.userId > 0)
 			throw new IllegalArgumentException("User already has a valid id.");
 		this.userId = newId;
-		this.context.USERS.userIdSet(this);
+		this.context.getUserDatabase().userIdSet(this);
 	}
 
 	@Override
