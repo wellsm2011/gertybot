@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import werewolf.Driver;
 import werewolf.Utils;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumInbox;
@@ -27,7 +26,7 @@ public class NeonContext extends ForumContext
 {
 	private static final Logger			LOGGER				= Logger.getLogger(NeonContext.class.getName());
 	private static final long			serialVersionUID	= -4455454156365061005L;
-	
+
 	static
 	{
 		NeonContext init = null;
@@ -36,7 +35,7 @@ public class NeonContext extends ForumContext
 			init = new NeonContext();
 		} catch (NumberFormatException | IOException e)
 		{
-			LOGGER.log(Level.SEVERE, "Error initalizing NeonContext", e);
+			NeonContext.LOGGER.log(Level.SEVERE, "Error initalizing NeonContext", e);
 		}
 		INSTANCE = init;
 	}
@@ -61,7 +60,7 @@ public class NeonContext extends ForumContext
 		int userId = Integer.parseInt(Utils.getProperty("neonId"));
 		String username = Utils.getProperty("neonUsername", "");
 		String password = Utils.getProperty("neonPassword", "");
-		login = new ForumLogin(userId, username, password, this);
+		this.login = new ForumLogin(userId, username, password, this);
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class NeonContext extends ForumContext
 		// Don't try to log in unless not currently logged in.
 		if (loginList.size() > 0)
 		{
-			LOGGER.info("Logging into Neon server as " + this.login + "...");
+			NeonContext.LOGGER.info("Logging into Neon server as " + this.login + "...");
 			HtmlAnchor a = (HtmlAnchor) loginList.get(0);
 			String url = a.getAttributesMap().get("href").getValue().replaceAll("^\\.", NeonContext.DOMAIN);
 			this.pageRequestLock();
@@ -101,9 +100,9 @@ public class NeonContext extends ForumContext
 			if (loginList.size() > 0)
 			{
 				String name = ((HtmlAnchor) loginList.get(0)).asText().replace("Logout ", "");
-				LOGGER.info("Logged in as " + name + ".");
+				NeonContext.LOGGER.info("Logged in as " + name + ".");
 			} else
-				LOGGER.warning("Could not extract username from page.");
+				NeonContext.LOGGER.warning("Could not extract username from page.");
 			return false;
 		} else if (sidLink.size() > 1)
 			// Don't want to click that!
@@ -143,6 +142,12 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
+	public String getDomain()
+	{
+		return NeonContext.DOMAIN;
+	}
+
+	@Override
 	public List<ForumThread> getGameThreads() throws IOException
 	{
 		LinkedList<ForumThread> output = new LinkedList<ForumThread>();
@@ -151,6 +156,18 @@ public class NeonContext extends ForumContext
 			if (thread.isStickied() || NeonContext.PARSE_ALL_THREADS)
 				output.add(thread);
 		return output;
+	}
+
+	@Override
+	public ForumInbox getInbox()
+	{
+		return NeonContext.INBOX;
+	}
+
+	@Override
+	public ForumLogin getLogin()
+	{
+		return this.login;
 	}
 
 	@Override
@@ -188,6 +205,12 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
+	public int getPollInterval()
+	{
+		return NeonContext.POLL_INTERVAL;
+	}
+
+	@Override
 	public String getPostDeleteUrl(String boardId, String threadId, int postId)
 	{
 		return NeonContext.DOMAIN + "posting.php?mode=delete&f=" + boardId + "&p=" + postId;
@@ -212,6 +235,24 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
+	public GameRecord getRecord()
+	{
+		return NeonContext.RECORD;
+	}
+
+	@Override
+	public String getRulesUrl()
+	{
+		return NeonContext.RULES_URL;
+	}
+
+	@Override
+	public HostingSignups getSignups()
+	{
+		return NeonContext.SIGNUPS;
+	}
+
+	@Override
 	public String getThreadReplyUrl(String boardId, String threadId)
 	{
 		return NeonContext.DOMAIN + "posting.php?mode=reply&f=" + boardId + "&t=" + threadId;
@@ -227,6 +268,13 @@ public class NeonContext extends ForumContext
 	public String getThreadUrl(String boardId, String threadId, int start)
 	{
 		return NeonContext.DOMAIN + "viewtopic.php?t=" + threadId + "&start=" + (start - 1) * 15;
+	}
+
+	@Override
+	public ForumUserDatabase getUserDatabase()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -290,7 +338,7 @@ public class NeonContext extends ForumContext
 			postPage = form.getInputByName("post").click();
 			if (postPage.getUrl().getRef() == null)
 			{
-				LOGGER.warning("NeonContext: Unable to post - trying again...\nURL: " + initialPage.getUrl().toString());
+				NeonContext.LOGGER.warning("NeonContext: Unable to post - trying again...\nURL: " + initialPage.getUrl().toString());
 				try
 				{
 					Thread.sleep(30 * 1000);
@@ -340,54 +388,5 @@ public class NeonContext extends ForumContext
 	public String toString()
 	{
 		return "NeonContext";
-	}
-
-	@Override
-	public ForumLogin getLogin()
-	{
-		return login;
-	}
-
-	@Override
-	public String getDomain()
-	{
-		return DOMAIN;
-	}
-
-	@Override
-	public GameRecord getRecord()
-	{
-		return RECORD;
-	}
-
-	@Override
-	public HostingSignups getSignups()
-	{
-		return SIGNUPS;
-	}
-
-	@Override
-	public ForumInbox getInbox()
-	{
-		return INBOX;
-	}
-
-	@Override
-	public int getPollInterval()
-	{
-		return POLL_INTERVAL;
-	}
-
-	@Override
-	public String getRulesUrl()
-	{
-		return RULES_URL;
-	}
-
-	@Override
-	public ForumUserDatabase getUserDatabase()
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

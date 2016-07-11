@@ -106,9 +106,10 @@ public class PrivateMessage implements Comparable<PrivateMessage>
 		this.checkInit();
 		return this.to;
 	}
-	
-	public boolean hasBeenRead() {
-		return read;
+
+	public boolean hasBeenRead()
+	{
+		return this.read;
 	}
 
 	@Override

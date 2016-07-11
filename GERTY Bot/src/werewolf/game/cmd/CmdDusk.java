@@ -13,4 +13,11 @@ public class CmdDusk extends GameCommand
 
 	}
 
+	@Override
+	protected boolean execute(Command cmd)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

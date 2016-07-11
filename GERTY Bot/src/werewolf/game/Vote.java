@@ -1,14 +1,13 @@
 package werewolf.game;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 import werewolf.net.ForumPost;
 
 public class Vote implements Serializable
 {
-	// private final static Logger LOGGER =
-	// Logger.getLogger(Vote.class.getName());
-
+	private final static Logger	LOGGER				= Logger.getLogger(Vote.class.getName());
 	private static final long	serialVersionUID	= -479947774406039167L;
 
 	private Player				voter;
@@ -16,7 +15,7 @@ public class Vote implements Serializable
 	public final ForumPost		post;
 
 	/**
-	 * Creates a new vote that is not ascociated with any forum post.
+	 * Creates a new vote that is not associated with any forum post.
 	 *
 	 * @param voter
 	 *            The voting user.
@@ -26,6 +25,7 @@ public class Vote implements Serializable
 	public Vote(Player voter, User target)
 	{
 		this(voter, target, null);
+		LOGGER.fine("Vote created: " + this);
 	}
 
 	/**

@@ -101,19 +101,19 @@ public abstract class ForumContext implements Serializable, Runnable
 		}
 	}
 
-	public final WebClient			CLIENT				= new WebClient(BrowserVersion.FIREFOX_38);
-	public final double				REQUEST_INTERVAL	= 2;
+	public final WebClient	CLIENT				= new WebClient(BrowserVersion.FIREFOX_38);
+	public final double		REQUEST_INTERVAL	= 2;
 	// Seconds between posts and PM submissions.
-	public final double				POST_INTERVAL		= 45;
+	public final double		POST_INTERVAL		= 45;
 
 	//
-	private long					lastPageRequest		= System.currentTimeMillis() - (long) (this.REQUEST_INTERVAL * 500);
-	private long					lastPostSubmission	= System.currentTimeMillis() - (long) (this.POST_INTERVAL * 500);
+	private long			lastPageRequest		= System.currentTimeMillis() - (long) (this.REQUEST_INTERVAL * 500);
+	private long			lastPostSubmission	= System.currentTimeMillis() - (long) (this.POST_INTERVAL * 500);
 
 	public ForumContext()
 	{
 		this.disableLogging();
-		System.out.println("Context Created:\n      User=" + this.getLogin() + "\n      Domain=" + getDomain());
+		System.out.println("Context Created:\n      User=" + this.getLogin() + "\n      Domain=" + this.getDomain());
 	}
 
 	public abstract boolean allowExpectedLynch();
@@ -303,11 +303,17 @@ public abstract class ForumContext implements Serializable, Runnable
 
 	public abstract String getDeleteMessageUrl(int id);
 
+	public abstract String getDomain();
+
 	/**
 	 * @return A list of forum threads that contain a game.
 	 * @throws IOException
 	 */
 	public abstract List<ForumThread> getGameThreads() throws IOException;
+
+	public abstract ForumInbox getInbox();
+
+	public abstract ForumLogin getLogin();
 
 	/**
 	 * Returns an HtmlPage for a given user's profile.
@@ -350,6 +356,8 @@ public abstract class ForumContext implements Serializable, Runnable
 	 *             If any of the underlying network calls throw an error.
 	 */
 	public abstract List<PrivateMessage> getPMs(int page) throws IOException;
+
+	public abstract int getPollInterval();
 
 	/**
 	 * Returns an HtmlPage to delete a given post.
@@ -402,6 +410,12 @@ public abstract class ForumContext implements Serializable, Runnable
 
 	public abstract String getReadMessageUrl(int id);
 
+	public abstract GameRecord getRecord();
+
+	public abstract String getRulesUrl();
+
+	public abstract HostingSignups getSignups();
+
 	/**
 	 * Returns an HtmlPage for the first page of a given forum thread.
 	 *
@@ -450,6 +464,8 @@ public abstract class ForumContext implements Serializable, Runnable
 	public abstract String getThreadUrl(String boardId, String threadId);
 
 	public abstract String getThreadUrl(String boardId, String threadId, int start);
+
+	public abstract ForumUserDatabase getUserDatabase();
 
 	/**
 	 * Returns an HtmlPage for a given user's profile.
@@ -604,22 +620,6 @@ public abstract class ForumContext implements Serializable, Runnable
 	public abstract String spoiler(String title, String text);
 
 	public abstract String strike(String text);
-
-	public abstract ForumLogin getLogin();
-
-	public abstract String getDomain();
-
-	public abstract GameRecord getRecord();
-
-	public abstract HostingSignups getSignups();
-
-	public abstract ForumInbox getInbox();
-
-	public abstract int getPollInterval();
-
-	public abstract String getRulesUrl();
-	
-	public abstract ForumUserDatabase getUserDatabase();
 
 	@Override
 	public String toString()

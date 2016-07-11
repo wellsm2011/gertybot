@@ -6,9 +6,15 @@ import werewolf.net.Command;
 public class CmdCohost extends GameCommand
 {
 
-	@Override
-	protected void execute(WerewolfGame game, Command cmd)
+	public CmdCohost(WerewolfGame game)
 	{
+		super(game);
+	}
+
+	@Override
+	protected boolean execute(Command cmd)
+	{
+		return false;
 		// TODO Auto-generated method stub
 
 	}

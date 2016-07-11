@@ -10,6 +10,14 @@ public class Driver
 {
 	private static final Logger	LOGGER	= Logger.getLogger(Driver.class.getName());
 
+	public static void launchContext(String context) throws Exception
+	{
+		Driver.LOGGER.info("Loading context: " + context);
+		String className = "werewolf.net." + context.toLowerCase() + "." + context + "Context";
+		ForumContext obj = (NeonContext) Class.forName(className).getField("INSTANCE").get(null);
+		new Thread(obj).start();
+	}
+
 	public static void main(String... cheese) throws Exception
 	{
 		WerewolfLogger.setup();
@@ -20,14 +28,6 @@ public class Driver
 			throw new IllegalArgumentException("No contexts to start. Please configure local properties.");
 
 		for (String context : contexts)
-			launchContext(context);
-	}
-
-	public static void launchContext(String context) throws Exception
-	{
-		LOGGER.info("Loading context: " + context);
-		String className = "werewolf.net." + context.toLowerCase() + "." + context + "Context";
-		ForumContext obj = (NeonContext) (Class.forName(className).getField("INSTANCE").get(null));
-		new Thread(obj).start();
+			Driver.launchContext(context);
 	}
 }

@@ -20,18 +20,18 @@ public class CmdAdd extends GameCommand
 	@Override
 	protected boolean execute(Command cmd)
 	{
-		ForumUser target = game.getUser(cmd.getParamString());
+		ForumUser target = this.game.getUser(cmd.getParamString());
 		if (target == null)
 		{
 			cmd.invalidate("unknown user");
 			return false;
 		}
-		if (game.getPlayer(target) != null)
+		if (this.game.getPlayer(target) != null)
 		{
 			cmd.invalidate("target is a player");
 			return false;
 		}
-		game.getPlayers().add(new Player(target, cmd.getPost(), game));
+		this.game.getPlayers().add(new Player(target, cmd.getPost(), this.game));
 		return true;
 	}
 

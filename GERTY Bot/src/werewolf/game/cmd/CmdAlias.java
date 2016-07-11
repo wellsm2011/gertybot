@@ -1,7 +1,6 @@
 package werewolf.game.cmd;
 
 import werewolf.game.WerewolfGame;
-import werewolf.game.cmd.GameCommand.Requirement;
 import werewolf.net.Command;
 import werewolf.net.ForumUser;
 
@@ -22,7 +21,7 @@ public class CmdAlias extends GameCommand
 	protected boolean execute(Command cmd)
 	{
 		String[] params = cmd.getParams();
-		ForumUser aliasPlayer = game.getContext().getUserDatabase().getUserFromExternalSource(params[0]);
+		ForumUser aliasPlayer = this.game.getContext().getUserDatabase().getUserFromExternalSource(params[0]);
 
 		return false;
 	}

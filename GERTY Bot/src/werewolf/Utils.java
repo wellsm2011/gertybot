@@ -16,8 +16,6 @@ import java.util.stream.LongStream;
 
 public final class Utils
 {
-	private static final Logger	LOGGER	= Logger.getLogger(Utils.class.getName());
-
 	public static class RomanNumerals
 	{
 		public enum Numeral
@@ -55,7 +53,27 @@ public final class Utils
 		}
 	}
 
+	private static final Logger	LOGGER			= Logger.getLogger(Utils.class.getName());
+
 	private static Properties	localProperties	= null;
+
+	@SuppressWarnings("unchecked")
+	public static <T> T cleanCast(Object cur)
+	{
+		return (T) cur;
+	}
+
+	public static String getProperty(String key) throws IOException
+	{
+		if (Utils.localProperties == null)
+			Utils.readProperties();
+		return Utils.localProperties.getProperty(key);
+	}
+
+	public static <T> T getProperty(String key, String defaultValue, Function<String, T> resolver)
+	{
+		return resolver.apply(Utils.getProperty(key, defaultValue));
+	}
 
 	/**
 	 * Fetches a property from the first of: local.properties, setup.properties,
@@ -69,7 +87,7 @@ public final class Utils
 	{
 		try
 		{
-			String value = getProperty(key);
+			String value = Utils.getProperty(key);
 			if (value == null || value.length() == 0)
 				return defaultValue;
 			// Check primitive types to see if we're parsing.
@@ -77,52 +95,34 @@ public final class Utils
 			{
 				if (value.length() != 1)
 					return defaultValue;
-				return cleanCast(value.charAt(0));
+				return Utils.cleanCast(value.charAt(0));
 			}
 			if (defaultValue instanceof Byte)
-				return cleanCast(Byte.valueOf(value));
+				return Utils.cleanCast(Byte.valueOf(value));
 			if (defaultValue instanceof Short)
-				return cleanCast(Short.valueOf(value));
+				return Utils.cleanCast(Short.valueOf(value));
 			if (defaultValue instanceof Integer)
-				return cleanCast(Integer.valueOf(value));
+				return Utils.cleanCast(Integer.valueOf(value));
 			if (defaultValue instanceof Long)
-				return cleanCast(Long.valueOf(value));
+				return Utils.cleanCast(Long.valueOf(value));
 			if (defaultValue instanceof Float)
-				return cleanCast(Float.valueOf(value));
+				return Utils.cleanCast(Float.valueOf(value));
 			if (defaultValue instanceof Double)
-				return cleanCast(Double.valueOf(value));
+				return Utils.cleanCast(Double.valueOf(value));
 			if (defaultValue instanceof Boolean)
-				return cleanCast(Boolean.valueOf(value));
+				return Utils.cleanCast(Boolean.valueOf(value));
 			// Try to extract a constructor that takes a string and create a new
 			// instance of the class.
-			return cleanCast(defaultValue.getClass().getConstructor(String.class).newInstance(value));
+			return Utils.cleanCast(defaultValue.getClass().getConstructor(String.class).newInstance(value));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex)
 		{
-			LOGGER.log(Level.WARNING, "Could not construct a new instance of type " + defaultValue.getClass().getName() + ".", ex);
+			Utils.LOGGER.log(Level.WARNING, "Could not construct a new instance of type " + defaultValue.getClass().getName() + ".", ex);
 			return defaultValue;
 		} catch (IOException ex)
 		{
-			LOGGER.log(Level.WARNING, "Could not read properties for field " + key + ".", ex);
+			Utils.LOGGER.log(Level.WARNING, "Could not read properties for field " + key + ".", ex);
 			return defaultValue;
 		}
-	}
-
-	public static String getProperty(String key) throws IOException
-	{
-		if (Utils.localProperties == null)
-			Utils.readProperties();
-		return Utils.localProperties.getProperty(key);
-	}
-
-	public static <T> T getProperty(String key, String defaultValue, Function<String, T> resolver)
-	{
-		return resolver.apply(getProperty(key, defaultValue));
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T cleanCast(Object cur)
-	{
-		return (T) cur;
 	}
 
 	private static void readProperties() throws IOException
@@ -136,7 +136,7 @@ public final class Utils
 			in.close();
 		} catch (FileNotFoundException ex)
 		{
-			LOGGER.warning("Could not load ./local.properties.");
+			Utils.LOGGER.warning("Could not load ./local.properties.");
 			throw new IOException(ex);
 		}
 	}

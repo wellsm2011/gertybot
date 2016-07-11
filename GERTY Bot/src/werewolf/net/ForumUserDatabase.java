@@ -8,10 +8,14 @@ import java.util.LinkedList;
 
 public class ForumUserDatabase implements Serializable
 {
-	private Hashtable<Integer, ForumUser>	users			= new Hashtable<Integer, ForumUser>();
-	private LinkedList<ForumUser>			unknownUsers	= new LinkedList<ForumUser>();
+	/**
+	 * 
+	 */
+	private static final long				serialVersionUID	= 1L;
+	private Hashtable<Integer, ForumUser>	users				= new Hashtable<Integer, ForumUser>();
+	private LinkedList<ForumUser>			unknownUsers		= new LinkedList<ForumUser>();
 	public final ForumContext				context;
-	private boolean							initalized		= false;
+	private boolean							initalized			= false;
 
 	public ForumUserDatabase(ForumContext context)
 	{
@@ -44,6 +48,33 @@ public class ForumUserDatabase implements Serializable
 		if (user != null)
 			return user;
 		return this.getUser(name);
+	}
+
+	public ForumUser getUser(String name)
+	{
+		boolean multipleAliases = false;
+		ForumUser found = null;
+		Enumeration<ForumUser> elements = this.users.elements();
+		while (elements.hasMoreElements())
+		{
+			ForumUser user = elements.nextElement();
+			if (user.getName().equalsIgnoreCase(name))
+				return user;
+			for (String alias : user.getAliases())
+				if (alias.equalsIgnoreCase(name))
+					if (found == null)
+						found = user;
+					else
+						multipleAliases = true;
+		}
+		if (!multipleAliases)
+			return found;
+		return null;
+	}
+
+	public ForumUser getUserFromExternalSource(String name)
+	{
+		return this.getUserFromExternalSource(name, this.users.values());
 	}
 
 	public <T extends ForumUser> T getUserFromExternalSource(String name, Collection<T> list)
@@ -93,34 +124,7 @@ public class ForumUserDatabase implements Serializable
 		} catch (NumberFormatException ex)
 		{
 		}
-		
-		return null;
-	}
 
-	public ForumUser getUserFromExternalSource(String name)
-	{
-		return getUserFromExternalSource(name, this.users.values());
-	}
-
-	public ForumUser getUser(String name)
-	{
-		boolean multipleAliases = false;
-		ForumUser found = null;
-		Enumeration<ForumUser> elements = this.users.elements();
-		while (elements.hasMoreElements())
-		{
-			ForumUser user = elements.nextElement();
-			if (user.getName().equalsIgnoreCase(name))
-				return user;
-			for (String alias : user.getAliases())
-				if (alias.equalsIgnoreCase(name))
-					if (found == null)
-						found = user;
-					else
-						multipleAliases = true;
-		}
-		if (!multipleAliases)
-			return found;
 		return null;
 	}
 

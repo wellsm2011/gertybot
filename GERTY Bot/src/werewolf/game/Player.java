@@ -17,7 +17,7 @@ public class Player extends ForumUser
 	private LinkedList<PlayerEvent>	data				= new LinkedList<PlayerEvent>();
 	private PlayerEvent				lastDeath			= null;
 	private ForumPost				joinPost;
-	private WerewolfGame game;
+	private WerewolfGame			game;
 
 	/**
 	 * Creates a new player with the given forum user and join post.

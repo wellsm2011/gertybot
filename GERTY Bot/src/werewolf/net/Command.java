@@ -2,8 +2,6 @@ package werewolf.net;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -93,20 +91,20 @@ public class Command implements Serializable
 	}
 
 	/**
-	 * @return Any additional text supplied with the command as a single string.
-	 */
-	public String getParamString()
-	{
-		return this.params;
-	}
-
-	/**
 	 * @return Any additional text supplied with this command as an array of
 	 *         strings split along any commas in the original string.
 	 */
 	public String[] getParams()
 	{
 		return this.params.split(",");
+	}
+
+	/**
+	 * @return Any additional text supplied with the command as a single string.
+	 */
+	public String getParamString()
+	{
+		return this.params;
 	}
 
 	/**

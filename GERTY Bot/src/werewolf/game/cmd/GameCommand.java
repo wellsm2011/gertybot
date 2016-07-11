@@ -1,15 +1,47 @@
 package werewolf.game.cmd;
 
-import java.util.List;
 import java.util.function.BiFunction;
 
 import werewolf.game.GamePhase;
-import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
 
 public abstract class GameCommand
 {
+	protected enum Requirement
+	{
+		HOST("invalid access", "can't be host"), PLAYER("unknown player", "can't be a player"), ALIVE("dead player", "living player"), DAY("must be day", "currently day"), NIGHT("must be night",
+				"currently night"), PREGAME("must be pregame setup", "currently pregame setup"), ADMIN("invalid access", "can't be admin");
+
+		public final String									requiredTrue;
+		public final String									requiredFalse;
+		private BiFunction<WerewolfGame, Command, Boolean>	resolver	= null;
+
+		private Requirement(String requiredTrue, String requiredFalse)
+		{
+			this.requiredTrue = requiredTrue;
+			this.requiredFalse = requiredFalse;
+		}
+
+		public void assertRequirement(boolean expectedResult, WerewolfGame game, Command cmd)
+		{
+			boolean state = this.resolver.apply(game, cmd);
+			if (state && !expectedResult)
+				cmd.invalidate(this.requiredFalse);
+			else if (!state && expectedResult)
+				cmd.invalidate(this.requiredTrue);
+			assert state == expectedResult;
+		}
+
+		protected void setResolver(BiFunction<WerewolfGame, Command, Boolean> resolver)
+		{
+			if (this.resolver == null)
+				this.resolver = resolver;
+			else
+				throw new IllegalArgumentException("Resolver already set for " + this.name());
+		}
+	}
+
 	static
 	{
 		Requirement.HOST.setResolver((WerewolfGame game, Command cmd) -> {
@@ -37,40 +69,6 @@ public abstract class GameCommand
 		});
 	}
 
-	protected enum Requirement
-	{
-		HOST("invalid access", "can't be host"), PLAYER("unknown player", "can't be a player"), ALIVE("dead player", "living player"), DAY("must be day", "currently day"), NIGHT("must be night",
-				"currently night"), PREGAME("must be pregame setup", "currently pregame setup"), ADMIN("invalid access", "can't be admin");
-
-		public final String									requiredTrue;
-		public final String									requiredFalse;
-		private BiFunction<WerewolfGame, Command, Boolean>	resolver	= null;
-
-		private Requirement(String requiredTrue, String requiredFalse)
-		{
-			this.requiredTrue = requiredTrue;
-			this.requiredFalse = requiredFalse;
-		}
-
-		protected void setResolver(BiFunction<WerewolfGame, Command, Boolean> resolver)
-		{
-			if (this.resolver == null)
-				this.resolver = resolver;
-			else
-				throw new IllegalArgumentException("Resolver already set for " + this.name());
-		}
-
-		public void assertRequirement(boolean expectedResult, WerewolfGame game, Command cmd)
-		{
-			boolean state = resolver.apply(game, cmd);
-			if (state && !expectedResult)
-				cmd.invalidate(this.requiredFalse);
-			else if (!state && expectedResult)
-				cmd.invalidate(this.requiredTrue);
-			assert state == expectedResult;
-		}
-	}
-
 	// Usage: player[:<alive|dead>], string[:<option1>|<option2>|<...>],
 	// number[:<min>,<max>]
 	protected String		name		= "UNKNOWN";
@@ -85,33 +83,21 @@ public abstract class GameCommand
 		this.game = game;
 	}
 
+	protected abstract boolean execute(Command cmd);
+
 	public String getName()
 	{
-		return name;
-	}
-
-	/**
-	 * @param game
-	 * @param cmd
-	 * @return true if the bot needs to make a new post.
-	 */
-	public boolean processCmd(Command cmd)
-	{
-		if (!cmd.getCommand().matches("^(" + match + ")$"))
-			return false;
-		if (!isValid(cmd))
-			return false;
-		return execute(cmd);
+		return this.name;
 	}
 
 	protected boolean isValid(Command cmd)
 	{
 		try
 		{
-			for (Requirement req : mustBeTrue)
-				req.assertRequirement(true, game, cmd);
-			for (Requirement req : mustBeFalse)
-				req.assertRequirement(false, game, cmd);
+			for (Requirement req : this.mustBeTrue)
+				req.assertRequirement(true, this.game, cmd);
+			for (Requirement req : this.mustBeFalse)
+				req.assertRequirement(false, this.game, cmd);
 
 			// TODO: Evaluate Sig here.
 
@@ -122,5 +108,19 @@ public abstract class GameCommand
 		}
 	}
 
-	protected abstract boolean execute(Command cmd);
+	/**
+	 * @param game
+	 * @param cmd
+	 * @return true if the bot needs to make a new post.
+	 */
+	public boolean processCmd(Command cmd)
+	{
+		if (cmd.isInvalidated())
+			return false;
+		if (!cmd.getCommand().matches("^(" + this.match + ")$"))
+			return false;
+		if (!this.isValid(cmd))
+			return false;
+		return this.execute(cmd);
+	}
 }

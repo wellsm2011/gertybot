@@ -25,6 +25,6 @@ public class GamePhase
 
 	public void resolve(WerewolfGame game)
 	{
-		resolver.accept(game);
+		this.resolver.accept(game);
 	}
 }

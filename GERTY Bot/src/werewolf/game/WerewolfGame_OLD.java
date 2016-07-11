@@ -30,7 +30,7 @@ public class WerewolfGame_OLD implements ThreadManager
 
 	private ForumThread			thread;
 	private ArrayList<Player>	players					= new ArrayList<Player>();
-	private VoteManager_OLD			votes					= new VoteManager_OLD(this.players);
+	private VoteManager_OLD		votes					= new VoteManager_OLD(this.players);
 	private ForumUser			host					= null;
 	private ForumUser			cohost					= null;
 	private StringBuilder		pastVotes				= new StringBuilder();
@@ -176,7 +176,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			return;
 		}
 		String[] params = cmd.getParamString().split(" ", 2); // Syntax: <type>[
-															// <options>]
+																// <options>]
 		if (params[0].matches("timed"))
 		{
 			if (params.length == 1)
@@ -689,8 +689,9 @@ public class WerewolfGame_OLD implements ThreadManager
 			cmd.invalidate("invalid access");
 			return;
 		}
-		String[] params = cmd.getParamString().split(", ?", 2); // Syntax: <target>[,
-															// <message>]
+		String[] params = cmd.getParamString().split(", ?", 2); // Syntax:
+																// <target>[,
+		// <message>]
 		Player target = this.getPlayer(params[0]);
 		if (target != null)
 		{
@@ -791,8 +792,9 @@ public class WerewolfGame_OLD implements ThreadManager
 			cmd.invalidate("invalid access");
 			return;
 		}
-		String[] params = cmd.getParamString().split(", ?", 2); // Syntax: <target>[,
-															// <message>]
+		String[] params = cmd.getParamString().split(", ?", 2); // Syntax:
+																// <target>[,
+		// <message>]
 		Player target = this.getPlayer(params[0]);
 		if (target != null)
 		{
@@ -1070,8 +1072,9 @@ public class WerewolfGame_OLD implements ThreadManager
 			cmd.invalidate("invalid access");
 			return;
 		}
-		String[] params = cmd.getParamString().split(", ?", 2); // Syntax: <name>[,
-															// <user ID>]
+		String[] params = cmd.getParamString().split(", ?", 2); // Syntax:
+																// <name>[,
+		// <user ID>]
 		ForumUser newCohost = this.getUser(params[0]);
 		try
 		{
