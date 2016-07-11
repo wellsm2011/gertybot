@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import werewolf.net.msg.ForumMessageElement;
+
 public class PrivateMessage implements Comparable<PrivateMessage>
 {
 	private List<ForumUser>	to			= null;
@@ -130,16 +132,16 @@ public class PrivateMessage implements Comparable<PrivateMessage>
 		this.message = message;
 	}
 
-	public void replyToAll(String message) throws IOException
+	public void replyToAll(ForumMessageElement message) throws IOException
 	{
 		this.checkInit();
 		String newSub = this.subject;
 		if (!this.subject.startsWith("Re:"))
-			newSub = "Re:" + newSub;
+			newSub = "Re: " + newSub;
 		this.replyToAll(newSub, message);
 	}
 
-	public void replyToAll(String subject, String message) throws IOException
+	public void replyToAll(String subject, ForumMessageElement message) throws IOException
 	{
 		this.checkInit();
 		LinkedList<String> list = new LinkedList<>();
@@ -151,7 +153,7 @@ public class PrivateMessage implements Comparable<PrivateMessage>
 		this.getContext().makePm((String[]) list.toArray(), new String[0], subject, message);
 	}
 
-	public void replyToSender(String message) throws IOException
+	public void replyToSender(ForumMessageElement message) throws IOException
 	{
 		String newSub = this.subject;
 		if (!this.subject.startsWith("Re:"))
@@ -159,7 +161,7 @@ public class PrivateMessage implements Comparable<PrivateMessage>
 		this.replyToSender(newSub, message);
 	}
 
-	public void replyToSender(String subject, String message) throws IOException
+	public void replyToSender(String subject, ForumMessageElement message) throws IOException
 	{
 		this.getContext().makePm(new String[]
 		{ this.from.getName() }, new String[0], subject, message);

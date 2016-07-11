@@ -58,7 +58,7 @@ public class NeonBoard extends ForumBoard
 				if (thread.getThreadId() == "" + threadId)
 				{
 					found = true;
-					thread.setStickied(sticky);
+					thread.markStickied(sticky);
 					newThreads.add(thread);
 				}
 

@@ -25,9 +25,9 @@ public class NeonThread extends ForumThread
 {
 	private static final long				serialVersionUID	= 2939364857283333100L;
 
-	public static final DateTimeFormatter	TIME_FORMAT			= DateTimeFormat.forPattern("E MMMM d, YYYY h:m a");
-
+	private static final DateTimeFormatter	timeFormat			= DateTimeFormat.forPattern("E MMMM d, YYYY h:m a");
 	private static LinkedList<NeonThread>	loadedThreads		= new LinkedList<NeonThread>();
+	private String							lastPage			= "";
 
 	public static NeonThread getThread(int threadId)
 	{
@@ -49,7 +49,7 @@ public class NeonThread extends ForumThread
 		for (NeonThread thread : NeonThread.loadedThreads)
 			if (thread.getThreadId().equals("" + threadId))
 			{
-				thread.setStickied(isStickied);
+				thread.markStickied(isStickied);
 				return thread;
 			}
 		NeonThread thread = new NeonThread(boardId, threadId, title, isStickied);
@@ -59,10 +59,8 @@ public class NeonThread extends ForumThread
 
 	public static NeonThread getThread(int threadId, String title, boolean isStickied)
 	{
-		return NeonThread.getThread(0, threadId, title, isStickied);
+		return NeonThread.getThread(-1, threadId, title, isStickied);
 	}
-
-	private String	lastPage	= "";
 
 	private NeonThread(int boardId, int threadId)
 	{
@@ -71,7 +69,7 @@ public class NeonThread extends ForumThread
 
 	private NeonThread(int boardId, int threadId, String title, boolean isStickied)
 	{
-		super(boardId <= 0 ? "" : "" + boardId, threadId + "", title, isStickied, false, true);
+		super(boardId < 0 ? "" : "" + boardId, threadId + "", title, isStickied, false, true);
 	}
 
 	@Override
@@ -128,7 +126,7 @@ public class NeonThread extends ForumThread
 
 			HtmlElement timeStamp = page.getFirstByXPath(dataRow + "[@class='postbottom']");
 
-			DateTime postTime = DateTime.parse(timeStamp.asText(), NeonThread.TIME_FORMAT);
+			DateTime postTime = DateTime.parse(timeStamp.asText(), NeonThread.timeFormat);
 
 			NeonPost post = new NeonPost(this, postId, postTime, poster, commands, editable, postBody);
 			for (Object e : commandElements)

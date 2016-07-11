@@ -647,7 +647,7 @@ public class WerewolfGame_OLD implements ThreadManager
 					WerewolfGame_OLD.LOGGER.info("Error parsing injure command: " + ex.getMessage());
 					cmd.invalidate("error parsing duration");
 				}
-			target.addData(new PlayerEvent("Injured", this.round, cmd.getPost().getUrl()));
+			target.logEvent(new PlayerEvent("Injured", this.round, cmd.getPost().getUrl()));
 			target.injure(rounds);
 		}
 	}
@@ -740,7 +740,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		else if (target == null)
 			cmd.invalidate("unknown player");
 		else
-			target.addData(new PlayerEvent(params[1].trim(), this.round, cmd.getPost().getUrl()));
+			target.logEvent(new PlayerEvent(params[1].trim(), this.round, cmd.getPost().getUrl()));
 	}
 
 	private void makeVote(Command cmd)

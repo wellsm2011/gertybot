@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import werewolf.game.User;
+import werewolf.net.msg.ForumMessageElement;
 
 /**
  * This class describes a user on a forum, and the actions the bot may take to
@@ -205,10 +206,10 @@ public class ForumUser implements User
 	 * @throws IOException
 	 *             If the underlying network calls fail for any reason.
 	 */
-	public void replyTo(String body, String subject) throws IOException
+	public void replyTo(ForumMessageElement body, String subject) throws IOException
 	{
 		this.getContext().makePm(new String[]
-		{ this.name }, new String[0], body, subject);
+		{ this.name }, new String[0], subject, body);
 	}
 
 	public void setName(String newName)

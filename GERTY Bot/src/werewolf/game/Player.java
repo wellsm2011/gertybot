@@ -1,10 +1,15 @@
 package werewolf.game;
 
-import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import werewolf.net.ForumPost;
 import werewolf.net.ForumUser;
+import werewolf.net.msg.ForumMessageColor;
+import werewolf.net.msg.ForumMessageContainer;
+import werewolf.net.msg.ForumMessageElement;
+import werewolf.net.msg.ForumMessageStrike;
+import werewolf.net.msg.ForumMessageString;
+import werewolf.net.msg.ForumMessageUrl;
 
 public class Player extends ForumUser
 {
@@ -14,8 +19,7 @@ public class Player extends ForumUser
 
 	private boolean					alive				= true;
 	private int						injured				= 0;
-	private LinkedList<PlayerEvent>	data				= new LinkedList<PlayerEvent>();
-	private PlayerEvent				lastDeath			= null;
+	private ForumMessageContainer	data				= new ForumMessageContainer();
 	private ForumPost				joinPost;
 	private WerewolfGame			game;
 
@@ -39,53 +43,51 @@ public class Player extends ForumUser
 	/**
 	 * @param evt
 	 *            The event this player was involved in.
+	 * @param round
+	 *            The round this event happened.
+	 * @param origin
+	 *            The original post which caused or documented this event.
 	 */
-	public void addData(PlayerEvent evt)
+	public void logEvent(ForumMessageElement evt, int round, ForumPost origin)
 	{
-		this.data.add(evt);
+		evt.append(" R" + round);
+		logEvent(evt, origin);
 	}
 
 	/**
-	 * @return A plaintext log of the events that have happened to this player.
+	 * @param evt
+	 *            The event this player was involved in.
+	 * @param origin
+	 *            The original post which caused or documented this event.
 	 */
-	public String getData()
+	public void logEvent(ForumMessageElement evt, ForumPost origin)
 	{
-		if (this.data.isEmpty())
-			return "";
-
-		StringBuilder output = new StringBuilder();
-		output.append(" - ");
-		boolean isFirst = true;
-		for (PlayerEvent event : this.data)
-		{
-			if (!isFirst)
-				output.append(", ");
-			output.append(event.getData());
-			isFirst = false;
-		}
-		return output.toString();
+		evt = new ForumMessageUrl(origin.getUrl(), evt);
+		if (!this.data.getChildren().isEmpty())
+			this.data.append(", ");
+		this.data.append(evt);
 	}
 
 	/**
-	 * @return A BBCode formatted log of the events that have happened to this
-	 *         player.
+	 * @return A log of the events that have happened to this player.
 	 */
-	public String getForumData()
+	public ForumMessageElement getData()
 	{
-		if (this.data.isEmpty())
-			return "";
+		return this.data;
+	}
 
-		StringBuilder output = new StringBuilder();
-		output.append(" - ");
-		boolean isFirst = true;
-		for (PlayerEvent event : this.data)
-		{
-			if (!isFirst)
-				output.append(", ");
-			output.append(event.makeLink(event.getData()));
-			isFirst = false;
-		}
-		return output.toString();
+	/**
+	 * @return A forum message formatted to reflect the player's current status
+	 *         (alive / dead / injured).
+	 */
+	public ForumMessageElement getMessageName()
+	{
+		ForumMessageElement name = new ForumMessageString(getName());
+		if (!this.alive)
+			name = new ForumMessageStrike(new ForumMessageColor(ForumMessageColor.DEAD, name));
+		else if (this.injured > 0)
+			name = new ForumMessageColor(ForumMessageColor.DEAD, name);
+		return name;
 	}
 
 	/**
@@ -94,17 +96,6 @@ public class Player extends ForumUser
 	public ForumPost getJoinPost()
 	{
 		return this.joinPost;
-	}
-
-	/**
-	 * @return A shortened link to the last death of the player, or null if the
-	 *         player has not died yet.
-	 */
-	public String getLastDeath()
-	{
-		if (this.lastDeath == null)
-			return "";
-		return this.lastDeath.makeLink(this.lastDeath.getRound());
 	}
 
 	/**
@@ -145,9 +136,9 @@ public class Player extends ForumUser
 	 * @param evt
 	 *            The event surrounding this player's death.
 	 */
-	public void kill(PlayerEvent evt)
+	public void kill(ForumMessageElement evt, int round, ForumPost origin)
 	{
-		this.addData(evt);
+		this.logEvent(evt, round, origin);
 		this.alive = false;
 	}
 
@@ -164,7 +155,6 @@ public class Player extends ForumUser
 		this.data = plr.data;
 		this.alive = plr.alive;
 		this.injured = plr.injured;
-		this.lastDeath = plr.lastDeath;
 		this.game = plr.game;
 	}
 
@@ -175,11 +165,11 @@ public class Player extends ForumUser
 	 *            The event surrounding this player's death.
 	 * @return False if the player was already alive, true otherwise.
 	 */
-	public void revive(PlayerEvent evt)
+	public void revive(ForumMessageElement evt, int round, ForumPost origin)
 	{
 		if (this.alive)
 			throw new IllegalArgumentException("Player already alive.");
-		this.addData(evt);
+		this.logEvent(evt, round, origin);
 		this.alive = true;
 	}
 }

@@ -16,6 +16,7 @@ import werewolf.net.ForumUserDatabase;
 import werewolf.net.GameRecord;
 import werewolf.net.HostingSignups;
 import werewolf.net.PrivateMessage;
+import werewolf.net.msg.ForumMessageElement;
 
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -24,8 +25,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class NeonContext extends ForumContext
 {
-	private static final Logger			LOGGER				= Logger.getLogger(NeonContext.class.getName());
-	private static final long			serialVersionUID	= -4455454156365061005L;
+	private static final Logger				LOGGER				= Logger.getLogger(NeonContext.class.getName());
+	private static final long				serialVersionUID	= -4455454156365061005L;
 
 	static
 	{
@@ -40,20 +41,21 @@ public class NeonContext extends ForumContext
 		INSTANCE = init;
 	}
 
-	public static final NeonContext		INSTANCE;
+	public static final NeonContext			INSTANCE;
 
-	public static final String			DOMAIN				= "http://www.neondragon.net/";
-	public static final NeonGameRecord	RECORD				= NeonGameRecord.INSTANCE;
-	public static final HostingSignups	SIGNUPS				= NeonHostingSignups.INSTANCE;
-	public static final int				POLL_INTERVAL		= 2;
-	public static final String			RULES_URL			= NeonContext.DOMAIN + "viewtopic.php?f=179&t=15538";
+	public static final String				DOMAIN				= "http://www.neondragon.net/";
+	public static final NeonGameRecord		RECORD				= NeonGameRecord.INSTANCE;
+	public static final HostingSignups		SIGNUPS				= NeonHostingSignups.INSTANCE;
+	public static final int					POLL_INTERVAL		= 2;
+	public static final String				RULES_URL			= NeonContext.DOMAIN + "viewtopic.php?f=179&t=15538";
+	public static final NeonMessageEncoder	ENCODER				= new NeonMessageEncoder();
 
-	public static final int				WEREWOLF_BOARD		= 178;
-	public static final boolean			PARSE_ALL_THREADS	= false;
+	public static final int					WEREWOLF_BOARD		= 178;
+	public static final boolean				PARSE_ALL_THREADS	= false;
 
-	public static final NeonInbox		INBOX				= new NeonInbox("inbox");
+	public static final NeonInbox			INBOX				= new NeonInbox("inbox");
 
-	private ForumLogin					login;
+	private ForumLogin						login;
 
 	private NeonContext() throws NumberFormatException, IOException
 	{
@@ -284,13 +286,7 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
-	public String header(String text)
-	{
-		return "[size=125][b]" + text + ":[/b][/size]";
-	}
-
-	@Override
-	public void makePm(HtmlPage pmPage, String[] to, String[] bcc, String subject, String body) throws IOException
+	public void makePm(HtmlPage pmPage, String[] to, String[] bcc, String subject, ForumMessageElement body) throws IOException
 	{
 		String formName = "postform";
 
@@ -308,7 +304,7 @@ public class NeonContext extends ForumContext
 
 			HtmlElement message = form.getElementsByAttribute("textarea", "name", "message").get(0);
 			message.click();
-			message.type(body);
+			message.type(ENCODER.encodeMessage(body));
 			this.pagePostLock();
 			pmPage = ((HtmlElement) pmPage.getFirstByXPath("//input[@name='post' and @class='btnmain']")).click();
 			// TODO: Check to ensure PM was sent successfully.
@@ -318,7 +314,7 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
-	public void makePost(HtmlPage postPage, final String body, final String subject) throws IOException
+	public void makePost(HtmlPage postPage, final ForumMessageElement body, final String subject) throws IOException
 	{
 		String formName = "postform";
 		List<HtmlForm> forms = postPage.getForms();
@@ -332,7 +328,7 @@ public class NeonContext extends ForumContext
 				form.getInputByName("subject").setValueAttribute(subject);
 			HtmlElement message = form.getElementsByAttribute("textarea", "name", "message").get(0);
 			message.click();
-			message.type(body);
+			message.type(ENCODER.encodeMessage(body));
 
 			this.pagePostLock();
 			postPage = form.getInputByName("post").click();
@@ -370,18 +366,6 @@ public class NeonContext extends ForumContext
 		for (String user : users)
 			usernames.type(user + "\n");
 		return ((HtmlElement) pmPage.getFirstByXPath("//input[@name='add_" + (bcc ? "bcc" : "to") + "']")).click();
-	}
-
-	@Override
-	public String spoiler(String title, String text)
-	{
-		return this.header(title) + "[spoiler]" + text + "[/spoiler]";
-	}
-
-	@Override
-	public String strike(String text)
-	{
-		return "[s]" + text + "[/s]";
 	}
 
 	@Override

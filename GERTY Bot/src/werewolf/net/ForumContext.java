@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.LogFactory;
 import org.w3c.css.sac.CSSException;
@@ -16,6 +17,7 @@ import org.w3c.css.sac.CSSParseException;
 import org.w3c.css.sac.ErrorHandler;
 
 import werewolf.game.WerewolfGame_OLD;
+import werewolf.net.msg.ForumMessageElement;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.IncorrectnessListener;
@@ -50,6 +52,7 @@ public abstract class ForumContext implements Serializable, Runnable
 		}
 	}
 
+	private static final Logger	LOGGER				= Logger.getLogger(ForumContext.class.getName());
 	private static final long	serialVersionUID	= -6670513047683798183L;
 
 	/**
@@ -101,19 +104,17 @@ public abstract class ForumContext implements Serializable, Runnable
 		}
 	}
 
-	public final WebClient	CLIENT				= new WebClient(BrowserVersion.FIREFOX_38);
-	public final double		REQUEST_INTERVAL	= 2;
+	protected final WebClient	CLIENT				= new WebClient(BrowserVersion.FIREFOX_38);
+	protected double			REQUEST_INTERVAL	= 2;
 	// Seconds between posts and PM submissions.
-	public final double		POST_INTERVAL		= 45;
-
-	//
-	private long			lastPageRequest		= System.currentTimeMillis() - (long) (this.REQUEST_INTERVAL * 500);
-	private long			lastPostSubmission	= System.currentTimeMillis() - (long) (this.POST_INTERVAL * 500);
+	protected double			POST_INTERVAL		= 45;
+	private long				lastPageRequest		= System.currentTimeMillis() - (long) (this.REQUEST_INTERVAL * 500);
+	private long				lastPostSubmission	= System.currentTimeMillis() - (long) (this.POST_INTERVAL * 500);
 
 	public ForumContext()
 	{
 		this.disableLogging();
-		System.out.println("Context Created:\n      User=" + this.getLogin() + "\n      Domain=" + this.getDomain());
+		LOGGER.info("Context Created:\n\tUser=" + this.getLogin() + "\n\tDomain=" + this.getDomain());
 	}
 
 	public abstract boolean allowExpectedLynch();
@@ -482,8 +483,6 @@ public abstract class ForumContext implements Serializable, Runnable
 
 	public abstract String getUserProfileUrl(int userId);
 
-	public abstract String header(String text);
-
 	/**
 	 * Sends a new PM.
 	 *
@@ -500,7 +499,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 * @throws IOException
 	 *             If any of the underlying network calls throw an error.
 	 */
-	public abstract void makePm(HtmlPage page, String[] to, String[] bcc, String subject, String body) throws IOException;
+	protected abstract void makePm(HtmlPage page, String[] to, String[] bcc, String subject, ForumMessageElement body) throws IOException;
 
 	/**
 	 * Sends a new PM.
@@ -516,13 +515,13 @@ public abstract class ForumContext implements Serializable, Runnable
 	 * @throws IOException
 	 *             If any of the underlying network calls throw an error.
 	 */
-	public void makePm(String[] to, String[] bcc, String subject, String body) throws IOException
+	public void makePm(String[] to, String[] bcc, String subject, ForumMessageElement body) throws IOException
 	{
 		this.makePm(this.getComposeMessagePage(), to, bcc, subject, body);
 	}
 
 	/**
-	 * Makes a new post with the default subject (Re: topic subject).
+	 * Makes a new post with the default subject of "Re: topic subject"
 	 *
 	 * @param postPage
 	 *            The post page.
@@ -532,7 +531,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 *             If the given page is not a forum post page or if any of the
 	 *             underlying network calls throw an error.
 	 */
-	public void makePost(HtmlPage postPage, String body) throws IOException
+	protected void makePost(HtmlPage postPage, ForumMessageElement body) throws IOException
 	{
 		this.makePost(postPage, body, "");
 	}
@@ -548,7 +547,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 *             If the given page is not a forum post page or if any of the
 	 *             underlying network calls throw an error.
 	 */
-	public abstract void makePost(HtmlPage postPage, final String body, final String subject) throws IOException;
+	protected abstract void makePost(HtmlPage postPage, final ForumMessageElement body, final String subject) throws IOException;
 
 	/**
 	 * Called when a post must be made (be it a post to a thread, a PM, an edit,
@@ -616,10 +615,6 @@ public abstract class ForumContext implements Serializable, Runnable
 				ex.printStackTrace();
 			}
 	}
-
-	public abstract String spoiler(String title, String text);
-
-	public abstract String strike(String text);
 
 	@Override
 	public String toString()

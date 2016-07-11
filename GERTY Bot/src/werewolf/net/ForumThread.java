@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import werewolf.net.msg.ForumMessageElement;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public abstract class ForumThread implements Serializable
 {
+	private static final Logger		LOGGER				= Logger.getLogger(ForumThread.class.getName());
 	private static final long		serialVersionUID	= -1204239372191855699L;
 
 	protected LinkedList<ForumPost>	posts				= new LinkedList<ForumPost>();
@@ -153,7 +157,7 @@ public abstract class ForumThread implements Serializable
 
 	protected abstract String parseThreadTitle(HtmlPage page);
 
-	public void post(String message) throws IOException
+	public void post(ForumMessageElement message) throws IOException
 	{
 		this.getContext().makePost(this.getContext().getThreadReplyPage(this.boardId, this.threadId), message);
 	}
@@ -162,12 +166,12 @@ public abstract class ForumThread implements Serializable
 	{
 		if (!this.initalized)
 		{
-			if (this.title != null && this.title.length() > 0)
-				System.out.println("Loading new thread (context=" + this.getContext() + "): " + this.title);
+			if (this.title != null && !this.title.isEmpty())
+				LOGGER.info("Loading new thread (context=" + this.getContext() + "): " + this.title);
 			else
-				System.out.println("Loading new thread (context=" + this.getContext() + ")...");
+				LOGGER.info("Loading new thread (context=" + this.getContext() + ")...");
 		} else
-			System.out.println("Reloading Thread (context=" + this.getContext() + "): " + this.title);
+			LOGGER.info("Reloading Thread (context=" + this.getContext() + "): " + this.title);
 		this.initalized = true;
 
 		try
@@ -178,13 +182,12 @@ public abstract class ForumThread implements Serializable
 			do
 			{
 				this.parsePage(page);
-				// TODO: Find replacement for depricated function.
-				this.getContext().CLIENT.closeAllWindows();
+				this.getContext().CLIENT.close();
 				page = this.getContext().getThreadPage(this.boardId, this.threadId, ++this.pagesParsed);
 			} while (this.isValidThreadPage(page));
 
 			this.pagesParsed -= 1;
-			this.getContext().CLIENT.closeAllWindows();
+			this.getContext().CLIENT.close();
 		} catch (Exception ex)
 		{
 			this.initalized = false;
@@ -195,7 +198,7 @@ public abstract class ForumThread implements Serializable
 		for (ForumPost post : this.posts)
 			commands += post.getCommands().size();
 
-		System.out.println("Thread loaded (context=" + this.getContext() + "): " + this.title + ". " + this.posts.size() + " posts and " + commands + " commands found.");
+		LOGGER.info("Thread loaded (context=" + this.getContext() + "): " + this.title + ". " + this.posts.size() + " posts and " + commands + " commands found.");
 	}
 
 	public void refreshAll() throws IOException
@@ -210,17 +213,17 @@ public abstract class ForumThread implements Serializable
 		this.postReadIndex = 0;
 	}
 
-	public void setEditable(boolean editable)
+	public void markEditable(boolean editable)
 	{
 		this.editable = editable;
 	}
 
-	public void setLocked(boolean locked)
+	public void markLocked(boolean locked)
 	{
 		this.locked = locked;
 	}
 
-	public void setStickied(boolean stickied)
+	public void markStickied(boolean stickied)
 	{
 		this.stickied = stickied;
 	}
@@ -230,12 +233,12 @@ public abstract class ForumThread implements Serializable
 	{
 		String status = "";
 		if (this.stickied)
-			status += ", stickied=true";
+			status += ", stickied";
 		if (this.locked)
-			status += ", locked=true";
+			status += ", locked";
 
-		if (this.title.length() > 0)
-			return "[id=" + this.threadId + ", title=" + this.title + status + "]";
-		return "[id=" + this.threadId + ", title=unparsed]";
+		if (this.title.isEmpty())
+			return "[id=" + this.threadId + ", title=unparsed]";
+		return "[id=" + this.threadId + ", title=" + this.title + status + "]";
 	}
 }

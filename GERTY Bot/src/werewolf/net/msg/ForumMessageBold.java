@@ -1,23 +1,15 @@
 package werewolf.net.msg;
 
-import java.util.function.Function;
-
 public class ForumMessageBold extends ForumMessageElement
 {
-	ForumMessageElement	msg;
-
-	public ForumMessageBold(ForumMessageElement msg)
+	public ForumMessageBold(ForumMessageElement... msg)
 	{
-		this.msg = msg;
+		super(msg);
 	}
 
 	public ForumMessageBold(String msg)
 	{
-		this.msg = new ForumMessageString(msg);
-	}
-
-	public String getMsg(Function<ForumMessageElement, String> encoder)
-	{
-		return encoder.apply(msg);
+		super(new ForumMessageElement[]
+		{ new ForumMessageString(msg) });
 	}
 }
