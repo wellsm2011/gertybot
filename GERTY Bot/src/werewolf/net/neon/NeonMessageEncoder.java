@@ -57,7 +57,8 @@ public class NeonMessageEncoder extends ForumMessageEncoder
 	@Override
 	protected String encodeColor(String msg, Color color)
 	{
-		return null;
+		String rgb = Integer.toString(color.getRGB() % 0xFFFFFF, 16);
+		return "[color=#" + rgb + "]" + msg + "[/color]";
 	}
 
 	@Override

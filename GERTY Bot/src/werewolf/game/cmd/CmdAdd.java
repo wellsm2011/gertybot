@@ -10,8 +10,9 @@ public class CmdAdd extends GameCommand
 	public CmdAdd(WerewolfGame game)
 	{
 		super(game);
-		this.name = "Add";
+		this.name = "add";
 		this.info = "Adds a new player to the game. Only usable by the host";
+		this.usage = "user";
 		this.match = "add";
 		this.mustBeTrue = new Requirement[]
 		{ Requirement.HOST };

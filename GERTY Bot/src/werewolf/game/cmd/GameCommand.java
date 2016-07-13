@@ -73,6 +73,7 @@ public abstract class GameCommand
 	// number[:<min>,<max>]
 	protected String		name		= "UNKNOWN";
 	protected String		info		= "No information found for command.";
+	protected String		usage		= "";
 	protected String		match		= ".*";
 	protected Requirement[]	mustBeTrue	= new Requirement[0];
 	protected Requirement[]	mustBeFalse	= new Requirement[0];
@@ -88,6 +89,14 @@ public abstract class GameCommand
 	public String getName()
 	{
 		return this.name;
+	}
+	
+	public String getInfo() {
+		return info;
+	}
+	
+	public String getUsage() {
+		return name + " " + usage;
 	}
 
 	protected boolean isValid(Command cmd)
@@ -117,7 +126,7 @@ public abstract class GameCommand
 	{
 		if (cmd.isInvalidated())
 			return false;
-		if (!cmd.getCommand().matches("^(" + this.match + ")$"))
+		if (!cmd.getCommand().toLowerCase().matches("^(" + this.match + ")$"))
 			return false;
 		if (!this.isValid(cmd))
 			return false;

@@ -136,7 +136,7 @@ public class NeonThread extends ForumThread
 						element.remove();
 				String command = ((HtmlStrong) e).asText();
 				if (command.matches("\\[\\[?.*\\]\\]?"))
-					commands.add(new Command(command, poster, edited, false, post));
+					commands.add(new Command(command, poster, edited, post));
 			}
 
 			this.addPost(post);

@@ -157,4 +157,14 @@ public class WerewolfGame
 		for (GameCommand gcmd : this.getCmds())
 			this.stateChange |= gcmd.processCmd(cmd);
 	}
+
+	public int getRound()
+	{
+		return round;
+	}
+
+	public void setRound(int round)
+	{
+		this.round = round;
+	}
 }

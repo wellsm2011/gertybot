@@ -2,6 +2,8 @@ package werewolf.net;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -21,8 +23,6 @@ public class Command implements Serializable
 	private String				fullCommand;
 	private String				command;
 	private String				params;
-	private boolean				hidden;
-	private boolean				markedHidden;
 	private ForumUser			user;
 	private boolean				invalidated;
 	// True if the bot is currently checking this invalid command for validity.
@@ -47,18 +47,14 @@ public class Command implements Serializable
 	 * @param post
 	 *            The post associated with this command.
 	 */
-	public Command(String command, ForumUser user, boolean invalidated, boolean hidden, ForumPost post)
+	public Command(String command, ForumUser user, boolean invalidated, ForumPost post)
 	{
 		this.fullCommand = command;
-		command = command.replaceAll("^\\[+|\\]+$", "");
-		this.command = command.replaceFirst(" .*$", "");
-		this.params = command.replaceFirst("^[^ ]+ ", "");
+		command = command.trim().replaceAll("^\\[+|\\]+$", "").trim();
+		this.command = command.replaceFirst(" +.*$", "");
+		this.params = command.replaceFirst("^[^ ]+ +", "");
 		this.user = user;
 		this.invalidated = invalidated;
-		this.hidden = hidden;
-		this.markedHidden = hidden;
-		if (command.matches("^\\[\\[.*\\]\\]$"))
-			this.markedHidden = true;
 		this.post = post;
 	}
 
@@ -91,12 +87,14 @@ public class Command implements Serializable
 	}
 
 	/**
+	 * 
+	 * @param expected
 	 * @return Any additional text supplied with this command as an array of
 	 *         strings split along any commas in the original string.
 	 */
-	public String[] getParams()
+	public List<String> getParams(int expected)
 	{
-		return this.params.split(",");
+		return Arrays.asList(this.params.split(", ?", expected));
 	}
 
 	/**
@@ -133,36 +131,6 @@ public class Command implements Serializable
 	public ForumUser getUser()
 	{
 		return this.user;
-	}
-
-	/**
-	 * Hides this command, rendering it invisible to normal users but still
-	 * visible to the bot. This is only allowed in posts made by the host.
-	 */
-	public void hide()
-	{
-		if (this.hidden)
-			return;
-		try
-		{
-			ForumPostEditor editor = this.post.getEditor();
-			// TODO: Export the color and size tags to the ForumContext so they
-			// can be changed from forum to forum.
-			editor.setText(editor.getText().replaceFirst("\\[b\\]" + Pattern.quote(this.fullCommand) + "\\[\\/b\\]", "[color=#2e2e2f][size=1]" + this.fullCommand + "[/size][/color]"));
-			editor.submit();
-			this.hidden = true;
-		} catch (IOException e)
-		{
-			if (this.postCounter++ < 5)
-				this.hide();
-			else
-				System.err.println("Unable to hide command.");
-		} catch (IllegalArgumentException e)
-		{
-			System.err.println("Unable to hide command.");
-		}
-
-		this.postCounter = 0;
 	}
 
 	/**
@@ -222,14 +190,6 @@ public class Command implements Serializable
 	public boolean isInvalidated()
 	{
 		return this.invalidated;
-	}
-
-	/**
-	 * @return True if this command is marked as a hidden command.
-	 */
-	public boolean isMarkedHidden()
-	{
-		return this.markedHidden;
 	}
 
 	/**

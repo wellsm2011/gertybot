@@ -9,7 +9,8 @@ public class ForumMessageColor extends ForumMessageElement
 	public static final Color	EVIL		= Color.RED;
 	public static final Color	NEUTRAL		= Color.YELLOW;
 	public static final Color	THIRD_PARTY	= new Color(0xFF2DC3);
-	public static final Color	DEAD		= new Color(0x000000);
+	public static final Color	DEAD		= new Color(0xFFBF80);
+	public static final Color	INVALID		= Color.RED;
 
 	private Color				color;
 
