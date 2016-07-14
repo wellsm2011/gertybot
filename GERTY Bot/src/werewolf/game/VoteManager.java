@@ -3,7 +3,6 @@ package werewolf.game;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.logging.Logger;
 
 /**
@@ -18,29 +17,29 @@ public class VoteManager
 		private RoundRecord	previous;
 		LinkedList<Vote>	record	= new LinkedList<>();
 
-		public RoundRecord(RoundRecord previous)
-		{
-			this.previous = previous;
-		}
-
 		public RoundRecord()
 		{
 			this.previous = null;
 		}
 
-		public void record(Vote vote)
+		public RoundRecord(RoundRecord previous)
 		{
-			record.add(vote);
+			this.previous = previous;
 		}
 
 		public List<Vote> getRecord()
 		{
-			return record;
+			return this.record;
 		}
 
 		public RoundRecord previous()
 		{
-			return previous;
+			return this.previous;
+		}
+
+		public void record(Vote vote)
+		{
+			this.record.add(vote);
 		}
 	}
 
@@ -48,7 +47,7 @@ public class VoteManager
 	private RoundRecord									record	= new RoundRecord();
 	private WerewolfGame								game;
 	private BiFunction<RoundRecord, WerewolfGame, User>	lynchResolver;
-	private Function<List<Player>, Integer>				voteCounter;
+	private BiFunction<Player, Player, Integer>			voteApplier;
 
 	public VoteManager(WerewolfGame game)
 	{
@@ -57,6 +56,6 @@ public class VoteManager
 
 	public void endRound()
 	{
-		record = new RoundRecord(record);
+		this.record = new RoundRecord(this.record);
 	}
 }

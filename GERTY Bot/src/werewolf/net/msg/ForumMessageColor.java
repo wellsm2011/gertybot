@@ -14,19 +14,19 @@ public class ForumMessageColor extends ForumMessageElement
 
 	private Color				color;
 
-	public ForumMessageColor(Color color, String msg)
-	{
-		this(color, new ForumMessageString(msg));
-	}
-
 	public ForumMessageColor(Color color, ForumMessageElement... children)
 	{
 		super(children);
 		this.color = color;
 	}
 
+	public ForumMessageColor(Color color, String msg)
+	{
+		this(color, new ForumMessageString(msg));
+	}
+
 	public Color getColor()
 	{
-		return color;
+		return this.color;
 	}
 }

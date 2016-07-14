@@ -1,7 +1,5 @@
 package werewolf.net.msg;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class ForumMessageUrl extends ForumMessageElement
 {
@@ -12,19 +10,19 @@ public class ForumMessageUrl extends ForumMessageElement
 		this(url, url);
 	}
 
-	public ForumMessageUrl(String url, String text)
-	{
-		this(url, new ForumMessageString(text));
-	}
-
 	public ForumMessageUrl(String url, ForumMessageElement... children)
 	{
 		super(children);
 		this.url = url;
 	}
 
+	public ForumMessageUrl(String url, String text)
+	{
+		this(url, new ForumMessageString(text));
+	}
+
 	public String getUrl()
 	{
-		return url;
+		return this.url;
 	}
 }

@@ -86,17 +86,19 @@ public abstract class GameCommand
 
 	protected abstract boolean execute(Command cmd);
 
+	public String getInfo()
+	{
+		return this.info;
+	}
+
 	public String getName()
 	{
 		return this.name;
 	}
-	
-	public String getInfo() {
-		return info;
-	}
-	
-	public String getUsage() {
-		return name + " " + usage;
+
+	public String getUsage()
+	{
+		return this.name + " " + this.usage;
 	}
 
 	protected boolean isValid(Command cmd)

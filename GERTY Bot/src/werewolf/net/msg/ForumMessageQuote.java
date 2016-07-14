@@ -4,19 +4,14 @@ public class ForumMessageQuote extends ForumMessageElement
 {
 	String	author;
 
-	public ForumMessageQuote(String msg)
-	{
-		this("", msg);
-	}
-
-	public ForumMessageQuote(String author, String msg)
-	{
-		this(author, new ForumMessageString(msg));
-	}
-
 	public ForumMessageQuote(ForumMessageElement... children)
 	{
 		this("", children);
+	}
+
+	public ForumMessageQuote(String msg)
+	{
+		this("", msg);
 	}
 
 	public ForumMessageQuote(String author, ForumMessageElement... children)
@@ -25,8 +20,13 @@ public class ForumMessageQuote extends ForumMessageElement
 		this.author = author;
 	}
 
+	public ForumMessageQuote(String author, String msg)
+	{
+		this(author, new ForumMessageString(msg));
+	}
+
 	public String getAuthor()
 	{
-		return author;
+		return this.author;
 	}
 }

@@ -27,7 +27,6 @@ public class NeonThread extends ForumThread
 
 	private static final DateTimeFormatter	timeFormat			= DateTimeFormat.forPattern("E MMMM d, YYYY h:m a");
 	private static LinkedList<NeonThread>	loadedThreads		= new LinkedList<NeonThread>();
-	private String							lastPage			= "";
 
 	public static NeonThread getThread(int threadId)
 	{
@@ -61,6 +60,8 @@ public class NeonThread extends ForumThread
 	{
 		return NeonThread.getThread(-1, threadId, title, isStickied);
 	}
+
+	private String	lastPage	= "";
 
 	private NeonThread(int boardId, int threadId)
 	{

@@ -19,6 +19,8 @@ import werewolf.net.ForumUser;
 import werewolf.net.ThreadManager;
 import werewolf.net.neon.NeonContext;
 
+import com.sun.media.jfxmedia.events.PlayerEvent;
+
 public class WerewolfGame_OLD implements ThreadManager
 {
 	private static final Logger	LOGGER	= Logger.getLogger(WerewolfGame_OLD.class.getName());

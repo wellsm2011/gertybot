@@ -25,7 +25,7 @@ public class Vote implements Serializable
 	public Vote(Player voter, User target)
 	{
 		this(voter, target, null);
-		LOGGER.fine("Vote created: " + this);
+		Vote.LOGGER.fine("Vote created: " + this);
 	}
 
 	/**

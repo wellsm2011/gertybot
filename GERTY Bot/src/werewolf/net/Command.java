@@ -87,7 +87,6 @@ public class Command implements Serializable
 	}
 
 	/**
-	 * 
 	 * @param expected
 	 * @return Any additional text supplied with this command as an array of
 	 *         strings split along any commas in the original string.

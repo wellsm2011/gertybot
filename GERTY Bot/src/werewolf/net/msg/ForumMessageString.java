@@ -14,7 +14,7 @@ public class ForumMessageString extends ForumMessageElement
 	@Override
 	public ForumMessageString append(ForumMessageElement elm)
 	{
-		return append(ForumMessageEncoder.PLAINTEXT.encodeMessage(elm));
+		return this.append(ForumMessageEncoder.PLAINTEXT.encodeMessage(elm));
 	}
 
 	@Override
@@ -26,6 +26,6 @@ public class ForumMessageString extends ForumMessageElement
 
 	public String getMsg()
 	{
-		return msg;
+		return this.msg;
 	}
 }

@@ -18,6 +18,7 @@ public class Player extends ForumUser
 	private static final long		serialVersionUID	= 4363493461063986117L;
 
 	private boolean					alive				= true;
+	private boolean					modkilled			= false;
 	private int						injured				= 0;
 	private ForumMessageContainer	data				= new ForumMessageContainer();
 	private ForumPost				joinPost;
@@ -41,34 +42,6 @@ public class Player extends ForumUser
 	}
 
 	/**
-	 * @param evt
-	 *            The event this player was involved in.
-	 * @param round
-	 *            The round this event happened.
-	 * @param origin
-	 *            The original post which caused or documented this event.
-	 */
-	public void logEvent(ForumMessageElement evt, int round, ForumPost origin)
-	{
-		evt.append(" R" + round);
-		logEvent(evt, origin);
-	}
-
-	/**
-	 * @param evt
-	 *            The event this player was involved in.
-	 * @param origin
-	 *            The original post which caused or documented this event.
-	 */
-	public void logEvent(ForumMessageElement evt, ForumPost origin)
-	{
-		evt = new ForumMessageUrl(origin.getUrl(), evt);
-		if (!this.data.getChildren().isEmpty())
-			this.data.append(", ");
-		this.data.append(evt);
-	}
-
-	/**
 	 * @return A log of the events that have happened to this player.
 	 */
 	public ForumMessageElement getData()
@@ -77,25 +50,25 @@ public class Player extends ForumUser
 	}
 
 	/**
-	 * @return A forum message formatted to reflect the player's current status
-	 *         (alive / dead / injured).
-	 */
-	public ForumMessageElement getMessageName()
-	{
-		ForumMessageElement name = new ForumMessageString(getName());
-		if (!this.alive)
-			name = new ForumMessageStrike(new ForumMessageColor(ForumMessageColor.DEAD, name));
-		else if (this.injured > 0)
-			name = new ForumMessageColor(ForumMessageColor.DEAD, name);
-		return name;
-	}
-
-	/**
 	 * @return The post where this player joined or was added to the game.
 	 */
 	public ForumPost getJoinPost()
 	{
 		return this.joinPost;
+	}
+
+	/**
+	 * @return A forum message formatted to reflect the player's current status
+	 *         (alive / dead / injured).
+	 */
+	public ForumMessageElement getMessageName()
+	{
+		ForumMessageElement name = new ForumMessageString(this.getName());
+		if (!this.alive)
+			name = new ForumMessageStrike(new ForumMessageColor(ForumMessageColor.DEAD, name));
+		else if (this.injured > 0)
+			name = new ForumMessageColor(ForumMessageColor.DEAD, name);
+		return name;
 	}
 
 	/**
@@ -143,6 +116,34 @@ public class Player extends ForumUser
 	}
 
 	/**
+	 * @param evt
+	 *            The event this player was involved in.
+	 * @param origin
+	 *            The original post which caused or documented this event.
+	 */
+	public void logEvent(ForumMessageElement evt, ForumPost origin)
+	{
+		evt = new ForumMessageUrl(origin.getUrl(), evt);
+		if (!this.data.getChildren().isEmpty())
+			this.data.append(", ");
+		this.data.append(evt);
+	}
+
+	/**
+	 * @param evt
+	 *            The event this player was involved in.
+	 * @param round
+	 *            The round this event happened.
+	 * @param origin
+	 *            The original post which caused or documented this event.
+	 */
+	public void logEvent(ForumMessageElement evt, int round, ForumPost origin)
+	{
+		evt.append(" R" + round);
+		this.logEvent(evt, origin);
+	}
+
+	/**
 	 * Marks this player as replacing the given player, and copies the old
 	 * player's data and status to this player.
 	 *
@@ -171,5 +172,20 @@ public class Player extends ForumUser
 			throw new IllegalArgumentException("Player already alive.");
 		this.logEvent(evt, round, origin);
 		this.alive = true;
+	}
+
+	public void setAlive(boolean status)
+	{
+		this.alive = status;
+	}
+
+	public boolean isModkilled()
+	{
+		return modkilled;
+	}
+
+	public void setModkilled(boolean modkilled)
+	{
+		this.modkilled = modkilled;
 	}
 }

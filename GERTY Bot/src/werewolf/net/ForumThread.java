@@ -137,6 +137,21 @@ public abstract class ForumThread implements Serializable
 
 	protected abstract boolean isValidThreadPage(HtmlPage page);
 
+	public void markEditable(boolean editable)
+	{
+		this.editable = editable;
+	}
+
+	public void markLocked(boolean locked)
+	{
+		this.locked = locked;
+	}
+
+	public void markStickied(boolean stickied)
+	{
+		this.stickied = stickied;
+	}
+
 	public ForumPost nextPost() throws IOException
 	{
 		if (!this.initalized)
@@ -167,11 +182,11 @@ public abstract class ForumThread implements Serializable
 		if (!this.initalized)
 		{
 			if (this.title != null && !this.title.isEmpty())
-				LOGGER.info("Loading new thread (context=" + this.getContext() + "): " + this.title);
+				ForumThread.LOGGER.info("Loading new thread (context=" + this.getContext() + "): " + this.title);
 			else
-				LOGGER.info("Loading new thread (context=" + this.getContext() + ")...");
+				ForumThread.LOGGER.info("Loading new thread (context=" + this.getContext() + ")...");
 		} else
-			LOGGER.info("Reloading Thread (context=" + this.getContext() + "): " + this.title);
+			ForumThread.LOGGER.info("Reloading Thread (context=" + this.getContext() + "): " + this.title);
 		this.initalized = true;
 
 		try
@@ -198,7 +213,7 @@ public abstract class ForumThread implements Serializable
 		for (ForumPost post : this.posts)
 			commands += post.getCommands().size();
 
-		LOGGER.info("Thread loaded (context=" + this.getContext() + "): " + this.title + ". " + this.posts.size() + " posts and " + commands + " commands found.");
+		ForumThread.LOGGER.info("Thread loaded (context=" + this.getContext() + "): " + this.title + ". " + this.posts.size() + " posts and " + commands + " commands found.");
 	}
 
 	public void refreshAll() throws IOException
@@ -211,21 +226,6 @@ public abstract class ForumThread implements Serializable
 	{
 		this.refreshAll();
 		this.postReadIndex = 0;
-	}
-
-	public void markEditable(boolean editable)
-	{
-		this.editable = editable;
-	}
-
-	public void markLocked(boolean locked)
-	{
-		this.locked = locked;
-	}
-
-	public void markStickied(boolean stickied)
-	{
-		this.stickied = stickied;
 	}
 
 	@Override

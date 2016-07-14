@@ -304,7 +304,7 @@ public class NeonContext extends ForumContext
 
 			HtmlElement message = form.getElementsByAttribute("textarea", "name", "message").get(0);
 			message.click();
-			message.type(ENCODER.encodeMessage(body));
+			message.type(NeonContext.ENCODER.encodeMessage(body));
 			this.pagePostLock();
 			pmPage = ((HtmlElement) pmPage.getFirstByXPath("//input[@name='post' and @class='btnmain']")).click();
 			// TODO: Check to ensure PM was sent successfully.
@@ -328,7 +328,7 @@ public class NeonContext extends ForumContext
 				form.getInputByName("subject").setValueAttribute(subject);
 			HtmlElement message = form.getElementsByAttribute("textarea", "name", "message").get(0);
 			message.click();
-			message.type(ENCODER.encodeMessage(body));
+			message.type(NeonContext.ENCODER.encodeMessage(body));
 
 			this.pagePostLock();
 			postPage = form.getInputByName("post").click();

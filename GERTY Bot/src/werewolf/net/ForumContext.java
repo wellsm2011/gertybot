@@ -114,7 +114,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	public ForumContext()
 	{
 		this.disableLogging();
-		LOGGER.info("Context Created:\n\tUser=" + this.getLogin() + "\n\tDomain=" + this.getDomain());
+		ForumContext.LOGGER.info("Context Created:\n\tUser=" + this.getLogin() + "\n\tDomain=" + this.getDomain());
 	}
 
 	public abstract boolean allowExpectedLynch();

@@ -13,14 +13,16 @@ public class CmdAlias extends GameCommand
 	{
 		super(game);
 		this.name = "alias";
-		this.info = "Adds a new alias to a given player. Player can be specified by id or current name. The alias may not contain commas or be exactly matched by any other known user or alias.";
+		this.info = "Adds a new alias to a given user. Users can be specified by id or current name. The alias may not contain commas or be exactly matched by any other known user or alias.";
 		this.match = "alias";
-		this.usage = "player, alias";
+		this.usage = "user, alias";
 	}
 
 	@Override
 	protected boolean execute(Command cmd)
 	{
+		// Try-Catch since the command needs two parameters, the target and the
+		// alias.
 		try
 		{
 			List<String> params = cmd.getParams(3);

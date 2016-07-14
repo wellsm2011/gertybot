@@ -18,23 +18,23 @@ public class WerewolfGame
 
 	private static final Logger	LOGGER	= Logger.getLogger(WerewolfGame.class.getName());
 
-	private static boolean isMe(ForumUser user)
+	protected static boolean isMe(ForumUser user)
 	{
 		return user.equals(user.getContext().getLogin());
 	}
 
-	private ForumThread			thread;
-	private LinkedList<Player>	players		= new LinkedList<Player>();
-	private VoteManager			votes		= new VoteManager(this);
-	private ForumUser			host		= null;
-	private ForumUser			cohost		= null;
-	private int					round		= 0;
+	protected ForumThread			thread;
+	protected LinkedList<Player>	players		= new LinkedList<>();
+	protected VoteManager			votes		= new VoteManager(this);
+	protected ForumUser				host		= null;
+	protected LinkedList<ForumUser>	cohosts		= new LinkedList<>();
+	protected int					round		= 0;
 	// Game starts in pregame setup.
-	private GamePhase			phase		= GamePhase.PREGAME;
+	protected GamePhase				phase		= GamePhase.PREGAME;
 
-	private boolean				stateChange	= false;
-	private GameCommand[]		cmds		= new GameCommand[]
-											{};
+	protected boolean				stateChange	= false;
+	protected GameCommand[]			cmds		= new GameCommand[]
+												{};
 
 	public WerewolfGame(ForumThread subscription)
 	{
@@ -120,6 +120,11 @@ public class WerewolfGame
 		return this.players;
 	}
 
+	public int getRound()
+	{
+		return this.round;
+	}
+
 	/**
 	 * Queries the UserDatabase of the context of this WerewolfGame for a given
 	 * string. Equivalent to
@@ -136,7 +141,7 @@ public class WerewolfGame
 
 	public boolean isHost(ForumUser user)
 	{
-		return this.host.equals(user) || this.cohost.equals(user) || WerewolfGame.isMe(user);
+		return this.host.equals(user) || WerewolfGame.isMe(user) || this.cohosts.contains(user);
 	}
 
 	/**
@@ -158,9 +163,10 @@ public class WerewolfGame
 			this.stateChange |= gcmd.processCmd(cmd);
 	}
 
-	public int getRound()
+	public void setCohosts(LinkedList<ForumUser> cohosts)
 	{
-		return round;
+		cohosts.remove(this.host);
+		this.cohosts = cohosts;
 	}
 
 	public void setRound(int round)
