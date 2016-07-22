@@ -13,42 +13,41 @@ import java.util.logging.Logger;
  * @author Michael Wells
  * @author Andrew Binns
  */
-public abstract class ForumMessageEncoder<T>
+public abstract class ForumMessageEncoder
 {
-	private static final Logger				LOGGER		= Logger.getLogger(ForumMessageEncoder.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ForumMessageEncoder.class.getName());
+
 	/**
 	 * The default implementation, which eliminates richtext. Suitable for
 	 * console or logfile output.
 	 */
 
-
-	public T encodeMessageElement(ForumMessageElement elem)
+	public String encodeMessageElement(ForumMessageElement elem)
 	{
-		elem
 		return null;
 	}
 
-	protected abstract T encodeQuote(T msg, T author);
+	protected abstract String encodeQuote(String msg, String author);
 
-	protected abstract T encodeSpoiler(T msg, T title);
+	protected abstract String encodeSpoiler(String msg, String title);
 
-	protected abstract T encodeStrike(T msg);
+	protected abstract String encodeColor(String msg, Color color);
 
-	protected abstract T encodeUrl(T msg, T url);
+	protected abstract String encodeUrl(String msg, String url);
 
-	protected abstract T escape(T msg);
+	protected abstract String encodeStrike(String msg);
 
-	protected abstract T encodeBold(T msg);
+	protected abstract String encodeEscaped(String msg);
 
-	protected abstract T encodeCodeblock(T msg);
+	protected abstract String encodeBold(String msg);
 
-	protected abstract T encodeColor(T msg, Color color);
+	protected abstract String encodeCodeblock(String msg);
 
-	protected abstract T encodeHeader(T msg);
+	protected abstract String encodeHeader(String msg);
 
-	protected abstract T encodeItalic(T msg);
-	
-	public static final ForumMessageEncoder<String>	PLAINTEXT	= new ForumMessageEncoder<String>()
+	protected abstract String encodeItalic(String msg);
+
+	public static final ForumMessageEncoder PLAINTEXT = new ForumMessageEncoder()
 	{
 		@Override
 		protected String encodeBold(String msg)

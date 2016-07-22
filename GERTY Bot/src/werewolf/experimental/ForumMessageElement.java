@@ -1,36 +1,27 @@
 package werewolf.experimental;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiFunction;
 
 import werewolf.net.msg.ForumMessageString;
 
-public abstract class ForumMessageElement
+public class ForumMessageElement
 {
 
-	public enum ElementStyle
+	public enum StyleFlags
 	{
-		/**
-		 * test
-		 */
-		BOLD(""),
-		CODEBLOCK(""),
-		/**
-		 * test3
-		 */
-		COLOR(""),
-		/**
-		 * test2
-		 */
-		QUOTE("");
-		private ElementStyle(String txt)
-		{
-
-		}
+		BOLD,
+		CODEBLOCK,
+		COLOR,
+		QUOTE,
+		SPOILER;
 	}
 
-	protected List<ForumMessageElement> children = new LinkedList<>();
+	private List<ForumMessageElement>	children	= new LinkedList<>();
+	private Set<StyleFlags>				flags		= new HashSet<>();
 
 	public ForumMessageElement()
 	{
