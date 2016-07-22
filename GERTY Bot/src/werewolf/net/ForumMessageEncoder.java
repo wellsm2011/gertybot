@@ -1,7 +1,6 @@
 package werewolf.net;
 
 import java.awt.Color;
-import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

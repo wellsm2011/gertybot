@@ -12,15 +12,15 @@ import java.util.logging.SimpleFormatter;
 
 public class WerewolfLogger
 {
-	private static final boolean	LOG_TO_FILE	= false;
+	private static final boolean LOG_TO_FILE = false;
 
 	private static FileHandler		fileTxt;
 	private static SimpleFormatter	formatterTxt;
 
-	private static FileHandler		fileHTML;
-	private static Formatter		formatterHTML;
+	private static FileHandler	fileHTML;
+	private static Formatter	formatterHTML;
 
-	private static Handler			console;
+	private static Handler console;
 
 	public static void setup() throws IOException
 	{

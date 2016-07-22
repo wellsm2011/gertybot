@@ -8,7 +8,7 @@ import werewolf.net.neon.NeonContext;
 
 public class Driver
 {
-	private static final Logger	LOGGER	= Logger.getLogger(Driver.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Driver.class.getName());
 
 	public static void launchContext(String context) throws Exception
 	{

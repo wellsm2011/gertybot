@@ -8,15 +8,15 @@ import java.util.logging.Logger;
 
 public abstract class ForumBoard implements Serializable
 {
-	private static final Logger			LOGGER				= Logger.getLogger(ForumBoard.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ForumBoard.class.getName());
 
-	private static final long			serialVersionUID	= -6322669366595710741L;
+	private static final long serialVersionUID = -6322669366595710741L;
 
-	public final int					REFRESH_MINUTES;
+	public final int REFRESH_MINUTES;
 
-	protected LinkedList<ForumThread>	threads				= new LinkedList<ForumThread>();
-	protected LinkedList<ForumBoard>	subboards			= new LinkedList<ForumBoard>();
-	protected long						lastRefresh			= 0;
+	protected LinkedList<ForumThread>	threads		= new LinkedList<ForumThread>();
+	protected LinkedList<ForumBoard>	subboards	= new LinkedList<ForumBoard>();
+	protected long						lastRefresh	= 0;
 	protected String					boardId;
 
 	/**

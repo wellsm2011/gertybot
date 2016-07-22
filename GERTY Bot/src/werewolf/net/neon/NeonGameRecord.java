@@ -8,24 +8,24 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import com.gargoylesoftware.htmlunit.html.HtmlDivision;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
 import werewolf.Utils;
 import werewolf.net.ForumPostEditor;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUser;
 import werewolf.net.GameRecord;
 
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-
 public class NeonGameRecord implements GameRecord
 {
 	private static class WinLossGame implements Comparable<WinLossGame>
 	{
-		public static final int					UNKNOWN_GAME	= 0;
-		public static final int					WEREWOLF_GAME	= 1;
-		public static final int					ASSASSINS_GAME	= 2;
-		public static final int					MAFIA_GAME		= 3;
+		public static final int	UNKNOWN_GAME	= 0;
+		public static final int	WEREWOLF_GAME	= 1;
+		public static final int	ASSASSINS_GAME	= 2;
+		public static final int	MAFIA_GAME		= 3;
 
 		public final int						type;
 		public final String						threadId;
@@ -138,13 +138,13 @@ public class NeonGameRecord implements GameRecord
 
 	private static class WinLossUser extends ForumUser implements Comparable<WinLossUser>
 	{
-		private static final long	serialVersionUID	= 8435231982556605921L;
+		private static final long serialVersionUID = 8435231982556605921L;
 
-		protected int				wins				= 0;
-		protected int				losses				= 0;
-		protected int				hosts				= 0;
-		protected int[]				inactivityCount		= new int[]
-														{ 0, 0, 0 };
+		protected int	wins			= 0;
+		protected int	losses			= 0;
+		protected int	hosts			= 0;
+		protected int[]	inactivityCount	= new int[]
+											{ 0, 0, 0 };
 
 		public WinLossUser(ForumUser user)
 		{
@@ -246,7 +246,7 @@ public class NeonGameRecord implements GameRecord
 	private static LinkedList<WinLossGame>	games					= new LinkedList<WinLossGame>();
 	private static int						requiredActivityCount	= 2;
 
-	public static final NeonGameRecord		INSTANCE				= new NeonGameRecord();
+	public static final NeonGameRecord INSTANCE = new NeonGameRecord();
 
 	public static void main(String... cheese)
 	{
@@ -260,9 +260,9 @@ public class NeonGameRecord implements GameRecord
 		}
 	}
 
-	private boolean	initalized	= false;
+	private boolean initalized = false;
 
-	private boolean	initalizing	= false;
+	private boolean initalizing = false;
 
 	private NeonGameRecord()
 	{
@@ -373,7 +373,7 @@ public class NeonGameRecord implements GameRecord
 			{
 				HtmlAnchor playerLink = (HtmlAnchor) obj;
 				String url = playerLink.getAttribute("href");
-				if (url.endsWith("#")) // URLs for spoiler links.
+				if (url.endsWith("#"))  // URLs for spoiler links.
 					continue;
 				int id = -1;
 				if (url.lastIndexOf("&u=") > 0)
@@ -387,7 +387,7 @@ public class NeonGameRecord implements GameRecord
 			{
 				HtmlAnchor gameLink = (HtmlAnchor) obj;
 				String url = gameLink.getAttribute("href");
-				if (url.endsWith("#")) // URLs for spoiler links.
+				if (url.endsWith("#"))  // URLs for spoiler links.
 					continue;
 				int id = -1;
 				int index = url.lastIndexOf("t=");

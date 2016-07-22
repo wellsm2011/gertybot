@@ -2,7 +2,7 @@ package werewolf.net.msg;
 
 public class ForumMessageQuote extends ForumMessageElement
 {
-	String	author;
+	String author;
 
 	public ForumMessageQuote(ForumMessageElement... children)
 	{

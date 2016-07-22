@@ -7,11 +7,17 @@ import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
 import werewolf.net.ForumUser;
+import werewolf.net.msg.ForumMessageElement;
 
 public abstract class GameCommand
 {
 	protected static class InvalidatonException extends Exception
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public InvalidatonException(String msg)
 		{
 			super(msg);
@@ -23,9 +29,9 @@ public abstract class GameCommand
 		HOST("invalid access", "can't be host"), PLAYER("unknown player", "can't be a player"), ALIVE("dead player", "living player"), DAY("must be day", "currently day"), NIGHT("must be night",
 				"currently night"), PREGAME("must be pregame setup", "currently pregame setup"), ADMIN("invalid access", "can't be admin");
 
-		public final String									requiredTrue;
-		public final String									requiredFalse;
-		private BiFunction<WerewolfGame, Command, Boolean>	resolver	= null;
+		public final String requiredTrue;
+		public final String requiredFalse;
+		private BiFunction<WerewolfGame, Command, Boolean> resolver = null;
 
 		private Requirement(String requiredTrue, String requiredFalse)
 		{
@@ -62,9 +68,9 @@ public abstract class GameCommand
 		});
 		Requirement.ALIVE.setResolver((WerewolfGame game, Command cmd) -> {
 			// Assert that the user of the command is a player.
-				Requirement.PLAYER.assertRequirement(true, game, cmd);
-				return game.getPlayer(cmd.getUser()).isAlive();
-			});
+			Requirement.PLAYER.assertRequirement(true, game, cmd);
+			return game.getPlayer(cmd.getUser()).isAlive();
+		});
 		Requirement.DAY.setResolver((WerewolfGame game, Command cmd) -> {
 			return game.getPhase().equals(GamePhase.DAY);
 		});
@@ -81,13 +87,13 @@ public abstract class GameCommand
 
 	// Usage: player[:<alive|dead>], string[:<option1>|<option2>|<...>],
 	// number[:<min>,<max>]
-	protected String									name		= "UNKNOWN";
-	protected String									info		= "No information found for command.";
-	protected String									usage		= "";
-	protected String									match		= ".*";
-	protected Requirement[]								mustBeTrue	= new Requirement[0];
-	protected Requirement[]								mustBeFalse	= new Requirement[0];
-	protected WerewolfGame								game;
+	protected String		name		= "UNKNOWN";
+	protected String		info		= "No information found for command.";
+	protected String		usage		= "";
+	protected String		match		= ".*";
+	protected Requirement[]	mustBeTrue	= new Requirement[0];
+	protected Requirement[]	mustBeFalse	= new Requirement[0];
+	protected WerewolfGame	game;
 
 	public GameCommand(WerewolfGame game)
 	{
@@ -110,88 +116,6 @@ public abstract class GameCommand
 	protected abstract boolean execute(Command cmd) throws InvalidatonException, IndexOutOfBoundsException;
 
 	/**
-	 * @return Returns the description of this command, to be posted in the help
-	 *         section.
-	 */
-	public ForumMessageElement getInfo()
-	{
-		return this.info;
-	}
-
-	/**
-	 * @return The name of this command.
-	 */
-	public String getName()
-	{
-		return this.name;
-	}
-
-	/**
-	 * Returns a ForumUser specified by the given string.
-	 * 
-	 * @param user
-	 * @return
-	 * @throws InvalidatonException
-	 *             If no user could be found.
-	 */
-	protected ForumUser getUser(String user) throws InvalidatonException
-	{
-		ForumUser usr = game.getUser(user);
-		if (usr == null)
-			throw new InvalidatonException("user required: " + user);
-		return usr;
-	}
-
-	/**
-	 * Returns a ForumUser, specified by the given string, who is not in the
-	 * game.
-	 * 
-	 * @param user
-	 * @return
-	 * @throws InvalidatonException
-	 *             If no user could be found, or if the given user is already a
-	 *             player.
-	 */
-	protected ForumUser getNonPlayer(String user) throws InvalidatonException
-	{
-		ForumUser usr = game.getUser(user);
-		if (usr == null || game.getPlayer(usr) != null)
-			throw new InvalidatonException("non-player required: " + user);
-		return usr;
-	}
-
-	/**
-	 * Returns a player represented by the given String.
-	 * 
-	 * @param player
-	 * @return
-	 * @throws InvalidatonException
-	 */
-	protected Player getPlayer(String player) throws InvalidatonException
-	{
-		Player plr = game.getPlayer(player);
-		if (plr == null)
-			throw new InvalidatonException("player required: " + player);
-		return plr;
-	}
-
-	/**
-	 * Returns a player represented by the given ForumUser.
-	 * 
-	 * @param player
-	 * @return
-	 * @throws InvalidatonException
-	 *             If a player could not be found.
-	 */
-	protected Player getPlayer(ForumUser player) throws InvalidatonException
-	{
-		Player plr = game.getPlayer(player);
-		if (plr == null)
-			throw new InvalidatonException("living player required: " + player);
-		return plr;
-	}
-
-	/**
 	 * Returns a dead player represented by the given string.
 	 * 
 	 * @param player
@@ -202,27 +126,19 @@ public abstract class GameCommand
 	 */
 	protected Player getDeadPlayer(String player) throws InvalidatonException
 	{
-		Player plr = game.getPlayer(player);
+		Player plr = this.game.getPlayer(player);
 		if (plr == null || plr.isAlive())
 			throw new InvalidatonException("dead player required: " + player);
 		return plr;
 	}
 
 	/**
-	 * Returns a living player represented by the given string.
-	 * 
-	 * @param player
-	 * @return
-	 * @throws InvalidatonException
-	 *             If a player could not be found, or if the selected player is
-	 *             dead.
+	 * @return Returns the description of this command, to be posted in the help
+	 *         section.
 	 */
-	protected Player getLivingPlayer(String player) throws InvalidatonException
+	public ForumMessageElement getInfo()
 	{
-		Player plr = game.getPlayer(player);
-		if (plr == null || plr.isAlive())
-			throw new InvalidatonException("living player required: " + player);
-		return plr;
+		return this.info;
 	}
 
 	/**
@@ -242,6 +158,96 @@ public abstract class GameCommand
 		{
 			throw new InvalidatonException("number required: " + integer);
 		}
+	}
+
+	/**
+	 * Returns a living player represented by the given string.
+	 * 
+	 * @param player
+	 * @return
+	 * @throws InvalidatonException
+	 *             If a player could not be found, or if the selected player is
+	 *             dead.
+	 */
+	protected Player getLivingPlayer(String player) throws InvalidatonException
+	{
+		Player plr = this.game.getPlayer(player);
+		if (plr == null || plr.isAlive())
+			throw new InvalidatonException("living player required: " + player);
+		return plr;
+	}
+
+	/**
+	 * @return The name of this command.
+	 */
+	public String getName()
+	{
+		return this.name;
+	}
+
+	/**
+	 * Returns a ForumUser, specified by the given string, who is not in the
+	 * game.
+	 * 
+	 * @param user
+	 * @return
+	 * @throws InvalidatonException
+	 *             If no user could be found, or if the given user is already a
+	 *             player.
+	 */
+	protected ForumUser getNonPlayer(String user) throws InvalidatonException
+	{
+		ForumUser usr = this.game.getUser(user);
+		if (usr == null || this.game.getPlayer(usr) != null)
+			throw new InvalidatonException("non-player required: " + user);
+		return usr;
+	}
+
+	/**
+	 * Returns a player represented by the given ForumUser.
+	 * 
+	 * @param player
+	 * @return
+	 * @throws InvalidatonException
+	 *             If a player could not be found.
+	 */
+	protected Player getPlayer(ForumUser player) throws InvalidatonException
+	{
+		Player plr = this.game.getPlayer(player);
+		if (plr == null)
+			throw new InvalidatonException("living player required: " + player);
+		return plr;
+	}
+
+	/**
+	 * Returns a player represented by the given String.
+	 * 
+	 * @param player
+	 * @return
+	 * @throws InvalidatonException
+	 */
+	protected Player getPlayer(String player) throws InvalidatonException
+	{
+		Player plr = this.game.getPlayer(player);
+		if (plr == null)
+			throw new InvalidatonException("player required: " + player);
+		return plr;
+	}
+
+	/**
+	 * Returns a ForumUser specified by the given string.
+	 * 
+	 * @param user
+	 * @return
+	 * @throws InvalidatonException
+	 *             If no user could be found.
+	 */
+	protected ForumUser getUser(String user) throws InvalidatonException
+	{
+		ForumUser usr = this.game.getUser(user);
+		if (usr == null)
+			throw new InvalidatonException("user required: " + user);
+		return usr;
 	}
 
 	/**

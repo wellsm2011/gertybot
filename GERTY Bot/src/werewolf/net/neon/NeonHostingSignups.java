@@ -24,27 +24,27 @@ public class NeonHostingSignups implements HostingSignups
 		protected int			gameNumber	= -1;
 	}
 
-	public static final int					SIGNUP_THREAD	= 274282;
+	public static final int SIGNUP_THREAD = 274282;
 
 	public static final NeonHostingSignups	INSTANCE		= new NeonHostingSignups();
 	private NeonThread						thread			= NeonThread.getThread(NeonHostingSignups.SIGNUP_THREAD);
 	private LinkedList<SignupRecord>		werewolfGames	= new LinkedList<SignupRecord>();
 	private LinkedList<SignupRecord>		assassinsGames	= new LinkedList<SignupRecord>();
 	private LinkedList<SignupRecord>		mafiaGames		= new LinkedList<SignupRecord>();
-	private int								mafiaCount		= 0;														// First
-																														// running/queued
-																														// mafia
-																														// game
-																														// number.
-	private int								assassinsCount	= 0;														// ...
-																														// assassins
-																														// game
-																														// number.
+	private int								mafiaCount		= 0;																												// First
+														// running/queued
+														// mafia
+														// game
+														// number.
+	private int								assassinsCount	= 0;																												// ...
+														// assassins
+														// game
+														// number.
 
-	private int								werewolfCount	= 0;														// ...
-																														// werewolf
-																														// game
-																														// number.
+	private int werewolfCount = 0;														// ...
+														// werewolf
+														// game
+														// number.
 
 	private NeonHostingSignups()
 	{

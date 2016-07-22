@@ -8,17 +8,17 @@ import org.joda.time.DateTime;
 
 public abstract class ForumPost implements Serializable
 {
-	private static final long	serialVersionUID	= 1043955423819856116L;
+	private static final long serialVersionUID = 1043955423819856116L;
 
-	protected ForumUser			poster;
-	protected boolean			isEditable;
-	protected boolean			edited				= false;
-	protected boolean			deleted				= false;
-	protected List<Command>		commands;
-	protected int				postId;
-	protected String			content;
-	protected ForumThread		thread;
-	protected DateTime			postTime;
+	protected ForumUser		poster;
+	protected boolean		isEditable;
+	protected boolean		edited	= false;
+	protected boolean		deleted	= false;
+	protected List<Command>	commands;
+	protected int			postId;
+	protected String		content;
+	protected ForumThread	thread;
+	protected DateTime		postTime;
 
 	public ForumPost(ForumThread parent, int postId, DateTime postTime, ForumUser poster, List<Command> commands, boolean isEditable, String content)
 	{

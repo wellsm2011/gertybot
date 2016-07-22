@@ -2,29 +2,29 @@ package werewolf.net.neon;
 
 import java.io.IOException;
 
-import werewolf.net.ForumContext;
-import werewolf.net.ForumPostEditor;
-
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 
+import werewolf.net.ForumContext;
+import werewolf.net.ForumPostEditor;
+
 public class NeonPostEditor implements ForumPostEditor
 {
-	private static final long	serialVersionUID	= -6341434172839866953L;
+	private static final long serialVersionUID = -6341434172839866953L;
 
-	private HtmlInput			subject;
-	private HtmlTextArea		body;
-	private HtmlInput			reason;
-	private HtmlInput			submit;
-	private HtmlInput			preview;
-	private HtmlInput			lockPost;
-	private String				boardId;
-	private String				threadId;
-	private int					postId;
-	private boolean				isInitalized		= false;
-	private HtmlPage			page;
+	private HtmlInput		subject;
+	private HtmlTextArea	body;
+	private HtmlInput		reason;
+	private HtmlInput		submit;
+	private HtmlInput		preview;
+	private HtmlInput		lockPost;
+	private String			boardId;
+	private String			threadId;
+	private int				postId;
+	private boolean			isInitalized	= false;
+	private HtmlPage		page;
 
 	public NeonPostEditor(String boardId, String threadId, int postId) throws IOException
 	{

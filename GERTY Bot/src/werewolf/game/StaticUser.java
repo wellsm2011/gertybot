@@ -12,29 +12,29 @@ public class StaticUser implements User
 	 * The user representing a lack of a vote. All players default to voting for
 	 * this user.
 	 */
-	public static final StaticUser			NOVOTE				= new StaticUser("No Vote");
+	public static final StaticUser NOVOTE = new StaticUser("No Vote");
 
 	/**
 	 * The user representing no lynch. Allows players to <b>[vote no lynch]</b>
 	 * in games.
 	 */
-	public static final StaticUser			NOLYNCH				= new StaticUser("No Lynch");
+	public static final StaticUser NOLYNCH = new StaticUser("No Lynch");
 
 	/**
 	 * The user representing no king in kingmaker games. Allows players to
 	 * <b>[vote no king]</b> in games.
 	 */
-	public static final StaticUser			NOKING				= new StaticUser("No King");
+	public static final StaticUser NOKING = new StaticUser("No King");
 
 	/**
 	 * The user representing a lack of the ability to vote. Any player marked as
 	 * voting for this is either injured, not playing, or dead.
 	 */
-	public static final StaticUser			INCAPACITATED		= new StaticUser("Incapacitated");
+	public static final StaticUser INCAPACITATED = new StaticUser("Incapacitated");
 
-	public static final List<StaticUser>	LIST;
+	public static final List<StaticUser> LIST;
 
-	private static final long				serialVersionUID	= -9045376129902662803L;
+	private static final long serialVersionUID = -9045376129902662803L;
 
 	static
 	{
@@ -45,7 +45,7 @@ public class StaticUser implements User
 		StaticUser.LIST.add(StaticUser.INCAPACITATED);
 	}
 
-	private String							name;
+	private String name;
 
 	private StaticUser(String name)
 	{

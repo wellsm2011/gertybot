@@ -16,7 +16,7 @@ public class WerewolfGame
 	// Setup -> R0 Night -> R1 Day
 	// Setup -> R1 Day
 
-	private static final Logger	LOGGER	= Logger.getLogger(WerewolfGame.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(WerewolfGame.class.getName());
 
 	protected static boolean isMe(ForumUser user)
 	{
@@ -24,17 +24,17 @@ public class WerewolfGame
 	}
 
 	protected ForumThread			thread;
-	protected LinkedList<Player>	players		= new LinkedList<>();
-	protected VoteManager			votes		= new VoteManager(this);
-	protected ForumUser				host		= null;
-	protected LinkedList<ForumUser>	cohosts		= new LinkedList<>();
-	protected int					round		= 0;
+	protected LinkedList<Player>	players	= new LinkedList<>();
+	protected VoteManager			votes	= new VoteManager(this);
+	protected ForumUser				host	= null;
+	protected LinkedList<ForumUser>	cohosts	= new LinkedList<>();
+	protected int					round	= 0;
 	// Game starts in pregame setup.
-	protected GamePhase				phase		= GamePhase.PREGAME;
+	protected GamePhase				phase	= GamePhase.PREGAME;
 
-	protected boolean				stateChange	= false;
-	protected GameCommand[]			cmds		= new GameCommand[]
-												{};
+	protected boolean		stateChange	= false;
+	protected GameCommand[]	cmds		= new GameCommand[]
+											{};
 
 	public WerewolfGame(ForumThread subscription)
 	{

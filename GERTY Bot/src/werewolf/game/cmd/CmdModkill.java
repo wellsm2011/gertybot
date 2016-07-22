@@ -24,7 +24,7 @@ public class CmdModkill extends GameCommand
 	protected boolean execute(Command cmd) throws InvalidatonException
 	{
 		List<String> params = cmd.getParams(2);
-		Player target = getPlayer(params.get(0));
+		Player target = this.getPlayer(params.get(0));
 		String msg = "Modkilled";
 		if (params.size() > 1)
 			msg += " " + params.get(1); // Second param.

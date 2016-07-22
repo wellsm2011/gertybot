@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 
 public abstract class ForumMessageElement
 {
-	protected LinkedList<ForumMessageElement>	children	= new LinkedList<>();
+	protected LinkedList<ForumMessageElement> children = new LinkedList<>();
 
 	public ForumMessageElement()
 	{

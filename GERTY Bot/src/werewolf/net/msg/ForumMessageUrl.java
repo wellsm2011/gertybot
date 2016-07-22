@@ -1,9 +1,8 @@
 package werewolf.net.msg;
 
-
 public class ForumMessageUrl extends ForumMessageElement
 {
-	private String	url;
+	private String url;
 
 	public ForumMessageUrl(String url)
 	{

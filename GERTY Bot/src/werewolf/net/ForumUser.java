@@ -14,7 +14,7 @@ import werewolf.net.msg.ForumMessageElement;
  */
 public class ForumUser implements User
 {
-	private static final long	serialVersionUID	= -4838253248167596821L;
+	private static final long serialVersionUID = -4838253248167596821L;
 
 	public static ForumUser getUserFor(int u, ForumContext context)
 	{

@@ -4,17 +4,17 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import werewolf.net.ForumBoard;
-import werewolf.net.ForumContext;
-import werewolf.net.ForumThread;
-
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
+import werewolf.net.ForumBoard;
+import werewolf.net.ForumContext;
+import werewolf.net.ForumThread;
+
 public class NeonBoard extends ForumBoard
 {
-	private static final long	serialVersionUID	= 8482450920548956509L;
+	private static final long serialVersionUID = 8482450920548956509L;
 
 	/**
 	 * Loads data for a new board on NeonDragon.net.

@@ -12,7 +12,7 @@ public class ForumMessageColor extends ForumMessageElement
 	public static final Color	DEAD		= new Color(0xFFBF80);
 	public static final Color	INVALID		= Color.RED;
 
-	private Color				color;
+	private Color color;
 
 	public ForumMessageColor(Color color, ForumMessageElement... children)
 	{

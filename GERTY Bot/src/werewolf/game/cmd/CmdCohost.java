@@ -24,7 +24,7 @@ public class CmdCohost extends GameCommand
 	@Override
 	protected boolean execute(Command cmd)
 	{
-		List<String> params = cmd.getParams(game.getPlayers().size() + 1);
+		List<String> params = cmd.getParams(this.game.getPlayers().size() + 1);
 		LinkedList<ForumUser> cohosts = new LinkedList<>();
 		// Check to see if we're removing all cohosts.
 		if (params.get(0).length() == 0)

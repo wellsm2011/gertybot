@@ -4,7 +4,7 @@ import werewolf.net.ForumMessageEncoder;
 
 public class ForumMessageString extends ForumMessageElement
 {
-	private String	msg	= "";
+	private String msg = "";
 
 	public ForumMessageString(String msg)
 	{

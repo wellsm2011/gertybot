@@ -19,8 +19,12 @@ public class VoteManager implements java.io.Serializable
 	 */
 	public class RoundRecord implements java.io.Serializable
 	{
+		/**
+		 * 
+		 */
+		private static final long							serialVersionUID	= 1L;
 		private RoundRecord									previous;
-		LinkedList<Vote>									record	= new LinkedList<>();
+		LinkedList<Vote>									record				= new LinkedList<>();
 		private BiFunction<RoundRecord, WerewolfGame, User>	lynchResolver;
 		private BiFunction<Player, Player, Integer>			voteApplier;
 
@@ -32,6 +36,11 @@ public class VoteManager implements java.io.Serializable
 		public RoundRecord(RoundRecord previous)
 		{
 			this.previous = previous;
+		}
+
+		public BiFunction<RoundRecord, WerewolfGame, User> getLynchResolver()
+		{
+			return this.lynchResolver;
 		}
 
 		public List<Vote> getRecord()
@@ -49,16 +58,16 @@ public class VoteManager implements java.io.Serializable
 			this.record.add(vote);
 		}
 
-		public BiFunction<RoundRecord, WerewolfGame, User> getLynchResolver()
-		{
-			return lynchResolver;
-		}
-
 		public void setLynchResolver(BiFunction<RoundRecord, WerewolfGame, User> lynchResolver)
 		{
 			this.lynchResolver = lynchResolver;
 		}
 	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private final static Logger	LOGGER	= Logger.getLogger(VoteManager.class.getName());
 	private RoundRecord			record	= new RoundRecord();

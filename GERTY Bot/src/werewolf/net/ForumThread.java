@@ -6,29 +6,29 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import werewolf.net.msg.ForumMessageElement;
-
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
+import werewolf.net.msg.ForumMessageElement;
 
 public abstract class ForumThread implements Serializable
 {
-	private static final Logger		LOGGER				= Logger.getLogger(ForumThread.class.getName());
-	private static final long		serialVersionUID	= -1204239372191855699L;
+	private static final Logger	LOGGER				= Logger.getLogger(ForumThread.class.getName());
+	private static final long	serialVersionUID	= -1204239372191855699L;
 
-	protected LinkedList<ForumPost>	posts				= new LinkedList<ForumPost>();
-	protected LinkedList<ForumPost>	deleted				= new LinkedList<ForumPost>();
-	protected LinkedList<ForumPost>	edited				= new LinkedList<ForumPost>();
+	protected LinkedList<ForumPost>	posts	= new LinkedList<ForumPost>();
+	protected LinkedList<ForumPost>	deleted	= new LinkedList<ForumPost>();
+	protected LinkedList<ForumPost>	edited	= new LinkedList<ForumPost>();
 
-	private boolean					stickied			= false;
-	private boolean					locked				= false;
-	private boolean					editable			= false;
-	private String					threadId;
-	private String					boardId;
-	private String					title				= null;
+	private boolean	stickied	= false;
+	private boolean	locked		= false;
+	private boolean	editable	= false;
+	private String	threadId;
+	private String	boardId;
+	private String	title		= null;
 
-	private boolean					initalized			= false;
-	private int						postReadIndex		= 0;
-	private int						pagesParsed			= 0;
+	private boolean	initalized		= false;
+	private int		postReadIndex	= 0;
+	private int		pagesParsed		= 0;
 
 	protected ForumThread(String boardId, String threadId)
 	{

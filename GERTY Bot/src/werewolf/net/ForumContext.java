@@ -16,9 +16,6 @@ import org.w3c.css.sac.CSSException;
 import org.w3c.css.sac.CSSParseException;
 import org.w3c.css.sac.ErrorHandler;
 
-import werewolf.game.WerewolfGame_OLD;
-import werewolf.net.msg.ForumMessageElement;
-
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.IncorrectnessListener;
 import com.gargoylesoftware.htmlunit.InteractivePage;
@@ -27,6 +24,9 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HTMLParserListener;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.JavaScriptErrorListener;
+
+import werewolf.game.WerewolfGame_OLD;
+import werewolf.net.msg.ForumMessageElement;
 
 public abstract class ForumContext implements Serializable, Runnable
 {

@@ -22,7 +22,7 @@ public class CmdAlias extends GameCommand
 	protected boolean execute(Command cmd) throws InvalidatonException
 	{
 		List<String> params = cmd.getParams(3);
-		ForumUser aliasPlayer = getUser(params.get(0));
+		ForumUser aliasPlayer = this.getUser(params.get(0));
 		String alias = params.get(1);
 		ForumUser existingAlias = this.game.getUser(alias);
 		if (existingAlias != null)

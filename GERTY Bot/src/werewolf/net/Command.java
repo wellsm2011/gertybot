@@ -16,20 +16,20 @@ import java.util.regex.Pattern;
  */
 public class Command implements Serializable
 {
-	private static final Logger	LOGGER				= Logger.getLogger(Command.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Command.class.getName());
 
-	private static final long	serialVersionUID	= -8803103421504120775L;
+	private static final long serialVersionUID = -8803103421504120775L;
 
-	private String				fullCommand;
-	private String				command;
-	private String				params;
-	private ForumUser			user;
-	private boolean				invalidated;
+	private String		fullCommand;
+	private String		command;
+	private String		params;
+	private ForumUser	user;
+	private boolean		invalidated;
 	// True if the bot is currently checking this invalid command for validity.
-	private boolean				checking			= false;
-	private ForumPost			post				= null;
+	private boolean		checking	= false;
+	private ForumPost	post		= null;
 
-	private int					postCounter			= 0;
+	private int postCounter = 0;
 
 	/**
 	 * Creates a new command object with an attached post. This will allow

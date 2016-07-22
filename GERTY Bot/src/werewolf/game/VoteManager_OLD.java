@@ -17,13 +17,13 @@ import werewolf.net.ForumUser;
  */
 public class VoteManager_OLD implements Serializable
 {
-	private final static Logger	LOGGER				= Logger.getLogger(VoteManager_OLD.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(VoteManager_OLD.class.getName());
 
-	private static final long	serialVersionUID	= -1511892114410847496L;
+	private static final long serialVersionUID = -1511892114410847496L;
 
-	private LinkedList<Vote>	votes				= new LinkedList<Vote>();
+	private LinkedList<Vote>	votes			= new LinkedList<Vote>();
 	private List<Player>		players;
-	private boolean				multipleVotes		= false;
+	private boolean				multipleVotes	= false;
 
 	/**
 	 * Creates a new vote manager without the ability for players to vote
@@ -74,10 +74,10 @@ public class VoteManager_OLD implements Serializable
 			}
 		if (sortedVotes.get(StaticUser.NOLYNCH).size() >= maxVotes)
 			return StaticUser.NOLYNCH;
-		if (sortedVotes.get(StaticUser.NOKING).size() >= maxVotes) // Kingmaker
-																	// equivilent
-																	// of no
-																	// lynch.
+		if (sortedVotes.get(StaticUser.NOKING).size() >= maxVotes)  // Kingmaker
+ // equivilent
+ // of no
+ // lynch.
 			return StaticUser.NOKING; // No king, no king, lalalalalala.
 		if (highestVoted.size() == 1)
 			return highestVoted.getFirst();
@@ -377,7 +377,7 @@ public class VoteManager_OLD implements Serializable
 					return;
 				}
 				break; // Found player's last vote, and it wasn't a duplicate.
-						// Thus, allow this vote.
+ // Thus, allow this vote.
 			}
 		}
 		this.votes.add(vote);

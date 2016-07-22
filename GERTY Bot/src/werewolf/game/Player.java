@@ -13,14 +13,14 @@ import werewolf.net.msg.ForumMessageUrl;
 
 public class Player extends ForumUser
 {
-	private final static Logger		LOGGER				= Logger.getLogger(Player.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Player.class.getName());
 
-	private static final long		serialVersionUID	= 4363493461063986117L;
+	private static final long serialVersionUID = 4363493461063986117L;
 
-	private boolean					alive				= true;
-	private boolean					modkilled			= false;
-	private int						injured				= 0;
-	private ForumMessageContainer	data				= new ForumMessageContainer();
+	private boolean					alive		= true;
+	private boolean					modkilled	= false;
+	private int						injured		= 0;
+	private ForumMessageContainer	data		= new ForumMessageContainer();
 	private ForumPost				joinPost;
 	private WerewolfGame			game;
 
@@ -103,6 +103,11 @@ public class Player extends ForumUser
 		return this.injured > 0;
 	}
 
+	public boolean isModkilled()
+	{
+		return this.modkilled;
+	}
+
 	/**
 	 * Marks this player as dead.
 	 *
@@ -177,11 +182,6 @@ public class Player extends ForumUser
 	public void setAlive(boolean status)
 	{
 		this.alive = status;
-	}
-
-	public boolean isModkilled()
-	{
-		return modkilled;
 	}
 
 	public void setModkilled(boolean modkilled)

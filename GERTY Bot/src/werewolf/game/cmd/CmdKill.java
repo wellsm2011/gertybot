@@ -24,7 +24,7 @@ public class CmdKill extends GameCommand
 	protected boolean execute(Command cmd) throws InvalidatonException
 	{
 		List<String> params = cmd.getParams(2);
-		Player target = getLivingPlayer(params.get(0));
+		Player target = this.getLivingPlayer(params.get(0));
 		String msg = "Killed";
 		if (params.size() > 1)
 			msg = params.get(1);

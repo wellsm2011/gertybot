@@ -23,7 +23,7 @@ public class CmdAdd extends GameCommand
 	@Override
 	protected boolean execute(Command cmd) throws InvalidatonException
 	{
-		ForumUser target = getNonPlayer(cmd.getParams(1).get(0));
+		ForumUser target = this.getNonPlayer(cmd.getParams(1).get(0));
 		this.game.getPlayers().add(new Player(target, cmd.getPost(), this.game));
 		return true;
 	}

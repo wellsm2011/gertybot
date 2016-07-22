@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
 import werewolf.Utils;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumInbox;
@@ -18,15 +23,10 @@ import werewolf.net.HostingSignups;
 import werewolf.net.PrivateMessage;
 import werewolf.net.msg.ForumMessageElement;
 
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-
 public class NeonContext extends ForumContext
 {
-	private static final Logger				LOGGER				= Logger.getLogger(NeonContext.class.getName());
-	private static final long				serialVersionUID	= -4455454156365061005L;
+	private static final Logger	LOGGER				= Logger.getLogger(NeonContext.class.getName());
+	private static final long	serialVersionUID	= -4455454156365061005L;
 
 	static
 	{
@@ -41,21 +41,21 @@ public class NeonContext extends ForumContext
 		INSTANCE = init;
 	}
 
-	public static final NeonContext			INSTANCE;
+	public static final NeonContext INSTANCE;
 
-	public static final String				DOMAIN				= "http://www.neondragon.net/";
-	public static final NeonGameRecord		RECORD				= NeonGameRecord.INSTANCE;
-	public static final HostingSignups		SIGNUPS				= NeonHostingSignups.INSTANCE;
-	public static final int					POLL_INTERVAL		= 2;
-	public static final String				RULES_URL			= NeonContext.DOMAIN + "viewtopic.php?f=179&t=15538";
-	public static final NeonMessageEncoder	ENCODER				= new NeonMessageEncoder();
+	public static final String				DOMAIN			= "http://www.neondragon.net/";
+	public static final NeonGameRecord		RECORD			= NeonGameRecord.INSTANCE;
+	public static final HostingSignups		SIGNUPS			= NeonHostingSignups.INSTANCE;
+	public static final int					POLL_INTERVAL	= 2;
+	public static final String				RULES_URL		= NeonContext.DOMAIN + "viewtopic.php?f=179&t=15538";
+	public static final NeonMessageEncoder	ENCODER			= new NeonMessageEncoder();
 
-	public static final int					WEREWOLF_BOARD		= 178;
-	public static final boolean				PARSE_ALL_THREADS	= false;
+	public static final int		WEREWOLF_BOARD		= 178;
+	public static final boolean	PARSE_ALL_THREADS	= false;
 
-	public static final NeonInbox			INBOX				= new NeonInbox("inbox");
+	public static final NeonInbox INBOX = new NeonInbox("inbox");
 
-	private ForumLogin						login;
+	private ForumLogin login;
 
 	private NeonContext() throws NumberFormatException, IOException
 	{

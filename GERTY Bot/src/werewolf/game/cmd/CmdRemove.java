@@ -14,7 +14,7 @@ public class CmdRemove extends GameCommand
 		this.usage = "player";
 		this.match = "remove";
 		this.mustBeTrue = new Requirement[]
-		{ Requirement.HOST , Requirement.PLAYER };
+		{ Requirement.HOST, Requirement.PLAYER };
 	}
 
 	@Override
@@ -27,8 +27,8 @@ public class CmdRemove extends GameCommand
 			return false;
 		}
 
-		//TODO - Finish when there's a remove command
-		//this.game.;
+		// TODO - Finish when there's a remove command
+		// this.game.;
 		return true;
 	}
 }

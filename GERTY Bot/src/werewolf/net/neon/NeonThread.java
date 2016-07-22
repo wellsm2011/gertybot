@@ -9,11 +9,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import werewolf.net.Command;
-import werewolf.net.ForumContext;
-import werewolf.net.ForumThread;
-import werewolf.net.ForumUser;
-
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
@@ -21,12 +16,17 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlStrong;
 
+import werewolf.net.Command;
+import werewolf.net.ForumContext;
+import werewolf.net.ForumThread;
+import werewolf.net.ForumUser;
+
 public class NeonThread extends ForumThread
 {
-	private static final long				serialVersionUID	= 2939364857283333100L;
+	private static final long serialVersionUID = 2939364857283333100L;
 
-	private static final DateTimeFormatter	timeFormat			= DateTimeFormat.forPattern("E MMMM d, YYYY h:m a");
-	private static LinkedList<NeonThread>	loadedThreads		= new LinkedList<NeonThread>();
+	private static final DateTimeFormatter	timeFormat		= DateTimeFormat.forPattern("E MMMM d, YYYY h:m a");
+	private static LinkedList<NeonThread>	loadedThreads	= new LinkedList<NeonThread>();
 
 	public static NeonThread getThread(int threadId)
 	{
@@ -61,7 +61,7 @@ public class NeonThread extends ForumThread
 		return NeonThread.getThread(-1, threadId, title, isStickied);
 	}
 
-	private String	lastPage	= "";
+	private String lastPage = "";
 
 	private NeonThread(int boardId, int threadId)
 	{

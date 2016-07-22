@@ -2,9 +2,9 @@ package werewolf.net;
 
 public class ForumLogin extends ForumUser
 {
-	private static final long	serialVersionUID	= -8865347377571642240L;
+	private static final long serialVersionUID = -8865347377571642240L;
 
-	public final String			password;
+	public final String password;
 
 	/**
 	 * @param oth

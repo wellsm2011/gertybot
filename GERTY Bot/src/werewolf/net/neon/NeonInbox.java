@@ -7,15 +7,15 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-import werewolf.net.ForumContext;
-import werewolf.net.ForumInbox;
-import werewolf.net.ForumUser;
-import werewolf.net.PrivateMessage;
-
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlParagraph;
+
+import werewolf.net.ForumContext;
+import werewolf.net.ForumInbox;
+import werewolf.net.ForumUser;
+import werewolf.net.PrivateMessage;
 
 public class NeonInbox extends ForumInbox
 {
@@ -72,7 +72,7 @@ public class NeonInbox extends ForumInbox
 		{
 			this.dumpUsers(row4, to);
 			this.dumpUsers(row5, bcc);
-		} else if (true) // TODO: Implement conditional.
+		} else if (true)  // TODO: Implement conditional.
 			this.dumpUsers(row4, to);
 		else
 			this.dumpUsers(row4, bcc);

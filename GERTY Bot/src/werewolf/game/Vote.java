@@ -10,9 +10,9 @@ public class Vote implements Serializable
 	private final static Logger	LOGGER				= Logger.getLogger(Vote.class.getName());
 	private static final long	serialVersionUID	= -479947774406039167L;
 
-	private Player				voter;
-	private User				target;
-	public final ForumPost		post;
+	private Player			voter;
+	private User			target;
+	public final ForumPost	post;
 
 	/**
 	 * Creates a new vote that is not associated with any forum post.

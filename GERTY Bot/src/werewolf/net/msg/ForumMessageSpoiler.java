@@ -2,7 +2,7 @@ package werewolf.net.msg;
 
 public class ForumMessageSpoiler extends ForumMessageElement
 {
-	String	title;
+	String title;
 
 	public ForumMessageSpoiler(ForumMessageElement... children)
 	{

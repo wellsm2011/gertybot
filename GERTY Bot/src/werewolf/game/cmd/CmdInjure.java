@@ -24,10 +24,10 @@ public class CmdInjure extends GameCommand
 	protected boolean execute(Command cmd) throws InvalidatonException
 	{
 		List<String> params = cmd.getParams(2);
-		Player target = getPlayer(params.get(0));
+		Player target = this.getPlayer(params.get(0));
 		int rounds = 1;
 		if (params.size() > 1)
-			rounds = getInteger(params.get(1));
+			rounds = this.getInteger(params.get(1));
 		if (rounds < 1)
 			throw new InvalidatonException("must injure for at least one round");
 
