@@ -1,20 +1,7 @@
 package werewolf.experimental;
 
 import java.awt.Color;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import werewolf.net.msg.ForumMessageBold;
-import werewolf.net.msg.ForumMessageCodeblock;
-import werewolf.net.msg.ForumMessageColor;
-import werewolf.net.msg.ForumMessageContainer;
-import werewolf.net.msg.ForumMessageElement;
-import werewolf.net.msg.ForumMessageItalic;
-import werewolf.net.msg.ForumMessageQuote;
-import werewolf.net.msg.ForumMessageSpoiler;
-import werewolf.net.msg.ForumMessageStrike;
-import werewolf.net.msg.ForumMessageString;
-import werewolf.net.msg.ForumMessageUrl;
 
 /**
  * This class handles messages passed from the game package. Classes that extend
@@ -24,15 +11,44 @@ import werewolf.net.msg.ForumMessageUrl;
  * it to &lt;b&gt;text&lt;/b&gt;.
  * 
  * @author Michael Wells
+ * @author Andrew Binns
  */
-public abstract class ForumMessageEncoder
+public abstract class ForumMessageEncoder<T>
 {
 	private static final Logger				LOGGER		= Logger.getLogger(ForumMessageEncoder.class.getName());
 	/**
 	 * The default implementation, which eliminates richtext. Suitable for
 	 * console or logfile output.
 	 */
-	public static final ForumMessageEncoder	PLAINTEXT	= new ForumMessageEncoder()
+
+
+	public T encodeMessageElement(ForumMessageElement elem)
+	{
+		elem
+		return null;
+	}
+
+	protected abstract T encodeQuote(T msg, T author);
+
+	protected abstract T encodeSpoiler(T msg, T title);
+
+	protected abstract T encodeStrike(T msg);
+
+	protected abstract T encodeUrl(T msg, T url);
+
+	protected abstract T escape(T msg);
+
+	protected abstract T encodeBold(T msg);
+
+	protected abstract T encodeCodeblock(T msg);
+
+	protected abstract T encodeColor(T msg, Color color);
+
+	protected abstract T encodeHeader(T msg);
+
+	protected abstract T encodeItalic(T msg);
+	
+	public static final ForumMessageEncoder<String>	PLAINTEXT	= new ForumMessageEncoder<String>()
 	{
 		@Override
 		protected String encodeBold(String msg)
@@ -98,62 +114,4 @@ public abstract class ForumMessageEncoder
 
 	};
 
-	protected abstract String encodeBold(String msg);
-
-	protected abstract String encodeCodeblock(String msg);
-
-	protected abstract String encodeColor(String msg, Color color);
-
-	protected abstract String encodeHeader(String msg);
-
-	protected abstract String encodeItalic(String msg);
-
-	/**
-	 * Function to perform the encoding of a forum message element.
-	 * 
-	 * @param msg
-	 *            The message to encode.
-	 * @return The encoded form of the given message, as a String.
-	 */
-	public String encodeMessage(ForumMessageElement msg)
-	{
-		if (this != ForumMessageEncoder.PLAINTEXT && ForumMessageEncoder.LOGGER.isLoggable(Level.FINE))
-			ForumMessageEncoder.LOGGER.fine("Encoding Message: " + ForumMessageEncoder.PLAINTEXT.encodeMessage(msg));
-
-		// Figure out which element we're dealing with and call the
-		// associated implementation-specific function.
-		return msg.toString((elem, string) -> {
-			if (elem instanceof ForumMessageContainer)
-				return string;	// Container is just a grouping.
-			if (elem instanceof ForumMessageString)
-				return this.escape(((ForumMessageString) elem).getMsg());
-			if (elem instanceof ForumMessageBold)
-				return this.encodeBold(string);
-			if (elem instanceof ForumMessageItalic)
-				return this.encodeItalic(string);
-			if (elem instanceof ForumMessageStrike)
-				return this.encodeStrike(string);
-			if (elem instanceof ForumMessageSpoiler)
-				return this.encodeSpoiler(string, ((ForumMessageSpoiler) elem).getTitle());
-			if (elem instanceof ForumMessageCodeblock)
-				return this.encodeCodeblock(string);
-			if (elem instanceof ForumMessageQuote)
-				return this.encodeQuote(string, ((ForumMessageQuote) elem).getAuthor());
-			if (elem instanceof ForumMessageColor)
-				return this.encodeColor(string, ((ForumMessageColor) elem).getColor());
-			if (elem instanceof ForumMessageUrl)
-				return this.encodeUrl(string, ((ForumMessageUrl) elem).getUrl());
-			throw new IllegalArgumentException("Unknown element type in message: " + elem.getClass().toString());
-		});
-	}
-
-	protected abstract String encodeQuote(String msg, String author);
-
-	protected abstract String encodeSpoiler(String msg, String title);
-
-	protected abstract String encodeStrike(String msg);
-
-	protected abstract String encodeUrl(String msg, String url);
-
-	protected abstract String escape(String msg);
 }

@@ -8,7 +8,29 @@ import werewolf.net.msg.ForumMessageString;
 
 public abstract class ForumMessageElement
 {
-	protected LinkedList<ForumMessageElement> children = new LinkedList<>();
+
+	public enum ElementStyle
+	{
+		/**
+		 * test
+		 */
+		BOLD(""),
+		CODEBLOCK(""),
+		/**
+		 * test3
+		 */
+		COLOR(""),
+		/**
+		 * test2
+		 */
+		QUOTE("");
+		private ElementStyle(String txt)
+		{
+
+		}
+	}
+
+	protected List<ForumMessageElement> children = new LinkedList<>();
 
 	public ForumMessageElement()
 	{
