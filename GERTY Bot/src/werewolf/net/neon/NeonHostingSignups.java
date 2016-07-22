@@ -31,27 +31,26 @@ public class NeonHostingSignups implements HostingSignups
 	private LinkedList<SignupRecord>		werewolfGames	= new LinkedList<SignupRecord>();
 	private LinkedList<SignupRecord>		assassinsGames	= new LinkedList<SignupRecord>();
 	private LinkedList<SignupRecord>		mafiaGames		= new LinkedList<SignupRecord>();
-	private int								mafiaCount		= 0;																												// First
-														// running/queued
-														// mafia
-														// game
-														// number.
-	private int								assassinsCount	= 0;																												// ...
-														// assassins
-														// game
-														// number.
+	/**
+	 * running/queued mafia game number.
+	 */
+	private int								mafiaCount		= 0;																																																																																																																														// First
+	/**
+	 * assassins game number.
+	 */
+	private int								assassinsCount	= 0;																																																																																																																														// ...
 
+	/**
+	 * werewolf game number.
+	 */
 	private int werewolfCount = 0;														// ...
-														// werewolf
-														// game
-														// number.
 
 	private NeonHostingSignups()
 	{
 
 	}
 
-	/*
+	/**
 	 * Commands: signup <type>[, <name>] cohost <cohost> confirm [<host>] name
 	 * <name> thread <thread id> withdraw notify [<type>]
 	 */

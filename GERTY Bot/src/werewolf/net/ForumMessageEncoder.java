@@ -122,28 +122,28 @@ public abstract class ForumMessageEncoder
 
 		// Figure out which element we're dealing with and call the
 		// associated implementation-specific function.
-		return msg.toString((elm, inner) -> {
-			if (elm instanceof ForumMessageContainer)
-				return inner;	// Container is just a grouping.
-			if (elm instanceof ForumMessageString)
-				return ForumMessageEncoder.this.escape(((ForumMessageString) elm).getMsg());
-			if (elm instanceof ForumMessageBold)
-				return ForumMessageEncoder.this.encodeBold(inner);
-			if (elm instanceof ForumMessageItalic)
-				return ForumMessageEncoder.this.encodeItalic(inner);
-			if (elm instanceof ForumMessageStrike)
-				return ForumMessageEncoder.this.encodeStrike(inner);
-			if (elm instanceof ForumMessageSpoiler)
-				return ForumMessageEncoder.this.encodeSpoiler(inner, ((ForumMessageSpoiler) elm).getTitle());
-			if (elm instanceof ForumMessageCodeblock)
-				return ForumMessageEncoder.this.encodeCodeblock(inner);
-			if (elm instanceof ForumMessageQuote)
-				return ForumMessageEncoder.this.encodeQuote(inner, ((ForumMessageQuote) elm).getAuthor());
-			if (elm instanceof ForumMessageColor)
-				return ForumMessageEncoder.this.encodeColor(inner, ((ForumMessageColor) elm).getColor());
-			if (elm instanceof ForumMessageUrl)
-				return ForumMessageEncoder.this.encodeUrl(inner, ((ForumMessageUrl) elm).getUrl());
-			throw new IllegalArgumentException("Unknown element type in message: " + elm.getClass().toString());
+		return msg.toString((elem, string) -> {
+			if (elem instanceof ForumMessageContainer)
+				return string;	// Container is just a grouping.
+			if (elem instanceof ForumMessageString)
+				return this.escape(((ForumMessageString) elem).getMsg());
+			if (elem instanceof ForumMessageBold)
+				return this.encodeBold(string);
+			if (elem instanceof ForumMessageItalic)
+				return this.encodeItalic(string);
+			if (elem instanceof ForumMessageStrike)
+				return this.encodeStrike(string);
+			if (elem instanceof ForumMessageSpoiler)
+				return this.encodeSpoiler(string, ((ForumMessageSpoiler) elem).getTitle());
+			if (elem instanceof ForumMessageCodeblock)
+				return this.encodeCodeblock(string);
+			if (elem instanceof ForumMessageQuote)
+				return this.encodeQuote(string, ((ForumMessageQuote) elem).getAuthor());
+			if (elem instanceof ForumMessageColor)
+				return this.encodeColor(string, ((ForumMessageColor) elem).getColor());
+			if (elem instanceof ForumMessageUrl)
+				return this.encodeUrl(string, ((ForumMessageUrl) elem).getUrl());
+			throw new IllegalArgumentException("Unknown element type in message: " + elem.getClass().toString());
 		});
 	}
 

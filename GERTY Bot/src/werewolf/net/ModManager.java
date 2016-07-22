@@ -37,11 +37,16 @@ public class ModManager
 			ModManager.initalize();
 		LinkedList<ForumUser> remove = (LinkedList<ForumUser>) ModManager.mods.clone();
 		LinkedList<ForumUser> add = (LinkedList<ForumUser>) users.clone();
-		remove.removeAll(users); // Only remove players who are currently mods,
- // but not in the new mod list.
-		add.removeAll(ModManager.mods); // Only add players who are in the add
- // list, but not the mod list or the
- // permamod list.
+		remove.removeAll(users);
+		/*
+		 * Only remove players who are currently mods, but not in the new mod
+		 * list.
+		 */
+		add.removeAll(ModManager.mods);
+		/*
+		 * Only add players who are in the add list, but not the mod list or the
+		 * permamod list.
+		 */
 		add.removeAll(ModManager.permamods);
 
 		ModManager.removeMods(remove);

@@ -14,8 +14,8 @@ public class CmdRevive extends GameCommand
 		super(game);
 		this.name = "revive";
 		this.info = "Revives a deceased player. Only usable by a host.";
-		this.usage = "player[, message]"; // Turns into: revive player[,
- // message]
+		this.usage = "player[, message]";
+		// Turns into: revive player[,message]
 		this.match = "revive|raise|unkill";
 		this.mustBeTrue = new Requirement[]
 		{ Requirement.HOST };

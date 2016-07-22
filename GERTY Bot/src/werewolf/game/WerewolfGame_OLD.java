@@ -177,8 +177,8 @@ public class WerewolfGame_OLD implements ThreadManager
 			cmd.invalidate("error: cannot parse timestamps");
 			return;
 		}
-		String[] params = cmd.getParamString().split(" ", 2); // Syntax: <type>[
- // <options>]
+		String[] params = cmd.getParamString().split(" ", 2);
+		// Syntax: <type>[<options>]
 		if (params[0].matches("timed"))
 		{
 			if (params.length == 1)
@@ -192,7 +192,8 @@ public class WerewolfGame_OLD implements ThreadManager
 					cmd.invalidate("cannot parse hours: " + params[1]);
 					return;
 				}
-			this.lynchType = 1; // Set lynch type to timed.
+			this.lynchType = 1;
+			// Set lynch type to timed.
 		} else if (params[0].matches("single"))
 		{
 			if (params.length == 1)
@@ -206,7 +207,8 @@ public class WerewolfGame_OLD implements ThreadManager
 					cmd.invalidate("cannot parse hours: " + params[1]);
 					return;
 				}
-			this.lynchType = 2; // Set lynch type to single vote.
+			this.lynchType = 2;
+			// Set lynch type to single vote.
 		} else if (params[0].matches("majority"))
 		{
 			if (params.length == 1)
@@ -692,7 +694,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			return;
 		}
 		String[] params = cmd.getParamString().split(", ?", 2); // Syntax:
- // <target>[,
+		// <target>[,
 		// <message>]
 		Player target = this.getPlayer(params[0]);
 		if (target != null)
@@ -765,8 +767,9 @@ public class WerewolfGame_OLD implements ThreadManager
 				cmd.invalidate("unknown target");
 			else if (voter == null)
 				cmd.invalidate("unknown voter");
-			else if (voter.isInjured())  // Injured players are not allowed to
- // vote.
+			else if (voter.isInjured())      // Injured players are not allowed
+     // to
+				// vote.
 				cmd.invalidate("injured voter");
 			else if (!voter.isAlive())
 				cmd.invalidate("voter dead");
@@ -795,7 +798,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			return;
 		}
 		String[] params = cmd.getParamString().split(", ?", 2); // Syntax:
- // <target>[,
+		// <target>[,
 		// <message>]
 		Player target = this.getPlayer(params[0]);
 		if (target != null)
@@ -825,110 +828,126 @@ public class WerewolfGame_OLD implements ThreadManager
 			boolean isCommand = true;
 			String cmd = command.getCommand().toLowerCase();
 			// Search through all possible commands and execute any valid ones.
-			if (cmd.matches("^(join|in)$"))  // Adds the user to the game.
-											 // Requires signups open and
-											 // pregame
-											 // setup.
+			if (cmd.matches("^(join|in)$"))      // Adds the user to the game.
+				// Requires signups open and
+				// pregame
+				// setup.
 				this.joinGame(command);
-			else if (cmd.matches("^(leave|quit|out)$"))  // Removes the user
- // fromt the game.
+			else if (cmd.matches("^(leave|quit|out)$"))      // Removes the user
+				// fromt the game.
 				this.leaveGame(command);
-			else if (cmd.matches("^(add)$"))  // Forces a user to join the game.
- // Only usable by the host.
- // Requires the
+			else if (cmd.matches("^(add)$"))      // Forces a user to join the
+				// game.
+				// Only usable by the host.
+				// Requires the
 				this.addToGame(command); // forced user to have posted at least
- // once in the game thread.
-			else if (cmd.matches("^(replace)$"))  // Replaces a user with
-													 // another
-													 // user. Only usable by the
-													 // host.
+			// once in the game thread.
+			else if (cmd.matches("^(replace)$"))      // Replaces a user with
+				// another
+				// user. Only usable by
+				// the
+				// host.
 				this.replaceInGame(command);
 			else if (cmd.matches("^(alias)$"))
 				this.addAlias(command);
-			else if (cmd.matches("^(remove)$"))  // Removes a player from the
- // game completely. Only usable
- // by the host.
+			else if (cmd.matches("^(remove)$"))      // Removes a player from
+												     // the
+				// game completely. Only usable
+				// by the host.
 				this.removeFromGame(command);
-			else if (cmd.matches("^(vote|lynch|banish)$"))  // Logs the user as
- // voting for
- // another player.
- // Requires day
+			else if (cmd.matches("^(vote|lynch|banish)$"))      // Logs the user
+				// as
+				// voting for
+				// another player.
+				// Requires day
 				this.makeVote(command); // and can only be used by a player.
-			else if (cmd.matches("^(unvote|abstain)$"))  // Logs the user as not
- // voting. Requires day
- // and can only be
+			else if (cmd.matches("^(unvote|abstain)$"))      // Logs the user as
+				// not
+				// voting. Requires day
+				// and can only be
 				this.removeVote(command); // used by a player.
-			else if (cmd.matches("^(sign\\-?ups?)$"))  // Marks signups as open
- // or closed. May only
- // be used by the host.
+			else if (cmd.matches("^(sign\\-?ups?)$"))      // Marks signups as
+				// open
+				// or closed. May only
+				// be used by the host.
 				this.changeSignups(command);
-			else if (cmd.matches("^(dusk|night)$"))  // Marks that the game is
- // now in night phase,
- // jumping from the
+			else if (cmd.matches("^(dusk|night)$"))      // Marks that the game
+     // is
+				// now in night phase,
+				// jumping from the
 				this.duskPost(command); // current phase forward to night. Only
- // usable by the host.
-			else if (cmd.matches("^(dawn|day)$"))  // Marks that the game is now
- // in day phase, jumping
- // from the
+			// usable by the host.
+			else if (cmd.matches("^(dawn|day)$"))      // Marks that the game is
+				// now
+				// in day phase, jumping
+				// from the
 				this.dawnPost(command); // current phase forward to dau. Only
- // usable by the host.
-			else if (cmd.matches("^(start)$"))  // Starts the game and puts it
- // into round zero.
- // Automatically closes
+			// usable by the host.
+			else if (cmd.matches("^(start)$"))      // Starts the game and puts
+     // it
+				// into round zero.
+				// Automatically closes
 				this.startGame(command); // signups. Only usable by the host.
-			else if (cmd.matches("^(kill)$"))  // Marks a player as killed and
- // removes them from
+			else if (cmd.matches("^(kill)$"))      // Marks a player as killed
+     // and
+				// removes them from
 				this.killPlayer(command); // the game. Unlike remove, keeps
- // their data. Only usable by host.
-			else if (cmd.matches("^(modkill)$"))  // Marks a player as modkilled
- // and removes them from
+			// their data. Only usable by host.
+			else if (cmd.matches("^(modkill)$"))      // Marks a player as
+				// modkilled
+				// and removes them from
 				this.modkillPlayer(command); // the game. Unlike remove, keeps
- // their data. Only usable by
- // host.
-			else if (cmd.matches("^(revive|raise)$"))  // Marks a previously
- // killed player as
- // alive again. Only
- // usable by
+			// their data. Only usable by
+			// host.
+			else if (cmd.matches("^(revive|raise)$"))      // Marks a previously
+				// killed player as
+				// alive again. Only
+				// usable by
 				this.revivePlayer(command); // the host.
-			else if (cmd.matches("^(log|data|note)$"))  // Logs some extra data
-														 // about a player, but
-														 // does not change
-														 // their
+			else if (cmd.matches("^(log|data|note)$"))      // Logs some extra
+				// data
+				// about a player, but
+				// does not change
+				// their
 				this.logPlayerData(command); // status in any way. Only usable
- // by the host.
-			else if (cmd.matches("^(injure|hospitalize)$"))  // Logs a player as
- // having been
- // injured and
- // unable to vote.
+			// by the host.
+			else if (cmd.matches("^(injure|hospitalize)$"))      // Logs a
+															     // player
+				// as
+				// having been
+				// injured and
+				// unable to vote.
 				this.injurePlayer(command); // Bars the player from voting in
- // the next round. Host only.
-			else if (cmd.matches("^(co\\-?host)$"))  // Sets a player as the
- // cohost of the game,
- // giving them all the
+			// the next round. Host only.
+			else if (cmd.matches("^(co\\-?host)$"))      // Sets a player as the
+				// cohost of the game,
+				// giving them all the
 				this.setCohost(command); // powers the host has. Only usable by
- // the host.
-			else if (cmd.matches("^(vote|lynch)(ing)?type$"))  // Sets the
-																 // current
-																 // lynch
-																 // type.
-																 // Supported
-																 // types:
+			// the host.
+			else if (cmd.matches("^(vote|lynch)(ing)?type$"))      // Sets the
+				// current
+				// lynch
+				// type.
+				// Supported
+				// types:
 				this.changeLynchType(command); // Majority [<%>], Timed <hours>,
-												 // Single [<hours>],
-												 // Decremantal
-												 // <hours> [<%>].
-			else if (cmd.matches("^(end)$"))  // Marks a game as being complete.
- // May be used with a list of
- // winning
+			// Single [<hours>],
+			// Decremantal
+			// <hours> [<%>].
+			else if (cmd.matches("^(end)$"))      // Marks a game as being
+				// complete.
+				// May be used with a list of
+				// winning
 				this.endGame(command); // players to have the bot update
- // win/loss records. Only usable by the
- // host.
-			else if (cmd.matches("^(story(post)?|flag|title)$"))  // Marks a
-																	 // post
-																	 // as being
-																	 // importiant.
+			// win/loss records. Only usable by the
+			// host.
+			else if (cmd.matches("^(story(post)?|flag|title)$"))      // Marks a
+				// post
+				// as
+				// being
+				// importiant.
 				this.setStoryPost(command); // Optionally adds a title to the
- // post. Only usable by the host.
+			// post. Only usable by the host.
 			else if (cmd.matches("^(re(hash|start|set))$"))
 				try
 				{
@@ -950,16 +969,17 @@ public class WerewolfGame_OLD implements ThreadManager
 				command.invalidate("unknown command");
 			}
 
-			if (isCommand && command.isMarkedHidden() && this.isHost(command.getUser()))  // 'Hidden'
- // commands
- // are
- // commands
- // with
- // two
+			if (isCommand && command.isMarkedHidden() && this.isHost(command.getUser()))      // 'Hidden'
+				// commands
+				// are
+				// commands
+				// with
+				// two
 				command.hide(); // brackets instead of one. eg, [[command]]
-			if (isCommand && command.isChecking())  // Means this command was
- // previously invalid, but
- // has since become valid.
+			if (isCommand && command.isChecking())      // Means this command
+													     // was
+				// previously invalid, but
+				// has since become valid.
 				command.validate();
 
 			containsCommand = containsCommand || isCommand;
@@ -997,7 +1017,8 @@ public class WerewolfGame_OLD implements ThreadManager
 			cmd.invalidate("can't change vote");
 		else
 		{
-			if (player.isInjured())  // Injured players are not allowed to vote.
+			if (player.isInjured())      // Injured players are not allowed to
+				// vote.
 				return;
 
 			this.votes.placeVote(new Vote(player, StaticUser.NOVOTE, cmd.getPost()));
@@ -1081,7 +1102,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			return;
 		}
 		String[] params = cmd.getParamString().split(", ?", 2); // Syntax:
- // <name>[,
+		// <name>[,
 		// <user ID>]
 		ForumUser newCohost = this.getUser(params[0]);
 		try

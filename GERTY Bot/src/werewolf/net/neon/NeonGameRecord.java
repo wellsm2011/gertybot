@@ -373,7 +373,8 @@ public class NeonGameRecord implements GameRecord
 			{
 				HtmlAnchor playerLink = (HtmlAnchor) obj;
 				String url = playerLink.getAttribute("href");
-				if (url.endsWith("#"))  // URLs for spoiler links.
+				// URLs for spoiler links.
+				if (url.endsWith("#"))
 					continue;
 				int id = -1;
 				if (url.lastIndexOf("&u=") > 0)
@@ -387,7 +388,8 @@ public class NeonGameRecord implements GameRecord
 			{
 				HtmlAnchor gameLink = (HtmlAnchor) obj;
 				String url = gameLink.getAttribute("href");
-				if (url.endsWith("#"))  // URLs for spoiler links.
+				// URLs for spoiler links.
+				if (url.endsWith("#"))
 					continue;
 				int id = -1;
 				int index = url.lastIndexOf("t=");

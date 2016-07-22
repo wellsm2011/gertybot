@@ -74,10 +74,9 @@ public class VoteManager_OLD implements Serializable
 			}
 		if (sortedVotes.get(StaticUser.NOLYNCH).size() >= maxVotes)
 			return StaticUser.NOLYNCH;
-		if (sortedVotes.get(StaticUser.NOKING).size() >= maxVotes)  // Kingmaker
- // equivilent
- // of no
- // lynch.
+			// equivilent
+			// of no
+			// lynch.
 			return StaticUser.NOKING; // No king, no king, lalalalalala.
 		if (highestVoted.size() == 1)
 			return highestVoted.getFirst();
@@ -367,8 +366,10 @@ public class VoteManager_OLD implements Serializable
 		while (iter.hasNext())
 		{
 			Vote voteCheck = iter.next();
-			// Ensure that this vote is not the same as the player's previous
-			// vote. (ignore duplicates)
+			/*
+			 * Ensure that this vote is not the same as the player's previous
+			 * vote. (ignore duplicates)
+			 */
 			if (voteCheck.getVoter().equals(vote.getVoter()))
 			{
 				if (voteCheck.getTarget().equals(vote.getTarget()))
@@ -376,8 +377,11 @@ public class VoteManager_OLD implements Serializable
 					VoteManager_OLD.LOGGER.fine("Duplicate vote found, ignoring: " + vote);
 					return;
 				}
-				break; // Found player's last vote, and it wasn't a duplicate.
- // Thus, allow this vote.
+				break;
+				/*
+				 * Found player's last vote, and it wasn't a duplicate. Thus,
+				 * allow this vote.
+				 */
 			}
 		}
 		this.votes.add(vote);
