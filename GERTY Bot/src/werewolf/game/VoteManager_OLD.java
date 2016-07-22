@@ -74,10 +74,12 @@ public class VoteManager_OLD implements Serializable
 			}
 		if (sortedVotes.get(StaticUser.NOLYNCH).size() >= maxVotes)
 			return StaticUser.NOLYNCH;
-			// equivilent
-			// of no
-			// lynch.
-			return StaticUser.NOKING; // No king, no king, lalalalalala.
+		if (sortedVotes.get(StaticUser.NOKING).size() >= maxVotes)
+			/*
+			 * Kingmaker equivilent of no lynch
+			 */
+			return StaticUser.NOKING;
+		// No king, no king, lalalalalala.
 		if (highestVoted.size() == 1)
 			return highestVoted.getFirst();
 		Iterator<Vote> reverseVotes = this.votes.descendingIterator();
