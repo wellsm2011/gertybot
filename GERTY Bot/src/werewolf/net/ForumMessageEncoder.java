@@ -34,70 +34,70 @@ public abstract class ForumMessageEncoder
 	 * console or logfile output.
 	 */
 	public static final ForumMessageEncoder	PLAINTEXT	= new ForumMessageEncoder()
-														{
-															@Override
-															protected String encodeBold(String msg)
-															{
-																return msg;
-															}
+	{
+		@Override
+		protected String encodeBold(String msg)
+		{
+			return msg;
+		}
 
-															@Override
-															protected String encodeCodeblock(String msg)
-															{
-																return msg;
-															}
+		@Override
+		protected String encodeCodeblock(String msg)
+		{
+			return msg;
+		}
 
-															@Override
-															protected String encodeColor(String msg, Color color)
-															{
-																return msg;
-															}
+		@Override
+		protected String encodeColor(String msg, Color color)
+		{
+			return msg;
+		}
 
-															@Override
-															protected String encodeHeader(String msg)
-															{
-																return msg.toUpperCase();
-															}
+		@Override
+		protected String encodeHeader(String msg)
+		{
+			return msg.toUpperCase();
+		}
 
-															@Override
-															protected String encodeItalic(String msg)
-															{
-																return msg;
-															}
+		@Override
+		protected String encodeItalic(String msg)
+		{
+			return msg;
+		}
 
-															@Override
-															protected String encodeQuote(String msg, String author)
-															{
-																if (msg.contains("\n"))
-																	return "Quote (" + author + "):\n\t" + msg.replaceAll("\n", "\n\t");
-																return "\"" + msg + "\" (" + author + ")";
-															}
+		@Override
+		protected String encodeQuote(String msg, String author)
+		{
+			if (msg.contains("\n"))
+				return "Quote (" + author + "):\n\t" + msg.replaceAll("\n", "\n\t");
+			return "\"" + msg + "\" (" + author + ")";
+		}
 
-															@Override
-															protected String encodeSpoiler(String msg, String title)
-															{
-																return this.encodeHeader(title) + ":\n" + msg;
-															}
+		@Override
+		protected String encodeSpoiler(String msg, String title)
+		{
+			return this.encodeHeader(title) + ":\n" + msg;
+		}
 
-															@Override
-															protected String encodeStrike(String msg)
-															{
-																return msg;
-															}
+		@Override
+		protected String encodeStrike(String msg)
+		{
+			return msg;
+		}
 
-															@Override
-															protected String encodeUrl(String msg, String url)
-															{
-																return msg + "<" + url + ">";
-															}
+		@Override
+		protected String encodeUrl(String msg, String url)
+		{
+			return msg + "<" + url + ">";
+		}
 
-															@Override
-															protected String escape(String msg)
-															{
-																return msg;
-															}
+		@Override
+		protected String escape(String msg)
+		{
+			return msg;
+		}
 
-														};
+	};
 
 	protected abstract String encodeBold(String msg);
 
@@ -123,34 +123,28 @@ public abstract class ForumMessageEncoder
 
 		// Figure out which element we're dealing with and call the
 		// associated implementation-specific function.
-		return msg.toString(new BiFunction<ForumMessageElement, String, String>()
-		{
-			@Override
-			public String apply(ForumMessageElement elm, String inner)
-			{
-				if (elm instanceof ForumMessageContainer)
-					return inner;	// Container is just a grouping.
-				if (elm instanceof ForumMessageString)
-					return ForumMessageEncoder.this.escape(((ForumMessageString) elm).getMsg());
-				if (elm instanceof ForumMessageBold)
-					return ForumMessageEncoder.this.encodeBold(inner);
-				if (elm instanceof ForumMessageItalic)
-					return ForumMessageEncoder.this.encodeItalic(inner);
-				if (elm instanceof ForumMessageStrike)
-					return ForumMessageEncoder.this.encodeStrike(inner);
-				if (elm instanceof ForumMessageSpoiler)
-					return ForumMessageEncoder.this.encodeSpoiler(inner, ((ForumMessageSpoiler) elm).getTitle());
-				if (elm instanceof ForumMessageCodeblock)
-					return ForumMessageEncoder.this.encodeCodeblock(inner);
-				if (elm instanceof ForumMessageQuote)
-					return ForumMessageEncoder.this.encodeQuote(inner, ((ForumMessageQuote) elm).getAuthor());
-				if (elm instanceof ForumMessageColor)
-					return ForumMessageEncoder.this.encodeColor(inner, ((ForumMessageColor) elm).getColor());
-				if (elm instanceof ForumMessageUrl)
-					return ForumMessageEncoder.this.encodeUrl(inner, ((ForumMessageUrl) elm).getUrl());
-				throw new IllegalArgumentException("Unknown element type in message: " + elm.getClass().toString());
-			}
-
+		return msg.toString((elm, inner) -> {
+			if (elm instanceof ForumMessageContainer)
+				return inner;	// Container is just a grouping.
+			if (elm instanceof ForumMessageString)
+				return ForumMessageEncoder.this.escape(((ForumMessageString) elm).getMsg());
+			if (elm instanceof ForumMessageBold)
+				return ForumMessageEncoder.this.encodeBold(inner);
+			if (elm instanceof ForumMessageItalic)
+				return ForumMessageEncoder.this.encodeItalic(inner);
+			if (elm instanceof ForumMessageStrike)
+				return ForumMessageEncoder.this.encodeStrike(inner);
+			if (elm instanceof ForumMessageSpoiler)
+				return ForumMessageEncoder.this.encodeSpoiler(inner, ((ForumMessageSpoiler) elm).getTitle());
+			if (elm instanceof ForumMessageCodeblock)
+				return ForumMessageEncoder.this.encodeCodeblock(inner);
+			if (elm instanceof ForumMessageQuote)
+				return ForumMessageEncoder.this.encodeQuote(inner, ((ForumMessageQuote) elm).getAuthor());
+			if (elm instanceof ForumMessageColor)
+				return ForumMessageEncoder.this.encodeColor(inner, ((ForumMessageColor) elm).getColor());
+			if (elm instanceof ForumMessageUrl)
+				return ForumMessageEncoder.this.encodeUrl(inner, ((ForumMessageUrl) elm).getUrl());
+			throw new IllegalArgumentException("Unknown element type in message: " + elm.getClass().toString());
 		});
 	}
 
