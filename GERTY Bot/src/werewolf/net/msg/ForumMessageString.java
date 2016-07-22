@@ -20,6 +20,7 @@ public class ForumMessageString extends ForumMessageElement
 	@Override
 	public ForumMessageString append(String msg)
 	{
+		//FIXME this is most likely a silly derp, and doesn't work. Just FYI. - Sudo
 		msg += msg;
 		return this;
 	}
