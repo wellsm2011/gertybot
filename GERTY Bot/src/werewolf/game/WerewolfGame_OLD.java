@@ -767,13 +767,10 @@ public class WerewolfGame_OLD implements ThreadManager
 				cmd.invalidate("unknown target");
 			else if (voter == null)
 				cmd.invalidate("unknown voter");
-			else if (voter.isInjured())                           // Injured
-				// players
-				// are
-				// not
-				// allowed
-				// to
-				// vote.
+			else if (voter.isInjured())
+				/*
+				 * Injured players are not allowed to vote.
+				 */
 				cmd.invalidate("injured voter");
 			else if (!voter.isAlive())
 				cmd.invalidate("voter dead");
