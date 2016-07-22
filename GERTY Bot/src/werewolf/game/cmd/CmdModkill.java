@@ -21,18 +21,13 @@ public class CmdModkill extends GameCommand
 	}
 
 	@Override
-	protected boolean execute(Command cmd)
+	protected boolean execute(Command cmd) throws InvalidatonException
 	{
 		List<String> params = cmd.getParams(2);
-		Player target = this.game.getPlayer(params.get(0));
-		if (target == null)
-		{
-			cmd.invalidate("unknown player");
-			return false;
-		}
+		Player target = getPlayer(params.get(0));
 		String msg = "Modkilled";
 		if (params.size() > 1)
-			msg = params.get(1); // Second param.
+			msg += " " + params.get(1); // Second param.
 		target.kill(new ForumMessageString(msg), this.game.getRound(), cmd.getPost());
 		target.setModkilled(true);
 		return true;

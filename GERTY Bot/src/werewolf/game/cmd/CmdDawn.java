@@ -1,6 +1,6 @@
 package werewolf.game.cmd;
 
-public class CmdDawn
+public class CmdDawn extends GameCommand
 {
 
 }

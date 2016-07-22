@@ -14,25 +14,20 @@ public class CmdKill extends GameCommand
 		super(game);
 		this.name = "kill";
 		this.info = "Kills a target player. Only usable by a host";
-		this.usage = "player[, message]";
+		this.usage = "player[, reason]";
 		this.match = "kill";
 		this.mustBeTrue = new Requirement[]
-		{ Requirement.HOST, Requirement.ALIVE, Requirement.PLAYER };
+		{ Requirement.HOST, Requirement.ALIVE };
 	}
 
 	@Override
-	protected boolean execute(Command cmd)
+	protected boolean execute(Command cmd) throws InvalidatonException
 	{
 		List<String> params = cmd.getParams(2);
-		Player target = this.game.getPlayer(params.get(0));
-		if (target == null)
-		{
-			cmd.invalidate("unknown player");
-			return false;
-		}
-		String msg = "Died";
+		Player target = getLivingPlayer(params.get(0));
+		String msg = "Killed";
 		if (params.size() > 1)
-			msg = params.get(1); // Second param.
+			msg = params.get(1);
 		target.kill(new ForumMessageString(msg), this.game.getRound(), cmd.getPost());
 		return true;
 	}

@@ -14,25 +14,15 @@ public class CmdQuit extends GameCommand
 		this.name = "quit";
 		this.info = "Removes you from the game. Can only be used during Pregame.";
 		this.usage = "";
-		this.match = "quit";
+		this.match = "quit|out|leave";
 		this.mustBeTrue = new Requirement[]
-		{ Requirement.PREGAME , Requirement.PLAYER };
+		{ Requirement.PLAYER };
 	}
 
 	@Override
-	protected boolean execute(Command cmd)
+	protected boolean execute(Command cmd) throws InvalidatonException
 	{
-		Player target = this.game.getPlayer(cmd.getParamString());
-		if (target == null)
-		{
-			cmd.invalidate("unknown user");
-			return false;
-		}
-		if (this.game.getPlayer(target) != null)
-		{
-			cmd.invalidate("target is a player");
-			return false;
-		}
+		Player target = getPlayer(cmd.getUser());
 		this.game.getPlayers().add(new Player(target, cmd.getPost(), this.game));
 		return true;
 	}

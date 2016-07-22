@@ -15,7 +15,7 @@ public class CmdCohost extends GameCommand
 		super(game);
 		this.name = "cohost";
 		this.info = "Designates user(s) as the cohost(s), or removes all cohosts if blank. Only usable by a host";
-		this.usage = "user[, cohost]...";
+		this.usage = "user[, ...]";
 		this.match = "cohost";
 		this.mustBeTrue = new Requirement[]
 		{ Requirement.HOST };
@@ -24,27 +24,27 @@ public class CmdCohost extends GameCommand
 	@Override
 	protected boolean execute(Command cmd)
 	{
-		List<String> params = cmd.getParams(Integer.MAX_VALUE);
+		List<String> params = cmd.getParams(game.getPlayers().size() + 1);
 		LinkedList<ForumUser> cohosts = new LinkedList<>();
 		// Check to see if we're removing all cohosts.
-		if (params.get(0).equals(""))
-		{
+		if (params.get(0).length() == 0)
 			this.game.setCohosts(new LinkedList<ForumUser>());
-			return false;
-		}
-		// Read each new cohost.
-		for (String user : params)
+		else
 		{
-			ForumUser tempUser = this.game.getUser(user);
-			if (tempUser == null)
+			// Read each new cohost.
+			for (String user : params)
 			{
-				cmd.invalidate("unknown user");
-				return false;
+				ForumUser tempUser = this.game.getUser(user);
+				if (tempUser == null)
+				{
+					cmd.invalidate("unknown user");
+					return false;
+				}
+				if (!cohosts.contains(tempUser))
+					cohosts.add(tempUser);
 			}
-			if (!cohosts.contains(tempUser))
-				cohosts.add(tempUser);
+			this.game.setCohosts(cohosts);
 		}
-		this.game.setCohosts(cohosts);
 		return true;
 	}
 }

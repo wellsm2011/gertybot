@@ -10,12 +10,19 @@ import java.util.logging.Logger;
  * 
  * @author Michael
  */
-public class VoteManager
+public class VoteManager implements java.io.Serializable
 {
-	public class RoundRecord
+	/**
+	 * Records all of the votes that happen in a given round.
+	 * 
+	 * @author Michael
+	 */
+	public class RoundRecord implements java.io.Serializable
 	{
-		private RoundRecord	previous;
-		LinkedList<Vote>	record	= new LinkedList<>();
+		private RoundRecord									previous;
+		LinkedList<Vote>									record	= new LinkedList<>();
+		private BiFunction<RoundRecord, WerewolfGame, User>	lynchResolver;
+		private BiFunction<Player, Player, Integer>			voteApplier;
 
 		public RoundRecord()
 		{
@@ -41,13 +48,21 @@ public class VoteManager
 		{
 			this.record.add(vote);
 		}
+
+		public BiFunction<RoundRecord, WerewolfGame, User> getLynchResolver()
+		{
+			return lynchResolver;
+		}
+
+		public void setLynchResolver(BiFunction<RoundRecord, WerewolfGame, User> lynchResolver)
+		{
+			this.lynchResolver = lynchResolver;
+		}
 	}
 
-	private final static Logger							LOGGER	= Logger.getLogger(VoteManager.class.getName());
-	private RoundRecord									record	= new RoundRecord();
-	private WerewolfGame								game;
-	private BiFunction<RoundRecord, WerewolfGame, User>	lynchResolver;
-	private BiFunction<Player, Player, Integer>			voteApplier;
+	private final static Logger	LOGGER	= Logger.getLogger(VoteManager.class.getName());
+	private RoundRecord			record	= new RoundRecord();
+	private WerewolfGame		game;
 
 	public VoteManager(WerewolfGame game)
 	{

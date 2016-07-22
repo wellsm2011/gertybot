@@ -21,31 +21,17 @@ public class CmdInjure extends GameCommand
 	}
 
 	@Override
-	protected boolean execute(Command cmd)
+	protected boolean execute(Command cmd) throws InvalidatonException
 	{
-		try
-		{
-			List<String> params = cmd.getParams(2);
-			Player target = this.game.getPlayer(params.get(0));
-			if (target == null)
-			{
-				cmd.invalidate("invalid player");
-				return false;
-			}
-			int rounds = 1;
-			if (params.size() > 1)
-				rounds = Integer.parseInt(params.get(1));
-			if (rounds < 1) {
-				cmd.invalidate("must injure for at least one round");
-				return false;
-			}
+		List<String> params = cmd.getParams(2);
+		Player target = getPlayer(params.get(0));
+		int rounds = 1;
+		if (params.size() > 1)
+			rounds = getInteger(params.get(1));
+		if (rounds < 1)
+			throw new InvalidatonException("must injure for at least one round");
 
-			target.injure(rounds);
-		} catch (NumberFormatException ex)
-		{
-			cmd.invalidate("a non-number was supplied after the player");
-			return false;
-		}
+		target.injure(rounds);
 		return true;
 	}
 }
