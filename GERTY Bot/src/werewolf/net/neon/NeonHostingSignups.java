@@ -34,16 +34,16 @@ public class NeonHostingSignups implements HostingSignups
 	/**
 	 * running/queued mafia game number.
 	 */
-	private int								mafiaCount		= 0;																																																																																																																														// First
+	private int								mafiaCount		= 0;
 	/**
-	 * assassins game number.
+	 * First assassins game number.
 	 */
-	private int								assassinsCount	= 0;																																																																																																																														// ...
+	private int								assassinsCount	= 0;
 
 	/**
 	 * werewolf game number.
 	 */
-	private int werewolfCount = 0;														// ...
+	private int werewolfCount = 0;
 
 	private NeonHostingSignups()
 	{

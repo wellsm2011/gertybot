@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
 
+import werewolf.net.msg.ForumMessageString;
+
 public abstract class ForumMessageElement
 {
 	protected LinkedList<ForumMessageElement> children = new LinkedList<>();
