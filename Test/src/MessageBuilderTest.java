@@ -1,5 +1,6 @@
 import werewolf.experimental.ForumMessageBuilder;
 import werewolf.experimental.ForumMessageEncoder;
+import werewolf.experimental.NeonMessageEncoder;
 
 public class MessageBuilderTest
 {
@@ -15,5 +16,7 @@ public class MessageBuilderTest
 
 		System.out.println(b.formatString(ForumMessageEncoder.DEBUG));
 		System.out.println(b.formatString(ForumMessageEncoder.PLAINTEXT));
+		System.out.println(b.formatString(new NeonMessageEncoder()));
+
 	}
 }
