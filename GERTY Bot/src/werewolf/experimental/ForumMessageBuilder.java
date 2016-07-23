@@ -90,14 +90,30 @@ public class ForumMessageBuilder
 		this.operations = new ArrayList<>();
 	}
 
-	public ForumMessageBuilder append(String txt)
+	public ForumMessageBuilder add(String txt)
 	{
-		if (currentlyActive.contains(Style.LIST))
-			startStyle(Style.LISTITEM);
+		if (this.currentlyActive.contains(Style.LIST))
+			this.startStyle(Style.LISTITEM);
 		this.operations.add(new Message(txt));
-		if (currentlyActive.contains(Style.LIST))
-			stopStyle(Style.LISTITEM);
+		if (this.currentlyActive.contains(Style.LIST))
+			this.stopStyle(Style.LISTITEM);
 		return this;
+	}
+
+	public String formatString(ForumMessageEncoder encoder)
+	{
+		StringBuilder sb = new StringBuilder();
+
+		for (Op op : this.operations)
+		{
+			if (op instanceof StartStyle)
+				sb.append(encoder.getOpening(op.getStyle(), op.getParams()));
+			if (op instanceof StopStyle)
+				sb.append(encoder.getClosing(op.getStyle(), op.getParams()));
+			if (op instanceof Message)
+				sb.append(encoder.escape(op.getMsg()));
+		}
+		return sb.toString();
 	}
 
 	public ForumMessageBuilder startBold()
@@ -146,6 +162,14 @@ public class ForumMessageBuilder
 	{
 		this.startStyle(Style.STRIKE);
 		return this;
+	}
+
+	private void startStyle(Style s, Object... params)
+	{
+		if (this.currentlyActive.contains(s))
+			return;
+		this.currentlyActive.add(s);
+		this.operations.add(new StartStyle(s, params));
 	}
 
 	public ForumMessageBuilder startURL(String link)
@@ -202,36 +226,6 @@ public class ForumMessageBuilder
 		return this;
 	}
 
-	public ForumMessageBuilder stopURL()
-	{
-		this.stopStyle(Style.BOLD);
-		return this;
-	}
-
-	public String formatString(ForumMessageEncoder encoder)
-	{
-		StringBuilder sb = new StringBuilder();
-
-		for (Op op : this.operations)
-		{
-			if (op instanceof StartStyle)
-				sb.append(encoder.getOpening(op.getStyle(), op.getParams()));
-			if (op instanceof StopStyle)
-				sb.append(encoder.getClosing(op.getStyle(), op.getParams()));
-			if (op instanceof Message)
-				sb.append(encoder.escape(op.getMsg()));
-		}
-		return sb.toString();
-	}
-
-	private void startStyle(Style s, Object... params)
-	{
-		if (this.currentlyActive.contains(s))
-			return;
-		this.currentlyActive.add(s);
-		this.operations.add(new StartStyle(s, params));
-	}
-
 	private void stopStyle(Style s)
 	{
 		if (!this.currentlyActive.contains(s))
@@ -280,5 +274,11 @@ public class ForumMessageBuilder
 			// Remove the styles from the currently active set
 			toStop.forEach(this.currentlyActive::remove);
 		}
+	}
+
+	public ForumMessageBuilder stopURL()
+	{
+		this.stopStyle(Style.BOLD);
+		return this;
 	}
 }
