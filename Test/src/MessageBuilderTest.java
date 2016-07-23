@@ -13,5 +13,6 @@ public class MessageBuilderTest
 				.add("with only the correct bits of the url being stopped.");
 
 		System.out.println(b.formatString(ForumMessageEncoder.DEBUG));
+		System.out.println(b.formatString(ForumMessageEncoder.PLAINTEXT));
 	}
 }
