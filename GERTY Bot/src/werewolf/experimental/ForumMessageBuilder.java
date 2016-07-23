@@ -174,7 +174,7 @@ public class ForumMessageBuilder
 
 	public ForumMessageBuilder startURL(String link)
 	{
-		this.startStyle(Style.BOLD, link);
+		this.startStyle(Style.URL, link);
 		return this;
 	}
 
@@ -192,7 +192,7 @@ public class ForumMessageBuilder
 
 	public ForumMessageBuilder stopColor()
 	{
-		this.stopStyle(Style.BOLD);
+		this.stopStyle(Style.COLOR);
 		return this;
 	}
 
@@ -278,7 +278,7 @@ public class ForumMessageBuilder
 
 	public ForumMessageBuilder stopURL()
 	{
-		this.stopStyle(Style.BOLD);
+		this.stopStyle(Style.URL);
 		return this;
 	}
 }
