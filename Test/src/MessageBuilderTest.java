@@ -12,7 +12,7 @@ public class MessageBuilderTest
 		b.add("\nThis should be normal, after the bold and italc were stopped");
 		b.add("\nand now for...").startURL("http://google.com").add("some text in a url!");
 		b.startBold().add("that is bolded!").stopBold().add("in only certain places").stopURL();
-		b.add("with only the correct bits of the url being stopped.");
+		b.add("with only the correct bits of the url being stopped.\n");
 
 		System.out.println(b.formatString(ForumMessageEncoder.DEBUG));
 		System.out.println(b.formatString(ForumMessageEncoder.PLAINTEXT));
