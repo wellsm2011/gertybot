@@ -4,7 +4,7 @@ import werewolf.net.ForumMessageEncoder;
 
 public class ForumMessageString extends ForumMessageElement
 {
-	private String msg = "";
+	private String	msg	= "";
 
 	public ForumMessageString(String msg)
 	{
@@ -20,8 +20,9 @@ public class ForumMessageString extends ForumMessageElement
 	@Override
 	public ForumMessageString append(String msg)
 	{
-		//FIXME this is most likely a silly derp, and doesn't work. Just FYI. - Sudo
-		msg += msg;
+		// FIXME this is most likely a silly derp, and doesn't work. Just FYI. -
+		// Sudo
+		this.msg += msg;
 		return this;
 	}
 
