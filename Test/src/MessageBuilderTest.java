@@ -1,4 +1,5 @@
-import werewolf.net.ForumMessage;
+import werewolf.experimental.HTMLMessageEncoder;
+import werewolf.net.Message;
 import werewolf.net.MessageEncoder;
 import werewolf.net.neon.NeonMessageEncoder;
 
@@ -6,7 +7,7 @@ public class MessageBuilderTest
 {
 	public static void main(String[] args)
 	{
-		ForumMessage b = new ForumMessage();
+		Message b = new Message();
 
 		b.add("normal text").startBold().add(" bolded ").startItalic().add("and normal").stopBold();
 		b.add("\nThis should be normal, after the bold and italc were stopped");
@@ -17,6 +18,7 @@ public class MessageBuilderTest
 		System.out.println(b.formatString(MessageEncoder.DEBUG));
 		System.out.println(b.formatString(MessageEncoder.PLAINTEXT));
 		System.out.println(b.formatString(new NeonMessageEncoder()));
+		System.out.println(b.formatString(new HTMLMessageEncoder()));
 
 	}
 }
