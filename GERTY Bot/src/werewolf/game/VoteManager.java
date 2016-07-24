@@ -24,7 +24,7 @@ public class VoteManager implements java.io.Serializable
 		 */
 		private static final long							serialVersionUID	= 1L;
 		private RoundRecord									previous;
-		LinkedList<Vote>									record				= new LinkedList<>();
+		private List<Vote>									record				= new LinkedList<>();
 		private BiFunction<RoundRecord, WerewolfGame, User>	lynchResolver;
 		private BiFunction<Player, Player, Integer>			voteApplier;
 

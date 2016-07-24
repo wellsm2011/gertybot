@@ -2,20 +2,21 @@ package werewolf.net;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ForumUserDatabase implements Serializable
 {
 	/**
 	 * 
 	 */
-	private static final long				serialVersionUID	= 1L;
-	private Hashtable<Integer, ForumUser>	users				= new Hashtable<>();
-	private LinkedList<ForumUser>			unknownUsers		= new LinkedList<>();
-	public final ForumContext				context;
-	private boolean							initalized			= false;
+	private static final long		serialVersionUID	= 1L;
+	private Map<Integer, ForumUser>	users				= new HashMap<>();
+	private List<ForumUser>			unknownUsers		= new LinkedList<>();
+	public final ForumContext		context;
+	private boolean					initalized			= false;
 
 	public ForumUserDatabase(ForumContext context)
 	{
@@ -54,10 +55,8 @@ public class ForumUserDatabase implements Serializable
 	{
 		boolean multipleAliases = false;
 		ForumUser found = null;
-		Enumeration<ForumUser> elements = this.users.elements();
-		while (elements.hasMoreElements())
+		for (ForumUser user : this.users.values())
 		{
-			ForumUser user = elements.nextElement();
 			if (user.getName().equalsIgnoreCase(name))
 				return user;
 			for (String alias : user.getAliases())

@@ -27,13 +27,13 @@ public class NeonGameRecord implements GameRecord
 		public static final int	ASSASSINS_GAME	= 2;
 		public static final int	MAFIA_GAME		= 3;
 
-		public final int						type;
-		public final String						threadId;
-		public final String						title;
-		public final int						number;
-		public final LinkedList<WinLossUser>	hosts;
-		public final LinkedList<WinLossUser>	winners;
-		public final LinkedList<WinLossUser>	losers;
+		public final int				type;
+		public final String				threadId;
+		public final String				title;
+		public final int				number;
+		public final List<WinLossUser>	hosts;
+		public final List<WinLossUser>	winners;
+		public final List<WinLossUser>	losers;
 
 		public WinLossGame(String name, String threadId)
 		{
@@ -61,7 +61,7 @@ public class NeonGameRecord implements GameRecord
 			this.losers = new LinkedList<>();
 		}
 
-		public WinLossGame(String name, String threadId, LinkedList<? extends ForumUser> hosts, LinkedList<? extends ForumUser> winners, LinkedList<? extends ForumUser> losers)
+		public WinLossGame(String name, String threadId, List<? extends ForumUser> hosts, List<? extends ForumUser> winners, List<? extends ForumUser> losers)
 		{
 			switch (name.replaceFirst(" .*", "").toLowerCase())
 			{
@@ -238,13 +238,13 @@ public class NeonGameRecord implements GameRecord
 		}
 	}
 
-	private static final long				serialVersionUID		= -6411468909702922911L;
-	private static final int				threadId				= 16851;
-	private static final int				boardId					= 179;
-	private static final String				gameIdentifier			= "Games to Date";
-	private static LinkedList<WinLossUser>	users					= new LinkedList<>();
-	private static LinkedList<WinLossGame>	games					= new LinkedList<>();
-	private static int						requiredActivityCount	= 2;
+	private static final long			serialVersionUID		= -6411468909702922911L;
+	private static final int			threadId				= 16851;
+	private static final int			boardId					= 179;
+	private static final String			gameIdentifier			= "Games to Date";
+	private static List<WinLossUser>	users					= new LinkedList<>();
+	private static List<WinLossGame>	games					= new LinkedList<>();
+	private static int					requiredActivityCount	= 2;
 
 	public static final NeonGameRecord INSTANCE = new NeonGameRecord();
 
@@ -269,7 +269,7 @@ public class NeonGameRecord implements GameRecord
 	}
 
 	@Override
-	public void addGame(ForumThread thread, LinkedList<? extends ForumUser> hosts, LinkedList<? extends ForumUser> winners, LinkedList<? extends ForumUser> losers) throws IOException
+	public void addGame(ForumThread thread, List<? extends ForumUser> hosts, List<? extends ForumUser> winners, List<? extends ForumUser> losers) throws IOException
 	{
 		this.initalize();
 		String threadName = thread.getTitle();
@@ -451,12 +451,12 @@ public class NeonGameRecord implements GameRecord
 		int inactiveSeniorPlayers = 0;
 		int inactiveJuniorPlayers = 0;
 
-		LinkedList<WinLossUser> seniorPlayers = new LinkedList<>();
-		LinkedList<WinLossUser> juniorPlayers = new LinkedList<>();
+		List<WinLossUser> seniorPlayers = new LinkedList<>();
+		List<WinLossUser> juniorPlayers = new LinkedList<>();
 
-		LinkedList<WinLossGame> werewolfGames = new LinkedList<>();
-		LinkedList<WinLossGame> assassinsGames = new LinkedList<>();
-		LinkedList<WinLossGame> mafiaGames = new LinkedList<>();
+		List<WinLossGame> werewolfGames = new LinkedList<>();
+		List<WinLossGame> assassinsGames = new LinkedList<>();
+		List<WinLossGame> mafiaGames = new LinkedList<>();
 
 		for (WinLossGame game : NeonGameRecord.games)
 			switch (game.type)
@@ -594,9 +594,9 @@ public class NeonGameRecord implements GameRecord
 		return false;
 	}
 
-	private LinkedList<WinLossUser> userConvert(LinkedList<? extends ForumUser> list)
+	private List<WinLossUser> userConvert(List<? extends ForumUser> list)
 	{
-		LinkedList<WinLossUser> output = new LinkedList<>();
+		List<WinLossUser> output = new LinkedList<>();
 		for (ForumUser user : list)
 			if (user != null)
 				output.add(this.getUser(user));

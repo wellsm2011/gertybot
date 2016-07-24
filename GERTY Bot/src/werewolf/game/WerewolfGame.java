@@ -23,12 +23,12 @@ public class WerewolfGame
 		return user.equals(user.getContext().getLogin());
 	}
 
-	protected ForumThread			thread;
-	protected LinkedList<Player>	players	= new LinkedList<>();
-	protected VoteManager			votes	= new VoteManager(this);
-	protected ForumUser				host	= null;
-	protected LinkedList<ForumUser>	cohosts	= new LinkedList<>();
-	protected int					round	= 0;
+	protected ForumThread		thread;
+	protected List<Player>		players	= new LinkedList<>();
+	protected VoteManager		votes	= new VoteManager(this);
+	protected ForumUser			host	= null;
+	protected List<ForumUser>	cohosts	= new LinkedList<>();
+	protected int				round	= 0;
 	// Game starts in pregame setup.
 	protected GamePhase phase = GamePhase.PREGAME;
 
@@ -115,7 +115,7 @@ public class WerewolfGame
 		return this.thread.getContext().getUserDatabase().getUserFromExternalSource(name, this.players);
 	}
 
-	public LinkedList<Player> getPlayers()
+	public List<Player> getPlayers()
 	{
 		return this.players;
 	}
@@ -163,7 +163,7 @@ public class WerewolfGame
 			this.stateChange |= gcmd.processCmd(cmd);
 	}
 
-	public void setCohosts(LinkedList<ForumUser> cohosts)
+	public void setCohosts(List<ForumUser> cohosts)
 	{
 		cohosts.remove(this.host);
 		this.cohosts = cohosts;

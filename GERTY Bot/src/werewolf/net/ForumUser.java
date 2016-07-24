@@ -57,10 +57,10 @@ public class ForumUser implements User
 		return user;
 	}
 
-	private int					userId;
-	private ForumContext		context;
-	private String				name;
-	private LinkedList<String>	aliases	= new LinkedList<>();
+	private int				userId;
+	private ForumContext	context;
+	private String			name;
+	private List<String>	aliases	= new LinkedList<>();
 
 	/**
 	 * Uses the data from the given ForumUser to create a new user with the same

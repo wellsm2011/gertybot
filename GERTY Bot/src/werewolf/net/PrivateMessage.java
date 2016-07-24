@@ -142,7 +142,7 @@ public class PrivateMessage implements Comparable<PrivateMessage>
 	public void replyToAll(String subject, ForumMessage message) throws IOException
 	{
 		this.checkInit();
-		LinkedList<String> list = new LinkedList<>();
+		List<String> list = new LinkedList<>();
 		for (ForumUser user : this.to)
 			if (!user.equals(this.getContext().getLogin()))
 				list.add(user.getName());

@@ -26,7 +26,7 @@ public class CmdCoHost extends GameCommand
 	protected boolean execute(Command cmd)
 	{
 		List<String> params = cmd.getParams(this.game.getPlayers().size() + 1);
-		LinkedList<ForumUser> cohosts = new LinkedList<>();
+		List<ForumUser> cohosts = new LinkedList<>();
 		// Check to see if we're removing all cohosts.
 		if (params.get(0).length() == 0)
 			this.game.setCohosts(new LinkedList<ForumUser>());

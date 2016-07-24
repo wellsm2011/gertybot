@@ -113,8 +113,14 @@ public class NeonHostingSignups implements HostingSignups
 			iter.remove();
 			SignupRecord newGame = new SignupRecord();
 
-			// Need to add a new game. Check to see if the new game needs to be
-			// Werewolf or Assassins.
+			/*
+			 * TODO this entire '.getlast'... looks rather messy, something
+			 * should be different here.
+			 */
+			/*
+			 * Need to add a new game. Check to see if the new game needs to be
+			 * Werewolf or Assassins.
+			 */
 			if (this.werewolfGames.getLast().type.equalsIgnoreCase("Assassins") || this.werewolfGames.get(this.werewolfGames.size() - 2).type.equalsIgnoreCase("Assassins"))
 			{
 				newGame.type = "Assassins";
@@ -136,6 +142,10 @@ public class NeonHostingSignups implements HostingSignups
 			iter.remove();
 			SignupRecord newGame = new SignupRecord();
 
+			/*
+			 * TODO this entire '.getlast'... looks rather messy, something
+			 * should be different here.
+			 */
 			if (this.mafiaGames.getLast().type.equalsIgnoreCase("Assassins") || this.mafiaGames.get(this.mafiaGames.size() - 2).type.equalsIgnoreCase("Assassins"))
 			{
 				newGame.type = "Assassins";

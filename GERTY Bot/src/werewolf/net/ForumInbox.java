@@ -200,7 +200,7 @@ public abstract class ForumInbox
 
 	protected abstract void readMessage(PrivateMessage msg) throws IOException;
 
-	protected abstract LinkedList<PrivateMessage> readPage(int start) throws IOException;
+	protected abstract List<PrivateMessage> readPage(int start) throws IOException;
 
 	/**
 	 * Reloads the first page of this folder to search for new PMs.
@@ -212,11 +212,11 @@ public abstract class ForumInbox
 		PrivateMessage first = this.pms.get(0);
 		boolean loadNext = true;
 		int index = 0;
-		LinkedList<PrivateMessage> output = new LinkedList<>();
+		List<PrivateMessage> output = new LinkedList<>();
 
 		while (loadNext)
 		{
-			LinkedList<PrivateMessage> chk = this.readPage(index++);
+			List<PrivateMessage> chk = this.readPage(index++);
 			Iterator<PrivateMessage> iter = chk.iterator();
 			while (iter.hasNext())
 				if (iter.next().getId() <= first.getId())

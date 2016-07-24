@@ -2,6 +2,7 @@ package werewolf.net;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
@@ -12,11 +13,11 @@ public class ModManager
 {
 	public static final int groupId = 27;
 
-	private static LinkedList<ForumUser>	permamods	= new LinkedList<>();
-	private static LinkedList<ForumUser>	mods		= new LinkedList<>();
-	private static boolean					initalized	= false;
+	private static List<ForumUser>	permamods	= new LinkedList<>();
+	private static List<ForumUser>	mods		= new LinkedList<>();
+	private static boolean			initalized	= false;
 
-	public static void addMods(LinkedList<ForumUser> mods)
+	public static void addMods(List<ForumUser> mods)
 	{
 
 	}
@@ -26,17 +27,17 @@ public class ModManager
 		HtmlPage page = NeonContext.INSTANCE.getPage(NeonContext.DOMAIN + "ucp.php?i=groups&mode=manage&action=list&g=" + ModManager.groupId);
 	}
 
-	public static void removeMods(LinkedList<ForumUser> mods)
+	public static void removeMods(List<ForumUser> mods)
 	{
 
 	}
 
-	public static void setMods(LinkedList<ForumUser> users) throws IOException
+	public static void setMods(List<ForumUser> users) throws IOException
 	{
 		if (!ModManager.initalized)
 			ModManager.initalize();
-		LinkedList<ForumUser> remove = (LinkedList<ForumUser>) ModManager.mods.clone();
-		LinkedList<ForumUser> add = (LinkedList<ForumUser>) users.clone();
+		List<ForumUser> remove = new LinkedList<ForumUser>(mods);
+		List<ForumUser> add = new LinkedList<ForumUser>(users);
 		remove.removeAll(users);
 		/*
 		 * Only remove players who are currently mods, but not in the new mod

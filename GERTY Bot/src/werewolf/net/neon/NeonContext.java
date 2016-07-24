@@ -152,7 +152,7 @@ public class NeonContext extends ForumContext
 	@Override
 	public List<ForumThread> getGameThreads() throws IOException
 	{
-		LinkedList<ForumThread> output = new LinkedList<>();
+		List<ForumThread> output = new LinkedList<>();
 		List<ForumThread> threads = new NeonBoard(NeonContext.WEREWOLF_BOARD).getThreads();
 		for (ForumThread thread : threads)
 			if (thread.isStickied() || NeonContext.PARSE_ALL_THREADS)
@@ -184,7 +184,7 @@ public class NeonContext extends ForumContext
 		// TODO: Implement PM reading in the bot.
 		this.pageRequestLock();
 
-		LinkedList<PrivateMessage> output = new LinkedList<>();
+		List<PrivateMessage> output = new LinkedList<>();
 		HtmlPage initialPage = this.getPage(NeonContext.DOMAIN + "ucp.php?i=pm&start=" + page * 25);
 		String baseXPath = "//div[@id='pagecontent']/form/table[last()]/tbody/tr";
 		// Iterator<?> repliedTo = initialPage.getByXPath(baseXPath +

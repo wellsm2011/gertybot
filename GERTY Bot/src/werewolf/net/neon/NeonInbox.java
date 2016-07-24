@@ -39,7 +39,7 @@ public class NeonInbox extends ForumInbox
 		throw new IOException("Could not find form to submit.");
 	}
 
-	private void dumpUsers(List<?> rawUsers, LinkedList<ForumUser> users)
+	private void dumpUsers(List<?> rawUsers, List<ForumUser> users)
 	{
 		for (Object obj : rawUsers)
 		{
@@ -62,8 +62,8 @@ public class NeonInbox extends ForumInbox
 		HtmlPage page = this.getContext().getReadMessagePage(msg.getId());
 		String message = ((HtmlAnchor) page.getByXPath("//td/div[@class='postbody']").get(0)).asText();
 		ForumUser from = null;
-		LinkedList<ForumUser> to = new LinkedList<>();
-		LinkedList<ForumUser> bcc = new LinkedList<>();
+		List<ForumUser> to = new LinkedList<>();
+		List<ForumUser> bcc = new LinkedList<>();
 
 		List<?> row4 = page.getByXPath("//td/div[@id='pagecontent']/table/tbody/tr[4]/td/a");
 		List<?> row5 = page.getByXPath("//td/div[@id='pagecontent']/table/tbody/tr[5]/td/a");
@@ -83,7 +83,7 @@ public class NeonInbox extends ForumInbox
 	}
 
 	@Override
-	protected LinkedList<PrivateMessage> readPage(int start) throws IOException
+	protected List<PrivateMessage> readPage(int start) throws IOException
 	{
 		HtmlPage page = this.getContext().getMessageBoxPage(super.folderName, start);
 

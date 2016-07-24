@@ -14,10 +14,10 @@ public abstract class ForumBoard implements Serializable
 
 	public final int REFRESH_MINUTES;
 
-	protected LinkedList<ForumThread>	threads		= new LinkedList<>();
-	protected LinkedList<ForumBoard>	subboards	= new LinkedList<>();
-	protected long						lastRefresh	= 0;
-	protected String					boardId;
+	protected List<ForumThread>	threads		= new LinkedList<>();
+	protected List<ForumBoard>	subboards	= new LinkedList<>();
+	protected long				lastRefresh	= 0;
+	protected String			boardId;
 
 	/**
 	 * Creates a new forum board that will wait 30 minutes before refreshing.
@@ -91,7 +91,7 @@ public abstract class ForumBoard implements Serializable
 	 * @return A list of the threads contained in this forum board.
 	 * @throws IOException
 	 */
-	protected abstract LinkedList<ForumThread> loadBoard() throws IOException;
+	protected abstract List<ForumThread> loadBoard() throws IOException;
 
 	/**
 	 * Refreshes the current information about this board, loading any new
