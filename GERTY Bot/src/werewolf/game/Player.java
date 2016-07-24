@@ -2,7 +2,7 @@ package werewolf.game;
 
 import java.util.logging.Logger;
 
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 import werewolf.net.ForumPost;
 import werewolf.net.ForumUser;
 
@@ -14,8 +14,8 @@ public class Player extends ForumUser
 	private boolean				alive				= true;
 	private boolean				modkilled			= false;
 	private int					injured				= 0;
-	private ForumMessage		data				= new ForumMessage();
 	private ForumPost			joinPost;
+	private Message				data				= new Message();
 	private WerewolfGame		game;
 
 	/**
@@ -38,7 +38,7 @@ public class Player extends ForumUser
 	/**
 	 * @return A log of the events that have happened to this player.
 	 */
-	public ForumMessage getData()
+	public Message getData()
 	{
 		return this.data;
 	}
@@ -55,13 +55,13 @@ public class Player extends ForumUser
 	 * @return A forum message formatted to reflect the player's current status
 	 *         (alive / dead / injured).
 	 */
-	public ForumMessage getMessageName()
+	public Message getMessageName()
 	{
-		ForumMessage name = new ForumMessage();
+		Message name = new Message();
 		if (!this.alive)
-			name.startStrike().startColor(ForumMessage.DEAD);
+			name.startStrike().startColor(Message.DEAD);
 		else if (this.injured > 0)
-			name.startColor(ForumMessage.DEAD);
+			name.startColor(Message.DEAD);
 		name.add(this.getName()).stopColor().stopStrike();
 		return name;
 	}
@@ -109,7 +109,7 @@ public class Player extends ForumUser
 	 * @param evt
 	 *            The event surrounding this player's death.
 	 */
-	public void kill(ForumMessage evt, int round, ForumPost origin)
+	public void kill(Message evt, int round, ForumPost origin)
 	{
 		this.logEvent(evt, round, origin);
 		this.alive = false;
@@ -121,9 +121,9 @@ public class Player extends ForumUser
 	 * @param origin
 	 *            The original post which caused or documented this event.
 	 */
-	public void logEvent(ForumMessage evt, ForumPost origin)
+	public void logEvent(Message evt, ForumPost origin)
 	{
-		evt = new ForumMessage().startURL(origin.getUrl()).add(evt).stopURL();
+		evt = new Message().startURL(origin.getUrl()).add(evt).stopURL();
 		if (this.data.hasTextSegments())
 			this.data.add(", ");
 		this.data.add(evt);
@@ -137,7 +137,7 @@ public class Player extends ForumUser
 	 * @param origin
 	 *            The original post which caused or documented this event.
 	 */
-	public void logEvent(ForumMessage evt, int round, ForumPost origin)
+	public void logEvent(Message evt, int round, ForumPost origin)
 	{
 		evt.add(" R" + round);
 		this.logEvent(evt, origin);
@@ -166,7 +166,7 @@ public class Player extends ForumUser
 	 *            The event surrounding this player's death.
 	 * @return False if the player was already alive, true otherwise.
 	 */
-	public void revive(ForumMessage evt, int round, ForumPost origin)
+	public void revive(Message evt, int round, ForumPost origin)
 	{
 		if (this.alive)
 			throw new IllegalArgumentException("Player already alive.");
