@@ -8,16 +8,15 @@ import werewolf.net.ForumUser;
 
 public class Player extends ForumUser
 {
-	private final static Logger LOGGER = Logger.getLogger(Player.class.getName());
+	private final static Logger	LOGGER				= Logger.getLogger(Player.class.getName());
+	private static final long	serialVersionUID	= 4363493461063986117L;
 
-	private static final long serialVersionUID = 4363493461063986117L;
-
-	private boolean			alive		= true;
-	private boolean			modkilled	= false;
-	private int				injured		= 0;
-	private ForumMessage	data		= new ForumMessage();
-	private ForumPost		joinPost;
-	private WerewolfGame	game;
+	private boolean				alive				= true;
+	private boolean				modkilled			= false;
+	private int					injured				= 0;
+	private ForumMessage		data				= new ForumMessage();
+	private ForumPost			joinPost;
+	private WerewolfGame		game;
 
 	/**
 	 * Creates a new player with the given forum user and join post.
