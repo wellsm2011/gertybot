@@ -205,7 +205,7 @@ public class ForumUser implements User
 	 * @throws IOException
 	 *             If the underlying network calls fail for any reason.
 	 */
-	public void replyTo(ForumMessage body, String subject) throws IOException
+	public void replyTo(Message body, String subject) throws IOException
 	{
 		this.getContext().makePm(new String[]
 		{ this.name }, new String[0], subject, body);
@@ -242,5 +242,11 @@ public class ForumUser implements User
 	public String toString()
 	{
 		return this.name + "(id=" + this.userId + ", context=" + this.context + ")";
+	}
+
+	@Override
+	public int compareTo(User a)
+	{
+		return this.getName().compareTo(a.getName());
 	}
 }

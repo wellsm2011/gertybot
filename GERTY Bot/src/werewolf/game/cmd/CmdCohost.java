@@ -5,7 +5,7 @@ import java.util.List;
 
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 import werewolf.net.ForumUser;
 
 public class CmdCoHost extends GameCommand
@@ -15,7 +15,7 @@ public class CmdCoHost extends GameCommand
 	{
 		super(game);
 		this.name = "cohost";
-		this.info = ForumMessage.of("Designates user(s) as the cohost(s), or removes all cohosts if blank. Only usable by a host");
+		this.info = Message.of("Designates user(s) as the cohost(s), or removes all cohosts if blank. Only usable by a host");
 		this.usage = "user[, ...]";
 		this.match = "cohost";
 		this.mustBeTrue = new Requirement[]

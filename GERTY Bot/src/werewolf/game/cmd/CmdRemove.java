@@ -3,7 +3,7 @@ package werewolf.game.cmd;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 
 public class CmdRemove extends GameCommand
 {
@@ -11,7 +11,7 @@ public class CmdRemove extends GameCommand
 	{
 		super(game);
 		this.name = "remove";
-		this.info = ForumMessage.of("Removes a player from the game. Only usable by a host");
+		this.info = Message.of("Removes a player from the game. Only usable by a host");
 		this.usage = "player";
 		this.match = "remove";
 		this.mustBeTrue = new Requirement[]

@@ -3,7 +3,7 @@ package werewolf.game.cmd;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 import werewolf.net.ForumUser;
 
 public class CmdAdd extends GameCommand
@@ -12,7 +12,7 @@ public class CmdAdd extends GameCommand
 	{
 		super(game);
 		this.name = "add";
-		this.info = ForumMessage.of("Adds a new player to the game. Only usable by a host");
+		this.info = Message.of("Adds a new player to the game. Only usable by a host");
 		this.usage = "user";
 		this.match = "add";
 		this.mustBeTrue = new Requirement[]

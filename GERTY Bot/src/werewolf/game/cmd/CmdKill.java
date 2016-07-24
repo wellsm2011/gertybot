@@ -5,7 +5,7 @@ import java.util.List;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 
 public class CmdKill extends GameCommand
 {
@@ -13,7 +13,7 @@ public class CmdKill extends GameCommand
 	{
 		super(game);
 		this.name = "kill";
-		this.info = ForumMessage.of("Kills a target player. Only usable by a host");
+		this.info = Message.of("Kills a target player. Only usable by a host");
 		this.usage = "player[, reason]";
 		this.match = "kill";
 		this.mustBeTrue = new Requirement[]
@@ -28,7 +28,7 @@ public class CmdKill extends GameCommand
 		String msg = "Killed";
 		if (params.size() > 1)
 			msg = params.get(1);
-		target.kill(ForumMessage.of(msg), this.game.getRound(), cmd.getPost());
+		target.kill(Message.of(msg), this.game.getRound(), cmd.getPost());
 		return true;
 	}
 }
