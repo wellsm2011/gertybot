@@ -3,8 +3,8 @@ package werewolf.net.neon;
 import java.util.HashMap;
 import java.util.Map;
 
-import werewolf.net.MessageEncoder;
 import werewolf.net.Message.Style;
+import werewolf.net.MessageEncoder;
 
 public class NeonMessageEncoder extends MessageEncoder
 {

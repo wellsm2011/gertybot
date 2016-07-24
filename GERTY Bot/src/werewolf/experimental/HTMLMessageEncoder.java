@@ -9,14 +9,6 @@ import werewolf.net.MessageEncoder;
 public class HTMLMessageEncoder extends MessageEncoder
 {
 
-	@Override
-	public String escape(String msg)
-	{
-		return msg.replaceAll("\n", "<br>");
-	}
-
-	private Map<Style, Tags> map;
-
 	private static final String SPOILER_START =
 			//@formatter:off
 			"<style type=\"text/css\">"
@@ -29,11 +21,13 @@ public class HTMLMessageEncoder extends MessageEncoder
 			+ "<div class=\"spoiler\"><div>";
 			//@formatter:on
 
+	private Map<Style, Tags> map;
+
 	public HTMLMessageEncoder()
 	{
 		this.map = new HashMap<>();
 		this.map.put(Style.QUOTE, new Tags("<div><h2>%s</h2><div>", "</div></div>"));
-		this.map.put(Style.SPOILER, new Tags(SPOILER_START, "</div></div>"));
+		this.map.put(Style.SPOILER, new Tags(HTMLMessageEncoder.SPOILER_START, "</div></div>"));
 		this.map.put(Style.STRIKE, new Tags("<s>", "</s>"));
 		this.map.put(Style.URL, new Tags("<a href=\"%s\">", "</a>"));
 		this.map.put(Style.BOLD, new Tags("<b>", "</b>"));
@@ -44,6 +38,12 @@ public class HTMLMessageEncoder extends MessageEncoder
 		this.map.put(Style.CODE, new Tags("<code>", "</code>"));
 		this.map.put(Style.LIST, new Tags("<ul>", "</ul>"));
 		this.map.put(Style.LISTITEM, new Tags("<li>", "</li>"));
+	}
+
+	@Override
+	public String escape(String msg)
+	{
+		return msg.replaceAll("\n", "<br>");
 	}
 
 	@Override
