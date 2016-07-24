@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import werewolf.game.WerewolfGame;
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.ForumUser;
 import werewolf.net.Message;
 
@@ -23,7 +23,7 @@ public class CmdCoHost extends GameCommand
 	}
 
 	@Override
-	protected boolean execute(Command cmd)
+	protected boolean execute(ParsedCommand cmd)
 	{
 		List<String> params = cmd.getParams(this.game.getPlayers().size() + 1);
 		List<ForumUser> cohosts = new LinkedList<>();

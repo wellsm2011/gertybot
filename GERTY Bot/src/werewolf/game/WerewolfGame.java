@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import werewolf.game.cmd.GameCommand;
 import werewolf.game.voteconfig.RoundRecord;
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUser;
@@ -173,7 +173,7 @@ public class WerewolfGame
 		return GamePhase.NIGHT;
 	}
 
-	public void processCmd(Command cmd)
+	public void processCmd(ParsedCommand cmd)
 	{
 		for (GameCommand gcmd : this.getCmds())
 			this.stateChange |= gcmd.processCmd(cmd);

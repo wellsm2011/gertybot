@@ -14,13 +14,13 @@ public abstract class ForumPost implements Serializable
 	protected boolean		isEditable;
 	protected boolean		edited	= false;
 	protected boolean		deleted	= false;
-	protected List<Command>	commands;
+	protected List<ParsedCommand>	commands;
 	protected int			postId;
 	protected String		content;
 	protected ForumThread	thread;
 	protected DateTime		postTime;
 
-	public ForumPost(ForumThread parent, int postId, DateTime postTime, ForumUser poster, List<Command> commands, boolean isEditable, String content)
+	public ForumPost(ForumThread parent, int postId, DateTime postTime, ForumUser poster, List<ParsedCommand> commands, boolean isEditable, String content)
 	{
 		this.poster = poster;
 		this.thread = parent;
@@ -78,7 +78,7 @@ public abstract class ForumPost implements Serializable
 		return this.thread.getBoardId();
 	}
 
-	public List<Command> getCommands()
+	public List<ParsedCommand> getCommands()
 	{
 		return this.commands;
 	}

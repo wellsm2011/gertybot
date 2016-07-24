@@ -1,12 +1,12 @@
 package werewolf.game.cmd;
 
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 
 public class CmdDusk extends GameCommand
 {
 
 	@Override
-	protected boolean execute(Command cmd) throws InvalidatonException, IndexOutOfBoundsException
+	protected boolean execute(ParsedCommand cmd) throws InvalidatonException, IndexOutOfBoundsException
 	{
 		// TODO Auto-generated method stub
 		return false;

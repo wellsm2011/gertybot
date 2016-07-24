@@ -2,7 +2,7 @@ package werewolf.game.cmd;
 
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.ForumUser;
 import werewolf.net.Message;
 
@@ -22,7 +22,7 @@ public class CmdAdd extends GameCommand
 	}
 
 	@Override
-	protected boolean execute(Command cmd) throws InvalidatonException
+	protected boolean execute(ParsedCommand cmd) throws InvalidatonException
 	{
 		ForumUser target = this.getNonPlayer(cmd.getParams(1).get(0));
 		this.game.getPlayers().add(new Player(target, cmd.getPost(), this.game));

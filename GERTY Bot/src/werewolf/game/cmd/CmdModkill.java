@@ -4,7 +4,7 @@ import java.util.List;
 
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.Message;
 
 public class CmdModkill extends GameCommand
@@ -21,7 +21,7 @@ public class CmdModkill extends GameCommand
 	}
 
 	@Override
-	protected boolean execute(Command cmd) throws InvalidatonException
+	protected boolean execute(ParsedCommand cmd) throws InvalidatonException
 	{
 		List<String> params = cmd.getParams(2);
 		Player target = this.getPlayer(params.get(0));

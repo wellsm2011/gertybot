@@ -5,7 +5,7 @@ import java.util.function.BiFunction;
 import werewolf.game.GamePhase;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.ForumUser;
 import werewolf.net.Message;
 
@@ -13,9 +13,6 @@ public abstract class GameCommand
 {
 	protected static class InvalidatonException extends Exception
 	{
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		public InvalidatonException(String msg)
@@ -26,25 +23,30 @@ public abstract class GameCommand
 
 	protected enum Requirement
 	{
-		HOST("invalid access", "can't be host"),
-		PLAYER("unknown player", "can't be a player"),
-		ALIVE("dead player", "living player"),
-		DAY("must be day", "currently day"),
-		NIGHT("must be night", "currently night"),
-		PREGAME("must be pregame setup", "currently pregame setup"),
-		ADMIN("invalid access", "can't be admin");
+		HOST("invalid access", "can't be host", (game, cmd) -> game.isHost(cmd.getUser())),
+		PLAYER("unknown player", "can't be a player", (game, cmd) -> game.getPlayer(cmd.getUser()) != null),
+		ALIVE("dead player", "living player", (game, cmd) -> {
+			// Assert that the user of the command is a player.
+			Requirement.PLAYER.assertRequirement(true, game, cmd);
+			return game.getPlayer(cmd.getUser()).isAlive();
+		}),
+		DAY("must be day", "currently day", (game, cmd) -> game.getPhase().equals(GamePhase.DAY)),
+		NIGHT("must be night", "currently night", (game, cmd) -> game.getPhase().equals(GamePhase.NIGHT)),
+		PREGAME("must be pregame setup", "currently pregame setup", (game, cmd) -> game.getPhase().equals(GamePhase.PREGAME)),
+		ADMIN("invalid access", "can't be admin", (game, cmd) -> game.isHost(cmd.getUser()));
 
 		public final String									requiredTrue;
 		public final String									requiredFalse;
-		private BiFunction<WerewolfGame, Command, Boolean>	resolver	= null;
+		private BiFunction<WerewolfGame, ParsedCommand, Boolean>	resolver;
 
-		private Requirement(String requiredTrue, String requiredFalse)
+		private Requirement(String requiredTrue, String requiredFalse, BiFunction<WerewolfGame, ParsedCommand, Boolean> resolver)
 		{
 			this.requiredTrue = requiredTrue;
 			this.requiredFalse = requiredFalse;
+			this.resolver = resolver;
 		}
 
-		public void assertRequirement(boolean expectedResult, WerewolfGame game, Command cmd)
+		public void assertRequirement(boolean expectedResult, WerewolfGame game, ParsedCommand cmd)
 		{
 			boolean state = this.resolver.apply(game, cmd);
 			if (state && !expectedResult)
@@ -53,41 +55,6 @@ public abstract class GameCommand
 				cmd.invalidate(this.requiredTrue);
 			assert state == expectedResult;
 		}
-
-		protected void setResolver(BiFunction<WerewolfGame, Command, Boolean> resolver)
-		{
-			if (this.resolver == null)
-				this.resolver = resolver;
-			else
-				throw new IllegalArgumentException("Resolver already set for " + this.name());
-		}
-	}
-
-	static
-	{
-		Requirement.HOST.setResolver((WerewolfGame game, Command cmd) -> {
-			return game.isHost(cmd.getUser());
-		});
-		Requirement.PLAYER.setResolver((WerewolfGame game, Command cmd) -> {
-			return game.getPlayer(cmd.getUser()) != null;
-		});
-		Requirement.ALIVE.setResolver((WerewolfGame game, Command cmd) -> {
-			// Assert that the user of the command is a player.
-			Requirement.PLAYER.assertRequirement(true, game, cmd);
-			return game.getPlayer(cmd.getUser()).isAlive();
-		});
-		Requirement.DAY.setResolver((WerewolfGame game, Command cmd) -> {
-			return game.getPhase().equals(GamePhase.DAY);
-		});
-		Requirement.NIGHT.setResolver((WerewolfGame game, Command cmd) -> {
-			return game.getPhase().equals(GamePhase.NIGHT);
-		});
-		Requirement.PREGAME.setResolver((WerewolfGame game, Command cmd) -> {
-			return game.getPhase().equals(GamePhase.PREGAME);
-		});
-		Requirement.ADMIN.setResolver((WerewolfGame game, Command cmd) -> {
-			return game.isHost(cmd.getUser());
-		});
 	}
 
 	// Usage: player[:<alive|dead>], string[:<option1>|<option2>|<...>],
@@ -118,7 +85,7 @@ public abstract class GameCommand
 	 *             If this command requires additional command parameters which
 	 *             were not supplied.
 	 */
-	protected abstract boolean execute(Command cmd) throws InvalidatonException, IndexOutOfBoundsException;
+	protected abstract boolean execute(ParsedCommand cmd) throws InvalidatonException, IndexOutOfBoundsException;
 
 	/**
 	 * Returns a dead player represented by the given string.
@@ -262,7 +229,7 @@ public abstract class GameCommand
 	 * @param cmd
 	 * @return
 	 */
-	protected boolean isValid(Command cmd)
+	protected boolean isValidFor(ParsedCommand cmd)
 	{
 		try
 		{
@@ -285,14 +252,14 @@ public abstract class GameCommand
 	 * @param cmd
 	 * @return true if the bot needs to make a new post.
 	 */
-	public boolean processCmd(Command cmd)
+	public boolean processCmd(ParsedCommand cmd)
 	{
 		// Only process valid commands.
 		if (cmd.isInvalidated())
 			return false;
 		if (!cmd.getCommand().toLowerCase().matches("^(" + this.match + ")$"))
 			return false;
-		if (!this.isValid(cmd))
+		if (!this.isValidFor(cmd))
 			return false;
 		try
 		{

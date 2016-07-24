@@ -13,7 +13,7 @@ import org.joda.time.Duration;
 
 import com.sun.media.jfxmedia.events.PlayerEvent;
 
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumPost;
 import werewolf.net.ForumThread;
@@ -84,7 +84,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		WerewolfGame_OLD.LOGGER.info("Game initalized: " + this.thread);
 	}
 
-	private void addAlias(Command cmd)
+	private void addAlias(ParsedCommand cmd)
 	{
 		String[] params = cmd.getParamString().split(", ?");
 		if (params.length < 2)
@@ -111,7 +111,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		aliasPlayer.addAlias(params[1]);
 	}
 
-	private void addToGame(Command cmd)
+	private void addToGame(ParsedCommand cmd)
 	{
 		String[] params = cmd.getParamString().split(", ?");
 		ForumUser newPlayer = this.getUser(params[0]);
@@ -165,7 +165,7 @@ public class WerewolfGame_OLD implements ThreadManager
 	 * @param cmd
 	 *            The command object that is attempting to call the command.
 	 */
-	private void changeLynchType(Command cmd)
+	private void changeLynchType(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{
@@ -252,7 +252,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			cmd.invalidate("unknown type: " + params[0]);
 	}
 
-	private void changeSignups(Command cmd)
+	private void changeSignups(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 			cmd.invalidate("invalid access");
@@ -289,7 +289,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		this.votesReset = true;
 	}
 
-	private void dawnPost(Command cmd)
+	private void dawnPost(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{
@@ -304,7 +304,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		this.round += 1;
 	}
 
-	private void duskPost(Command cmd)
+	private void duskPost(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{
@@ -319,7 +319,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		this.checkVoteReset();
 	}
 
-	private void endGame(Command cmd)
+	private void endGame(ParsedCommand cmd)
 	{
 		try
 		{
@@ -631,7 +631,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		return this.lastPost != null && !this.lastPost.hasBeenDeleted();
 	}
 
-	private void injurePlayer(Command cmd)
+	private void injurePlayer(ParsedCommand cmd)
 	{
 		String[] params = cmd.getParamString().split(", ?", 2);
 		Player target = this.getPlayer(params[0]);
@@ -667,7 +667,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		return user != null && (user.equals(this.host) || user.equals(this.cohost) || WerewolfGame_OLD.isMe(user));
 	}
 
-	private void joinGame(Command cmd)
+	private void joinGame(ParsedCommand cmd)
 	{
 		if (!this.openSignups)
 		{
@@ -686,7 +686,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		this.stateChange = true;
 	}
 
-	private void killPlayer(Command cmd)
+	private void killPlayer(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{
@@ -708,7 +708,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		}
 	}
 
-	private void leaveGame(Command cmd)
+	private void leaveGame(ParsedCommand cmd)
 	{
 		if (this.players.remove(cmd.getUser()))
 			this.stateChange = true;
@@ -728,7 +728,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		return count;
 	}
 
-	private void logPlayerData(Command cmd)
+	private void logPlayerData(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{
@@ -747,7 +747,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			target.logEvent(new PlayerEvent(params[1].trim(), this.round, cmd.getPost().getUrl()));
 	}
 
-	private void makeVote(Command cmd)
+	private void makeVote(ParsedCommand cmd)
 	{
 		if (!this.isDay)
 		{
@@ -791,7 +791,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		}
 	}
 
-	private void modkillPlayer(Command cmd)
+	private void modkillPlayer(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{
@@ -823,7 +823,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		for (Player plr : this.players)
 			if (plr.equals(post.getPoster()))
 				plr.madePost();
-		for (Command command : post.getCommands())
+		for (ParsedCommand command : post.getCommands())
 		{
 			command.startCheck();
 			boolean isCommand = true;
@@ -1002,7 +1002,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		}
 	}
 
-	private void removeFromGame(Command cmd)
+	private void removeFromGame(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{
@@ -1012,7 +1012,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		this.stateChange = this.players.remove(this.getPlayer(cmd.getParamString()));
 	}
 
-	private void removeVote(Command cmd)
+	private void removeVote(ParsedCommand cmd)
 	{
 		Player player = this.getPlayer(cmd.getUser().getName());
 
@@ -1037,7 +1037,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		}
 	}
 
-	private void replaceInGame(Command cmd)
+	private void replaceInGame(ParsedCommand cmd)
 	{
 		String[] params = cmd.getParamString().split(", ?");
 		ForumUser newPlayer = this.getUser(params[1]);
@@ -1091,7 +1091,7 @@ public class WerewolfGame_OLD implements ThreadManager
 		}
 	}
 
-	private void revivePlayer(Command cmd)
+	private void revivePlayer(ParsedCommand cmd)
 	{
 		Player target = this.getPlayer(cmd.getParamString());
 
@@ -1105,7 +1105,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			this.stateChange |= target.revive(new PlayerEvent("Revived", this.round, cmd.getPost().getUrl()));
 	}
 
-	private void setCohost(Command cmd)
+	private void setCohost(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{
@@ -1135,7 +1135,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			cmd.invalidate("unknown user");
 	}
 
-	private void setStoryPost(Command cmd)
+	private void setStoryPost(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 			cmd.invalidate("invalid access");
@@ -1145,7 +1145,7 @@ public class WerewolfGame_OLD implements ThreadManager
 			this.storyPosts += "[*][url=" + cmd.getPost().getUrl() + "]" + cmd.getParamString() + "[/url]\n";
 	}
 
-	private void startGame(Command cmd)
+	private void startGame(ParsedCommand cmd)
 	{
 		if (!this.isHost(cmd.getUser()))
 		{

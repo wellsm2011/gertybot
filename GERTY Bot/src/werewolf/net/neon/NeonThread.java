@@ -16,7 +16,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlStrong;
 
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUser;
@@ -120,7 +120,7 @@ public class NeonThread extends ForumThread
 			} else
 				poster = ForumUser.getUserFor(posterName, this.getContext());
 			boolean editable = page.getByXPath(postRow + "//a/img[@title='Edit post']").size() > 0;
-			ArrayList<Command> commands = new ArrayList<>();
+			ArrayList<ParsedCommand> commands = new ArrayList<>();
 			List<?> commandElements = page.getByXPath(postRow + "//div[@class='postbody']/strong");
 			boolean edited = page.getByXPath(postRow + "//div[@class='edited']").size() > 0;
 			String postBody = ((HtmlDivision) page.getFirstByXPath(postRow + "//div[@class='postbody']")).asText();
@@ -137,7 +137,7 @@ public class NeonThread extends ForumThread
 						element.remove();
 				String command = ((HtmlStrong) e).asText();
 				if (command.matches("\\[\\[?.*\\]\\]?"))
-					commands.add(new Command(command, poster, edited, post));
+					commands.add(new ParsedCommand(command, poster, edited, post));
 			}
 
 			this.addPost(post);

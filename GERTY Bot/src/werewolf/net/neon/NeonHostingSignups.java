@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import werewolf.Utils;
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.ForumPost;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUser;
@@ -60,7 +60,7 @@ public class NeonHostingSignups implements HostingSignups
 		ForumPost post = this.thread.nextPost();
 		while (post != null)
 		{ // Parse any new commands.
-			for (Command command : post.getCommands())
+			for (ParsedCommand command : post.getCommands())
 			{
 				String cmd = command.getCommand().toLowerCase();
 				// Search through all possible commands and execute any valid
@@ -88,12 +88,12 @@ public class NeonHostingSignups implements HostingSignups
 
 	}
 
-	private void confirmForCohost(Command cmd)
+	private void confirmForCohost(ParsedCommand cmd)
 	{
 
 	}
 
-	private void deleteSignupRecord(Command cmd)
+	private void deleteSignupRecord(ParsedCommand cmd)
 	{
 
 	}
@@ -164,7 +164,7 @@ public class NeonHostingSignups implements HostingSignups
 		return this.thread;
 	}
 
-	private void nameGame(Command cmd)
+	private void nameGame(ParsedCommand cmd)
 	{
 
 	}
@@ -221,17 +221,17 @@ public class NeonHostingSignups implements HostingSignups
 		this.thread.reset();
 	}
 
-	private void setCohost(Command cmd)
+	private void setCohost(ParsedCommand cmd)
 	{
 
 	}
 
-	private void setThreadId(Command cmd)
+	private void setThreadId(ParsedCommand cmd)
 	{
 
 	}
 
-	private void signupForGame(Command cmd)
+	private void signupForGame(ParsedCommand cmd)
 	{
 
 	}

@@ -8,7 +8,7 @@ import org.joda.time.DateTime;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumPost;
 import werewolf.net.ForumUser;
@@ -17,7 +17,7 @@ public class NeonPost extends ForumPost
 {
 	private static final long serialVersionUID = 8585339145492188641L;
 
-	public NeonPost(NeonThread parent, int postId, DateTime postTime, ForumUser poster, List<Command> commands, boolean isEditable, String content)
+	public NeonPost(NeonThread parent, int postId, DateTime postTime, ForumUser poster, List<ParsedCommand> commands, boolean isEditable, String content)
 	{
 		super(parent, postId, postTime, poster, commands, isEditable, content);
 		if (!poster.getContext().equals(this.getContext()))

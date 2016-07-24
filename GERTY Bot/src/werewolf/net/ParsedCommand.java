@@ -14,9 +14,9 @@ import java.util.regex.Pattern;
  * or invalidated to prevent the bot from using them and to show human users
  * that they are not being used.
  */
-public class Command implements Serializable
+public class ParsedCommand implements Serializable
 {
-	private static final Logger LOGGER = Logger.getLogger(Command.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ParsedCommand.class.getName());
 
 	private static final long serialVersionUID = -8803103421504120775L;
 
@@ -47,7 +47,7 @@ public class Command implements Serializable
 	 * @param post
 	 *            The post associated with this command.
 	 */
-	public Command(String command, ForumUser user, boolean invalidated, ForumPost post)
+	public ParsedCommand(String command, ForumUser user, boolean invalidated, ForumPost post)
 	{
 		this.fullCommand = command;
 		command = command.trim().replaceAll("^\\[+|\\]+$", "").trim();
@@ -66,9 +66,9 @@ public class Command implements Serializable
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o instanceof Command)
+		if (o instanceof ParsedCommand)
 		{
-			Command other = (Command) o;
+			ParsedCommand other = (ParsedCommand) o;
 			if (!this.user.equals(other.user))
 				return false;
 			if (!this.params.equals(other.params))
@@ -149,7 +149,7 @@ public class Command implements Serializable
 		try
 		{
 			if (this.postCounter == 0)
-				Command.LOGGER.info("Invalid command." + infoString);
+				ParsedCommand.LOGGER.info("Invalid command." + infoString);
 
 			ForumPostEditor editor = this.post.getEditor();
 			String replaceCommand = "[color=#FF0000][b]" + this.fullCommand + "[/b] (" + reason + ")[/color]";
@@ -162,13 +162,13 @@ public class Command implements Serializable
 		{
 			if (this.postCounter++ < 5)
 			{
-				Command.LOGGER.warning("IOException while trying to invalidate post. Context: " + this.post.getContext().toString());
+				ParsedCommand.LOGGER.warning("IOException while trying to invalidate post. Context: " + this.post.getContext().toString());
 				this.invalidate(reason);
 			} else
-				Command.LOGGER.warning("IOException while trying to invalidate post. Unable to invalidate. Context: " + this.post.getContext().toString());
+				ParsedCommand.LOGGER.warning("IOException while trying to invalidate post. Unable to invalidate. Context: " + this.post.getContext().toString());
 		} catch (IllegalStateException e)
 		{
-			Command.LOGGER.warning("IllegalStateException while trying to invalidate post. Context: " + this.post.getContext().toString());
+			ParsedCommand.LOGGER.warning("IllegalStateException while trying to invalidate post. Context: " + this.post.getContext().toString());
 		}
 
 		this.postCounter = 0;

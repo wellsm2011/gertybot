@@ -1,13 +1,13 @@
 package werewolf.game.cmd;
 
 import werewolf.game.WerewolfGame;
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 
 public class CmdVote extends GameCommand
 {
 
 	@Override
-	protected boolean execute(Command cmd)
+	protected boolean execute(ParsedCommand cmd)
 	{
 		// TODO Auto-generated method stub
 		return false;
@@ -17,7 +17,7 @@ public class CmdVote extends GameCommand
 	// flipping a deathvote flag
 
 	@Override
-	protected void execute(WerewolfGame game, Command cmd)
+	protected void execute(WerewolfGame game, ParsedCommand cmd)
 	{
 		// TODO Auto-generated method stub
 
