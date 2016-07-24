@@ -498,7 +498,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 * @throws IOException
 	 *             If any of the underlying network calls throw an error.
 	 */
-	protected abstract void makePm(HtmlPage page, String[] to, String[] bcc, String subject, ForumMessage body) throws IOException;
+	protected abstract void makePm(HtmlPage page, String[] to, String[] bcc, String subject, Message body) throws IOException;
 
 	/**
 	 * Sends a new PM.
@@ -514,7 +514,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 * @throws IOException
 	 *             If any of the underlying network calls throw an error.
 	 */
-	public void makePm(String[] to, String[] bcc, String subject, ForumMessage body) throws IOException
+	public void makePm(String[] to, String[] bcc, String subject, Message body) throws IOException
 	{
 		this.makePm(this.getComposeMessagePage(), to, bcc, subject, body);
 	}
@@ -530,7 +530,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 *             If the given page is not a forum post page or if any of the
 	 *             underlying network calls throw an error.
 	 */
-	protected void makePost(HtmlPage postPage, ForumMessage body) throws IOException
+	protected void makePost(HtmlPage postPage, Message body) throws IOException
 	{
 		this.makePost(postPage, body, "");
 	}
@@ -546,7 +546,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 *             If the given page is not a forum post page or if any of the
 	 *             underlying network calls throw an error.
 	 */
-	protected abstract void makePost(HtmlPage postPage, final ForumMessage body, final String subject) throws IOException;
+	protected abstract void makePost(HtmlPage postPage, final Message body, final String subject) throws IOException;
 
 	/**
 	 * Called when a post must be made (be it a post to a thread, a PM, an edit,

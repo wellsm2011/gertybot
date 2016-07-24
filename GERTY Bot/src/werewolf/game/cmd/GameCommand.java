@@ -6,7 +6,7 @@ import werewolf.game.GamePhase;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 import werewolf.net.ForumUser;
 
 public abstract class GameCommand
@@ -90,10 +90,12 @@ public abstract class GameCommand
 		});
 	}
 
-	// Usage: player[:<alive|dead>], string[:<option1>|<option2>|<...>],
-	// number[:<min>,<max>]
+	/*
+	 * Usage: player[:<alive|dead>], string[:<option1>|<option2>|<...>],
+	 * number[:<min>,<max>]
+	 */
 	protected String		name		= "UNKNOWN";
-	protected ForumMessage	info		= ForumMessage.of("No information found for command.");
+	protected Message	info		= Message.of("No information found for command.");
 	protected String		usage		= "";
 	protected String		match		= ".*";
 	protected Requirement[]	mustBeTrue	= new Requirement[0];
@@ -141,7 +143,7 @@ public abstract class GameCommand
 	 * @return Returns the description of this command, to be posted in the help
 	 *         section.
 	 */
-	public ForumMessage getInfo()
+	public Message getInfo()
 	{
 		return this.info;
 	}

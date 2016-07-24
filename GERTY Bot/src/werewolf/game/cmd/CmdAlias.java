@@ -4,7 +4,7 @@ import java.util.List;
 
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 import werewolf.net.ForumUser;
 
 public class CmdAlias extends GameCommand
@@ -14,7 +14,7 @@ public class CmdAlias extends GameCommand
 	{
 		super(game);
 		this.name = "alias";
-		this.info = ForumMessage
+		this.info = Message
 				.of("Adds a new alias to a given user. Users can be specified by id or current name. The alias may not contain commas or be exactly matched by any other known user or alias.");
 		this.match = "alias";
 		this.usage = "user, string";

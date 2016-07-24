@@ -10,11 +10,18 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-public class ForumMessage
+/**
+ * This is a builder-style message contruction class. This allows for building
+ * of various rich-text stylings, all in a portable encoder-driven format.
+ * 
+ * @author Andrew Binns
+ * @see MessageEncoder
+ */
+public class Message
 {
-	private class Message extends Op
+	private class RawText extends Op
 	{
-		public Message(String msg)
+		public RawText(String msg)
 		{
 			super(null, msg);
 		}
@@ -95,16 +102,16 @@ public class ForumMessage
 	 * @param text
 	 * @return a forum message of that text
 	 */
-	public static ForumMessage of(String text)
+	public static Message of(String text)
 	{
-		return new ForumMessage().add(text);
+		return new Message().add(text);
 	}
 
 	private Set<Style> currentlyActive;
 
 	private List<Op> operations;
 
-	public ForumMessage()
+	public Message()
 	{
 		this.currentlyActive = new LinkedHashSet<>();
 		this.operations = new ArrayList<>();
@@ -129,11 +136,11 @@ public class ForumMessage
 	 *            the other message whose contents are to be added to this one
 	 * @return this message for chaining
 	 */
-	public ForumMessage add(ForumMessage otherMessage)
+	public Message add(Message otherMessage)
 	{
 		for (Op o : otherMessage.operations)
 		{
-			if (o instanceof Message)
+			if (o instanceof RawText)
 				this.operations.add(o);
 			if (o instanceof StopStyle)
 				this.stopStyle(o.getStyle());
@@ -143,20 +150,20 @@ public class ForumMessage
 		return this;
 	}
 
-	public ForumMessage add(String txt)
+	public Message add(String txt)
 	{
 		if (this.currentlyActive.contains(Style.LIST))
 			this.startStyle(Style.LISTITEM);
-		this.operations.add(new Message(txt));
+		this.operations.add(new RawText(txt));
 		if (this.currentlyActive.contains(Style.LIST))
 			this.stopStyle(Style.LISTITEM);
 		return this;
 	}
 
 	@Override
-	public ForumMessage clone()
+	public Message clone()
 	{
-		ForumMessage res = new ForumMessage();
+		Message res = new Message();
 		this.operations.forEach(res.operations::add);
 		this.currentlyActive.forEach(res.currentlyActive::add);
 		return res;
@@ -164,12 +171,13 @@ public class ForumMessage
 
 	/**
 	 * Given the specified encoder, encodes this message as a string. This
-	 * allows
+	 * allows for many different styles of encoding to be represented, each in
+	 * their own class, for different mediums.
 	 * 
 	 * @param encoder
 	 * @return
 	 */
-	public String formatString(ForumMessageEncoder encoder)
+	public String formatString(MessageEncoder encoder)
 	{
 		StringBuilder sb = new StringBuilder();
 
@@ -179,7 +187,7 @@ public class ForumMessage
 				sb.append(encoder.getOpening(op.getStyle(), op.getParams()));
 			if (op instanceof StopStyle)
 				sb.append(encoder.getClosing(op.getStyle(), op.getParams()));
-			if (op instanceof Message)
+			if (op instanceof RawText)
 				sb.append(encoder.escape(op.getMsg()));
 		}
 		return sb.toString();
@@ -190,57 +198,57 @@ public class ForumMessage
 	 */
 	public int getTxtCount()
 	{
-		return (int) this.operations.stream().filter(o -> o instanceof Message).count();
+		return (int) this.operations.stream().filter(o -> o instanceof RawText).count();
 	}
 
 	public boolean hasTextSegments()
 	{
-		return this.operations.stream().filter(o -> o instanceof Message).findFirst().isPresent();
+		return this.operations.stream().filter(o -> o instanceof RawText).findFirst().isPresent();
 	}
 
-	public ForumMessage startBold()
+	public Message startBold()
 	{
 		this.startStyle(Style.BOLD);
 		return this;
 	}
 
-	public ForumMessage startCodeBlock()
+	public Message startCodeBlock()
 	{
 		this.startStyle(Style.CODE);
 		return this;
 	}
 
-	public ForumMessage startColor(Color color)
+	public Message startColor(Color color)
 	{
 		this.startStyle(Style.BOLD, Integer.toString(color.getRGB() % 0xFFFFFF, 16));
 		return this;
 	}
 
-	public ForumMessage startHeader()
+	public Message startHeader()
 	{
 		this.startStyle(Style.HEADER);
 		return this;
 	}
 
-	public ForumMessage startItalic()
+	public Message startItalic()
 	{
 		this.startStyle(Style.ITALIC);
 		return this;
 	}
 
-	public ForumMessage startQuote(String author)
+	public Message startQuote(String author)
 	{
 		this.startStyle(Style.QUOTE, author);
 		return this;
 	}
 
-	public ForumMessage startSpoiler(String title)
+	public Message startSpoiler(String title)
 	{
 		this.startStyle(Style.SPOILER, title);
 		return this;
 	}
 
-	public ForumMessage startStrike()
+	public Message startStrike()
 	{
 		this.startStyle(Style.STRIKE);
 		return this;
@@ -254,7 +262,7 @@ public class ForumMessage
 		this.operations.add(new StartStyle(s, params));
 	}
 
-	public ForumMessage startURL(String link)
+	public Message startURL(String link)
 	{
 		this.startStyle(Style.URL, link);
 		return this;
@@ -265,7 +273,7 @@ public class ForumMessage
 	 * 
 	 * @return this message for chaining
 	 */
-	public ForumMessage stopAll()
+	public Message stopAll()
 	{
 		// by stopping the oldest style, we stop them all.
 		if (!this.currentlyActive.isEmpty())
@@ -273,49 +281,49 @@ public class ForumMessage
 		return this;
 	}
 
-	public ForumMessage stopBold()
+	public Message stopBold()
 	{
 		this.stopStyle(Style.BOLD);
 		return this;
 	}
 
-	public ForumMessage stopCodeBlock()
+	public Message stopCodeBlock()
 	{
 		this.stopStyle(Style.CODE);
 		return this;
 	}
 
-	public ForumMessage stopColor()
+	public Message stopColor()
 	{
 		this.stopStyle(Style.COLOR);
 		return this;
 	}
 
-	public ForumMessage stopHeader()
+	public Message stopHeader()
 	{
 		this.stopStyle(Style.HEADER);
 		return this;
 	}
 
-	public ForumMessage stopItalic()
+	public Message stopItalic()
 	{
 		this.stopStyle(Style.ITALIC);
 		return this;
 	}
 
-	public ForumMessage stopQuote()
+	public Message stopQuote()
 	{
 		this.stopStyle(Style.QUOTE);
 		return this;
 	}
 
-	public ForumMessage stopSpoiler()
+	public Message stopSpoiler()
 	{
 		this.stopStyle(Style.SPOILER);
 		return this;
 	}
 
-	public ForumMessage stopStrike()
+	public Message stopStrike()
 	{
 		this.stopStyle(Style.STRIKE);
 		return this;
@@ -376,7 +384,7 @@ public class ForumMessage
 	 * 
 	 * @return this message for chaining
 	 */
-	public ForumMessage stopURL()
+	public Message stopURL()
 	{
 		this.stopStyle(Style.URL);
 		return this;

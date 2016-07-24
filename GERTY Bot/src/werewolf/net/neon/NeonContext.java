@@ -16,7 +16,7 @@ import werewolf.Utils;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumInbox;
 import werewolf.net.ForumLogin;
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUserDatabase;
 import werewolf.net.GameRecord;
@@ -286,7 +286,7 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
-	public void makePm(HtmlPage pmPage, String[] to, String[] bcc, String subject, ForumMessage body) throws IOException
+	public void makePm(HtmlPage pmPage, String[] to, String[] bcc, String subject, Message body) throws IOException
 	{
 		String formName = "postform";
 
@@ -314,7 +314,7 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
-	public void makePost(HtmlPage postPage, final ForumMessage body, final String subject) throws IOException
+	public void makePost(HtmlPage postPage, final Message body, final String subject) throws IOException
 	{
 		String formName = "postform";
 		List<HtmlForm> forms = postPage.getForms();

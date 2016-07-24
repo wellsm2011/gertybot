@@ -170,7 +170,7 @@ public abstract class ForumThread implements Serializable
 
 	protected abstract String parseThreadTitle(HtmlPage page);
 
-	public void post(ForumMessage message) throws IOException
+	public void post(Message message) throws IOException
 	{
 		this.getContext().makePost(this.getContext().getThreadReplyPage(this.boardId, this.threadId), message);
 	}

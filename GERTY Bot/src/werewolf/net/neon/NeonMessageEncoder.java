@@ -3,10 +3,10 @@ package werewolf.net.neon;
 import java.util.HashMap;
 import java.util.Map;
 
-import werewolf.net.ForumMessage.Style;
-import werewolf.net.ForumMessageEncoder;
+import werewolf.net.Message.Style;
+import werewolf.net.MessageEncoder;
 
-public class NeonMessageEncoder extends ForumMessageEncoder
+public class NeonMessageEncoder extends MessageEncoder
 {
 	private Map<Style, Tags> map;
 
@@ -14,7 +14,7 @@ public class NeonMessageEncoder extends ForumMessageEncoder
 	{
 		this.map = new HashMap<>();
 		this.map.put(Style.QUOTE, new Tags("[quote=%s]", "[/quote]"));
-		this.map.put(Style.SPOILER, new Tags("[size=200]%s[/size][spoiler]", "[/spoiler]"));
+		this.map.put(Style.SPOILER, new Tags("[size200]%s[/size][spoiler]", "[/spoiler]"));
 		this.map.put(Style.STRIKE, new Tags("[s]", "[/s]"));
 		this.map.put(Style.URL, new Tags("[url=%s]", "[/url]"));
 		this.map.put(Style.BOLD, new Tags("[b]", "[/b]"));

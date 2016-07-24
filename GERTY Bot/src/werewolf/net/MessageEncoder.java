@@ -3,9 +3,9 @@ package werewolf.net;
 import java.util.HashMap;
 import java.util.Map;
 
-import werewolf.net.ForumMessage.Style;
+import werewolf.net.Message.Style;
 
-public abstract class ForumMessageEncoder
+public abstract class MessageEncoder
 {
 	protected class Tags
 	{
@@ -29,7 +29,7 @@ public abstract class ForumMessageEncoder
 		}
 	}
 
-	public static final ForumMessageEncoder PLAINTEXT = new ForumMessageEncoder()
+	public static final MessageEncoder PLAINTEXT = new MessageEncoder()
 	{
 		private Map<Style, Tags> map;
 
@@ -65,7 +65,7 @@ public abstract class ForumMessageEncoder
 		}
 	};
 
-	public static final ForumMessageEncoder DEBUG = new ForumMessageEncoder()
+	public static final MessageEncoder DEBUG = new MessageEncoder()
 	{
 		private Map<Style, Tags> map;
 

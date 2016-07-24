@@ -5,7 +5,7 @@ import java.util.List;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.ForumMessage;
+import werewolf.net.Message;
 
 public class CmdRevive extends GameCommand
 {
@@ -13,7 +13,7 @@ public class CmdRevive extends GameCommand
 	{
 		super(game);
 		this.name = "revive";
-		this.info = ForumMessage.of("Revives a deceased player. Only usable by a host.");
+		this.info = Message.of("Revives a deceased player. Only usable by a host.");
 		this.usage = "player[, message]";
 		// Turns into: revive player[,message]
 		this.match = "revive|raise|unkill";
@@ -36,7 +36,7 @@ public class CmdRevive extends GameCommand
 		String msg = "Revived";
 		if (params.size() > 1)
 			msg = params.get(1); // Second param.
-		this.game.getPlayer(target).revive(ForumMessage.of(msg), this.game.getRound(), cmd.getPost());
+		this.game.getPlayer(target).revive(Message.of(msg), this.game.getRound(), cmd.getPost());
 
 		return true;
 	}
