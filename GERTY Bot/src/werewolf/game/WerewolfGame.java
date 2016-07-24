@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import werewolf.game.cmd.GameCommand;
+import werewolf.game.voteconfig.RoundRecord;
+import werewolf.game.voteconfig.VoteManager;
 import werewolf.net.Command;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumThread;
@@ -13,6 +15,22 @@ import werewolf.net.ForumUser;
 
 public class WerewolfGame
 {
+	private class VoteManager
+	{
+		private RoundRecord record = new RoundRecord();
+
+		public void endRound()
+		{
+			record = new RoundRecord(record);
+		}
+
+		public RoundRecord getRecord()
+		{
+			return record;
+		}
+	}
+	
+	
 	// Setup -> R0 Night -> R1 Day
 	// Setup -> R1 Day
 
@@ -25,7 +43,7 @@ public class WerewolfGame
 
 	protected ForumThread		thread;
 	protected List<Player>		players	= new LinkedList<>();
-	protected VoteManager		votes	= new VoteManager(this);
+	protected VoteManager		votes	= new VoteManager();
 	protected ForumUser			host	= null;
 	protected List<ForumUser>	cohosts	= new LinkedList<>();
 	protected int				round	= 0;
