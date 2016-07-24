@@ -21,7 +21,7 @@ public class VoteManager_OLD implements Serializable
 
 	private static final long serialVersionUID = -1511892114410847496L;
 
-	private LinkedList<Vote>	votes			= new LinkedList<Vote>();
+	private LinkedList<Vote>	votes			= new LinkedList<>();
 	private List<Player>		players;
 	private boolean				multipleVotes	= false;
 
@@ -61,7 +61,7 @@ public class VoteManager_OLD implements Serializable
 	{
 		Hashtable<User, LinkedList<Vote>> sortedVotes = this.getSortedVotes();
 		int maxVotes = 0;
-		LinkedList<User> highestVoted = new LinkedList<User>();
+		LinkedList<User> highestVoted = new LinkedList<>();
 
 		for (Player player : this.players)
 			if (sortedVotes.get(player).size() == maxVotes)
@@ -145,7 +145,7 @@ public class VoteManager_OLD implements Serializable
 	 */
 	public String getReverseTally(boolean includeLinks)
 	{
-		Hashtable<Player, LinkedList<Vote>> sortedVotes = new Hashtable<Player, LinkedList<Vote>>();
+		Hashtable<Player, LinkedList<Vote>> sortedVotes = new Hashtable<>();
 		StringBuilder output = new StringBuilder();
 
 		for (Player player : this.players)
@@ -154,8 +154,8 @@ public class VoteManager_OLD implements Serializable
 			sortedVotes.get(vote.getVoter()).add(vote);
 
 		Enumeration<Player> plrs = sortedVotes.keys();
-		LinkedList<Player> noVotes = new LinkedList<Player>();
-		LinkedList<Player> incapacitated = new LinkedList<Player>();
+		LinkedList<Player> noVotes = new LinkedList<>();
+		LinkedList<Player> incapacitated = new LinkedList<>();
 		while (plrs.hasMoreElements())
 		{
 			Player player = plrs.nextElement();
@@ -187,8 +187,8 @@ public class VoteManager_OLD implements Serializable
 	 */
 	private Hashtable<User, LinkedList<Vote>> getSortedVotes()
 	{
-		Hashtable<User, LinkedList<Vote>> sortedVotes = new Hashtable<User, LinkedList<Vote>>();
-		LinkedList<ForumUser> applied = new LinkedList<ForumUser>();
+		Hashtable<User, LinkedList<Vote>> sortedVotes = new Hashtable<>();
+		LinkedList<ForumUser> applied = new LinkedList<>();
 
 		// Add all voting possibilities.
 		sortedVotes.put(StaticUser.NOVOTE, new LinkedList<Vote>());
@@ -276,7 +276,7 @@ public class VoteManager_OLD implements Serializable
 	 */
 	public LinkedList<Vote> getVotes(Player plr)
 	{
-		LinkedList<Vote> output = new LinkedList<Vote>();
+		LinkedList<Vote> output = new LinkedList<>();
 
 		// Ordered from begining to end.
 		for (Vote vote : this.votes)

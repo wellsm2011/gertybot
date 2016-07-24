@@ -65,7 +65,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	private static void checkGames(PriorityQueue<ThreadPriority> games, List<? extends ForumThread> threads) throws IOException
 	{
 		Iterator<ThreadPriority> iter = games.iterator();
-		LinkedList<ForumUser> hosts = new LinkedList<ForumUser>();
+		LinkedList<ForumUser> hosts = new LinkedList<>();
 
 		while (iter.hasNext())
 		{
@@ -576,7 +576,7 @@ public abstract class ForumContext implements Serializable, Runnable
 		while (true)
 			try
 			{
-				PriorityQueue<ThreadPriority> games = new PriorityQueue<ThreadPriority>();
+				PriorityQueue<ThreadPriority> games = new PriorityQueue<>();
 				games.add(new ThreadPriority(null));
 
 				while (true)

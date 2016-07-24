@@ -42,7 +42,7 @@ public class NeonBoard extends ForumBoard
 	@Override
 	protected LinkedList<ForumThread> loadBoard() throws IOException
 	{
-		LinkedList<ForumThread> newThreads = new LinkedList<ForumThread>();
+		LinkedList<ForumThread> newThreads = new LinkedList<>();
 
 		HtmlPage page = this.getContext().getBoardPage(this.boardId + "");
 		List<?> threadTable = page.getByXPath("//div[@id='pagecontent']/table[@class='tablebg']/tbody/tr/td[2]/a[last()]");

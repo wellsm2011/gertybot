@@ -56,9 +56,9 @@ public class NeonGameRecord implements GameRecord
 			this.title = name;
 			this.number = this.getGameNumber();
 			this.threadId = threadId;
-			this.hosts = new LinkedList<WinLossUser>();
-			this.winners = new LinkedList<WinLossUser>();
-			this.losers = new LinkedList<WinLossUser>();
+			this.hosts = new LinkedList<>();
+			this.winners = new LinkedList<>();
+			this.losers = new LinkedList<>();
 		}
 
 		public WinLossGame(String name, String threadId, LinkedList<? extends ForumUser> hosts, LinkedList<? extends ForumUser> winners, LinkedList<? extends ForumUser> losers)
@@ -144,7 +144,7 @@ public class NeonGameRecord implements GameRecord
 		protected int	losses			= 0;
 		protected int	hosts			= 0;
 		protected int[]	inactivityCount	= new int[]
-											{ 0, 0, 0 };
+		{ 0, 0, 0 };
 
 		public WinLossUser(ForumUser user)
 		{
@@ -242,8 +242,8 @@ public class NeonGameRecord implements GameRecord
 	private static final int				threadId				= 16851;
 	private static final int				boardId					= 179;
 	private static final String				gameIdentifier			= "Games to Date";
-	private static LinkedList<WinLossUser>	users					= new LinkedList<WinLossUser>();
-	private static LinkedList<WinLossGame>	games					= new LinkedList<WinLossGame>();
+	private static LinkedList<WinLossUser>	users					= new LinkedList<>();
+	private static LinkedList<WinLossGame>	games					= new LinkedList<>();
 	private static int						requiredActivityCount	= 2;
 
 	public static final NeonGameRecord INSTANCE = new NeonGameRecord();
@@ -364,7 +364,7 @@ public class NeonGameRecord implements GameRecord
 
 			String post = "//div[@id='pagecontent']/table[@class='tablebg'][last()]/tbody/tr[2]/td//div[@class='postbody']";
 			HtmlDivision postElement = (HtmlDivision) page.getByXPath(post).get(0);
-			Hashtable<String, Integer> gameTable = new Hashtable<String, Integer>();
+			Hashtable<String, Integer> gameTable = new Hashtable<>();
 			List<?> playerLinks = postElement.getByXPath(post + "/a|" + post + "/div/div/div/a");
 			List<?> gameLinks = postElement.getByXPath(post + "/strong/a");
 			System.out.println("Games Found: " + gameLinks.size() + ", Players Found: " + playerLinks.size());
@@ -451,12 +451,12 @@ public class NeonGameRecord implements GameRecord
 		int inactiveSeniorPlayers = 0;
 		int inactiveJuniorPlayers = 0;
 
-		LinkedList<WinLossUser> seniorPlayers = new LinkedList<WinLossUser>();
-		LinkedList<WinLossUser> juniorPlayers = new LinkedList<WinLossUser>();
+		LinkedList<WinLossUser> seniorPlayers = new LinkedList<>();
+		LinkedList<WinLossUser> juniorPlayers = new LinkedList<>();
 
-		LinkedList<WinLossGame> werewolfGames = new LinkedList<WinLossGame>();
-		LinkedList<WinLossGame> assassinsGames = new LinkedList<WinLossGame>();
-		LinkedList<WinLossGame> mafiaGames = new LinkedList<WinLossGame>();
+		LinkedList<WinLossGame> werewolfGames = new LinkedList<>();
+		LinkedList<WinLossGame> assassinsGames = new LinkedList<>();
+		LinkedList<WinLossGame> mafiaGames = new LinkedList<>();
 
 		for (WinLossGame game : NeonGameRecord.games)
 			switch (game.type)
@@ -596,7 +596,7 @@ public class NeonGameRecord implements GameRecord
 
 	private LinkedList<WinLossUser> userConvert(LinkedList<? extends ForumUser> list)
 	{
-		LinkedList<WinLossUser> output = new LinkedList<WinLossUser>();
+		LinkedList<WinLossUser> output = new LinkedList<>();
 		for (ForumUser user : list)
 			if (user != null)
 				output.add(this.getUser(user));

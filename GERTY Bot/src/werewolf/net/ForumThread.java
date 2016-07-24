@@ -13,9 +13,9 @@ public abstract class ForumThread implements Serializable
 	private static final Logger	LOGGER				= Logger.getLogger(ForumThread.class.getName());
 	private static final long	serialVersionUID	= -1204239372191855699L;
 
-	protected LinkedList<ForumPost>	posts	= new LinkedList<ForumPost>();
-	protected LinkedList<ForumPost>	deleted	= new LinkedList<ForumPost>();
-	protected LinkedList<ForumPost>	edited	= new LinkedList<ForumPost>();
+	protected LinkedList<ForumPost>	posts	= new LinkedList<>();
+	protected LinkedList<ForumPost>	deleted	= new LinkedList<>();
+	protected LinkedList<ForumPost>	edited	= new LinkedList<>();
 
 	private boolean	stickied	= false;
 	private boolean	locked		= false;

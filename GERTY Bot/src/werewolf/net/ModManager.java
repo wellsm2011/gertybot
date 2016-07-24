@@ -12,8 +12,8 @@ public class ModManager
 {
 	public static final int groupId = 27;
 
-	private static LinkedList<ForumUser>	permamods	= new LinkedList<ForumUser>();
-	private static LinkedList<ForumUser>	mods		= new LinkedList<ForumUser>();
+	private static LinkedList<ForumUser>	permamods	= new LinkedList<>();
+	private static LinkedList<ForumUser>	mods		= new LinkedList<>();
 	private static boolean					initalized	= false;
 
 	public static void addMods(LinkedList<ForumUser> mods)

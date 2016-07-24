@@ -26,7 +26,7 @@ public class NeonThread extends ForumThread
 	private static final long serialVersionUID = 2939364857283333100L;
 
 	private static final DateTimeFormatter	timeFormat		= DateTimeFormat.forPattern("E MMMM d, YYYY h:m a");
-	private static LinkedList<NeonThread>	loadedThreads	= new LinkedList<NeonThread>();
+	private static LinkedList<NeonThread>	loadedThreads	= new LinkedList<>();
 
 	public static NeonThread getThread(int threadId)
 	{
@@ -120,7 +120,7 @@ public class NeonThread extends ForumThread
 			} else
 				poster = ForumUser.getUserFor(posterName, this.getContext());
 			boolean editable = page.getByXPath(postRow + "//a/img[@title='Edit post']").size() > 0;
-			ArrayList<Command> commands = new ArrayList<Command>();
+			ArrayList<Command> commands = new ArrayList<>();
 			List<?> commandElements = page.getByXPath(postRow + "//div[@class='postbody']/strong");
 			boolean edited = page.getByXPath(postRow + "//div[@class='edited']").size() > 0;
 			String postBody = ((HtmlDivision) page.getFirstByXPath(postRow + "//div[@class='postbody']")).asText();

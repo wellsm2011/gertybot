@@ -31,7 +31,7 @@ public class WerewolfGame_OLD implements ThreadManager
 	}
 
 	private ForumThread			thread;
-	private ArrayList<Player>	players		= new ArrayList<Player>();
+	private ArrayList<Player>	players		= new ArrayList<>();
 	private VoteManager_OLD		votes		= new VoteManager_OLD(this.players);
 	private ForumUser			host		= null;
 	private ForumUser			cohost		= null;
@@ -47,7 +47,7 @@ public class WerewolfGame_OLD implements ThreadManager
 
 	private boolean resetVotesOnRoundChange = true;
 
-	private String	storyPosts		= "";
+	private String storyPosts = "";
 	// 0: Undefined, 1: Timed, 2: Single, 3: Majority, 4: Decremental
 	private byte	lynchType		= 0;
 	private int		roundLength		= 0;
@@ -330,9 +330,9 @@ public class WerewolfGame_OLD implements ThreadManager
 			}
 
 			String[] params = cmd.getParamString().split(", ?");
-			LinkedList<ForumUser> winners = new LinkedList<ForumUser>();
-			LinkedList<ForumUser> losers = new LinkedList<ForumUser>();
-			LinkedList<ForumUser> hosts = new LinkedList<ForumUser>();
+			LinkedList<ForumUser> winners = new LinkedList<>();
+			LinkedList<ForumUser> losers = new LinkedList<>();
+			LinkedList<ForumUser> hosts = new LinkedList<>();
 
 			for (String plr : params)
 				winners.add(this.getPlayer(plr));
@@ -405,7 +405,7 @@ public class WerewolfGame_OLD implements ThreadManager
 
 	private LinkedList<Player> getInactivePosters()
 	{
-		LinkedList<Player> output = new LinkedList<Player>();
+		LinkedList<Player> output = new LinkedList<>();
 		for (Player plr : this.players)
 			if (plr.inactivePostRounds() > 1 && plr.isAlive())
 				output.add(plr);
@@ -456,7 +456,7 @@ public class WerewolfGame_OLD implements ThreadManager
 
 	private LinkedList<Player> getInactiveVoters()
 	{
-		LinkedList<Player> output = new LinkedList<Player>();
+		LinkedList<Player> output = new LinkedList<>();
 		for (Player plr : this.players)
 			if (plr.inactiveVoteRounds() > 1 && plr.isAlive())
 				output.add(plr);

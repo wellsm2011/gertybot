@@ -30,11 +30,11 @@ public class WerewolfGame
 	protected LinkedList<ForumUser>	cohosts	= new LinkedList<>();
 	protected int					round	= 0;
 	// Game starts in pregame setup.
-	protected GamePhase				phase	= GamePhase.PREGAME;
+	protected GamePhase phase = GamePhase.PREGAME;
 
 	protected boolean		stateChange	= false;
 	protected GameCommand[]	cmds		= new GameCommand[]
-											{};
+	{};
 
 	public WerewolfGame(ForumThread subscription)
 	{

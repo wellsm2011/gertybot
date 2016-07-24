@@ -12,8 +12,8 @@ public class ForumUserDatabase implements Serializable
 	 * 
 	 */
 	private static final long				serialVersionUID	= 1L;
-	private Hashtable<Integer, ForumUser>	users				= new Hashtable<Integer, ForumUser>();
-	private LinkedList<ForumUser>			unknownUsers		= new LinkedList<ForumUser>();
+	private Hashtable<Integer, ForumUser>	users				= new Hashtable<>();
+	private LinkedList<ForumUser>			unknownUsers		= new LinkedList<>();
 	public final ForumContext				context;
 	private boolean							initalized			= false;
 

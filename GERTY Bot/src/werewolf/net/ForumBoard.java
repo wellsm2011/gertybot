@@ -14,8 +14,8 @@ public abstract class ForumBoard implements Serializable
 
 	public final int REFRESH_MINUTES;
 
-	protected LinkedList<ForumThread>	threads		= new LinkedList<ForumThread>();
-	protected LinkedList<ForumBoard>	subboards	= new LinkedList<ForumBoard>();
+	protected LinkedList<ForumThread>	threads		= new LinkedList<>();
+	protected LinkedList<ForumBoard>	subboards	= new LinkedList<>();
 	protected long						lastRefresh	= 0;
 	protected String					boardId;
 

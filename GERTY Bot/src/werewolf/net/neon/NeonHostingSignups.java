@@ -28,9 +28,9 @@ public class NeonHostingSignups implements HostingSignups
 
 	public static final NeonHostingSignups	INSTANCE		= new NeonHostingSignups();
 	private NeonThread						thread			= NeonThread.getThread(NeonHostingSignups.SIGNUP_THREAD);
-	private LinkedList<SignupRecord>		werewolfGames	= new LinkedList<SignupRecord>();
-	private LinkedList<SignupRecord>		assassinsGames	= new LinkedList<SignupRecord>();
-	private LinkedList<SignupRecord>		mafiaGames		= new LinkedList<SignupRecord>();
+	private LinkedList<SignupRecord>		werewolfGames	= new LinkedList<>();
+	private LinkedList<SignupRecord>		assassinsGames	= new LinkedList<>();
+	private LinkedList<SignupRecord>		mafiaGames		= new LinkedList<>();
 	/**
 	 * running/queued mafia game number.
 	 */

@@ -73,8 +73,8 @@ public class NeonInbox extends ForumInbox
 			this.dumpUsers(row4, to);
 			this.dumpUsers(row5, bcc);
 		} else
-			// TODO: Implement conditional.
-			if (true)
+		// TODO: Implement conditional.
+		if (true)
 			this.dumpUsers(row4, to);
 		else
 			this.dumpUsers(row4, bcc);
@@ -107,6 +107,6 @@ public class NeonInbox extends ForumInbox
 			new PrivateMessage(subjectLink.asText(), true, id, timestamp, this);
 		}
 
-		return new LinkedList<PrivateMessage>();
+		return new LinkedList<>();
 	}
 }

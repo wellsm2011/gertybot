@@ -3,8 +3,8 @@ package werewolf.net.neon;
 import java.util.HashMap;
 import java.util.Map;
 
-import werewolf.net.ForumMessageEncoder;
 import werewolf.net.ForumMessage.Style;
+import werewolf.net.ForumMessageEncoder;
 
 public class NeonMessageEncoder extends ForumMessageEncoder
 {
@@ -40,7 +40,7 @@ public class NeonMessageEncoder extends ForumMessageEncoder
 	@Override
 	protected Map<Style, Tags> getTagMap()
 	{
-		return map;
+		return this.map;
 	}
 
 }

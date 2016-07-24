@@ -12,14 +12,6 @@ import java.util.Set;
 
 public class ForumMessage
 {
-	// Default color for names to be posted in.
-	public static final Color	VILLAGE		= Color.GREEN;
-	public static final Color	EVIL		= Color.RED;
-	public static final Color	NEUTRAL		= Color.YELLOW;
-	public static final Color	THIRD_PARTY	= new Color(0xFF2DC3);
-	public static final Color	DEAD		= new Color(0xFFBF80);
-	public static final Color	INVALID		= Color.RED;
-
 	private class Message extends Op
 	{
 		public Message(String msg)
@@ -89,36 +81,33 @@ public class ForumMessage
 		LISTITEM
 	}
 
-	private Set<Style>	currentlyActive;
-	private List<Op>	operations;
+	// Default color for names to be posted in.
+	public static final Color	VILLAGE		= Color.GREEN;
+	public static final Color	EVIL		= Color.RED;
+	public static final Color	NEUTRAL		= Color.YELLOW;
+	public static final Color	THIRD_PARTY	= new Color(0xFF2DC3);
+	public static final Color	DEAD		= new Color(0xFFBF80);
+	public static final Color	INVALID		= Color.RED;
+
+	/**
+	 * Returns a simple forum message consisting of just the specified text.
+	 * 
+	 * @param text
+	 * @return a forum message of that text
+	 */
+	public static ForumMessage of(String text)
+	{
+		return new ForumMessage().add(text);
+	}
+
+	private Set<Style> currentlyActive;
+
+	private List<Op> operations;
 
 	public ForumMessage()
 	{
 		this.currentlyActive = new LinkedHashSet<>();
 		this.operations = new ArrayList<>();
-	}
-
-	public ForumMessage add(String txt)
-	{
-		if (this.currentlyActive.contains(Style.LIST))
-			this.startStyle(Style.LISTITEM);
-		this.operations.add(new Message(txt));
-		if (this.currentlyActive.contains(Style.LIST))
-			this.stopStyle(Style.LISTITEM);
-		return this;
-	}
-
-	/**
-	 * ends any currently in-progress styles.
-	 * 
-	 * @return this message for chaining
-	 */
-	public ForumMessage stopAll()
-	{
-		// by stopping the oldest style, we stop them all.
-		if (!currentlyActive.isEmpty())
-			this.stopStyle(currentlyActive.iterator().next());
-		return this;
 	}
 
 	/**
@@ -145,7 +134,7 @@ public class ForumMessage
 		for (Op o : otherMessage.operations)
 		{
 			if (o instanceof Message)
-				operations.add(o);
+				this.operations.add(o);
 			if (o instanceof StopStyle)
 				this.stopStyle(o.getStyle());
 			if (o instanceof StartStyle)
@@ -154,17 +143,14 @@ public class ForumMessage
 		return this;
 	}
 
-	/**
-	 * @return the number of raw text segments in this message
-	 */
-	public int getTxtCount()
+	public ForumMessage add(String txt)
 	{
-		return (int) this.operations.stream().filter(o -> o instanceof Message).count();
-	}
-
-	public boolean hasTextSegments()
-	{
-		return this.operations.stream().filter(o -> o instanceof Message).findFirst().isPresent();
+		if (this.currentlyActive.contains(Style.LIST))
+			this.startStyle(Style.LISTITEM);
+		this.operations.add(new Message(txt));
+		if (this.currentlyActive.contains(Style.LIST))
+			this.stopStyle(Style.LISTITEM);
+		return this;
 	}
 
 	@Override
@@ -197,6 +183,19 @@ public class ForumMessage
 				sb.append(encoder.escape(op.getMsg()));
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * @return the number of raw text segments in this message
+	 */
+	public int getTxtCount()
+	{
+		return (int) this.operations.stream().filter(o -> o instanceof Message).count();
+	}
+
+	public boolean hasTextSegments()
+	{
+		return this.operations.stream().filter(o -> o instanceof Message).findFirst().isPresent();
 	}
 
 	public ForumMessage startBold()
@@ -258,6 +257,19 @@ public class ForumMessage
 	public ForumMessage startURL(String link)
 	{
 		this.startStyle(Style.URL, link);
+		return this;
+	}
+
+	/**
+	 * ends any currently in-progress styles.
+	 * 
+	 * @return this message for chaining
+	 */
+	public ForumMessage stopAll()
+	{
+		// by stopping the oldest style, we stop them all.
+		if (!this.currentlyActive.isEmpty())
+			this.stopStyle(this.currentlyActive.iterator().next());
 		return this;
 	}
 
@@ -368,16 +380,5 @@ public class ForumMessage
 	{
 		this.stopStyle(Style.URL);
 		return this;
-	}
-
-	/**
-	 * Returns a simple forum message consisting of just the specified text.
-	 * 
-	 * @param text
-	 * @return a forum message of that text
-	 */
-	public static ForumMessage of(String text)
-	{
-		return new ForumMessage().add(text);
 	}
 }
