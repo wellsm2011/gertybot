@@ -6,8 +6,8 @@ import werewolf.game.GamePhase;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
+import werewolf.net.ForumMessage;
 import werewolf.net.ForumUser;
-import werewolf.net.msg.ForumMessageElement;
 
 public abstract class GameCommand
 {
@@ -26,12 +26,17 @@ public abstract class GameCommand
 
 	protected enum Requirement
 	{
-		HOST("invalid access", "can't be host"), PLAYER("unknown player", "can't be a player"), ALIVE("dead player", "living player"), DAY("must be day", "currently day"), NIGHT("must be night",
-				"currently night"), PREGAME("must be pregame setup", "currently pregame setup"), ADMIN("invalid access", "can't be admin");
+		HOST("invalid access", "can't be host"),
+		PLAYER("unknown player", "can't be a player"),
+		ALIVE("dead player", "living player"),
+		DAY("must be day", "currently day"),
+		NIGHT("must be night", "currently night"),
+		PREGAME("must be pregame setup", "currently pregame setup"),
+		ADMIN("invalid access", "can't be admin");
 
-		public final String requiredTrue;
-		public final String requiredFalse;
-		private BiFunction<WerewolfGame, Command, Boolean> resolver = null;
+		public final String									requiredTrue;
+		public final String									requiredFalse;
+		private BiFunction<WerewolfGame, Command, Boolean>	resolver	= null;
 
 		private Requirement(String requiredTrue, String requiredFalse)
 		{
@@ -88,7 +93,7 @@ public abstract class GameCommand
 	// Usage: player[:<alive|dead>], string[:<option1>|<option2>|<...>],
 	// number[:<min>,<max>]
 	protected String		name		= "UNKNOWN";
-	protected String		info		= "No information found for command.";
+	protected ForumMessage	info		= ForumMessage.of("No information found for command.");
 	protected String		usage		= "";
 	protected String		match		= ".*";
 	protected Requirement[]	mustBeTrue	= new Requirement[0];
@@ -136,7 +141,7 @@ public abstract class GameCommand
 	 * @return Returns the description of this command, to be posted in the help
 	 *         section.
 	 */
-	public ForumMessageElement getInfo()
+	public ForumMessage getInfo()
 	{
 		return this.info;
 	}

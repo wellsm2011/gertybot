@@ -1,4 +1,4 @@
-package werewolf.experimental;
+package werewolf.net;
 
 import java.awt.Color;
 import java.util.ArrayDeque;
@@ -10,8 +10,16 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-public class ForumMessageBuilder
+public class ForumMessage
 {
+	// Default color for names to be posted in.
+	public static final Color	VILLAGE		= Color.GREEN;
+	public static final Color	EVIL		= Color.RED;
+	public static final Color	NEUTRAL		= Color.YELLOW;
+	public static final Color	THIRD_PARTY	= new Color(0xFF2DC3);
+	public static final Color	DEAD		= new Color(0xFFBF80);
+	public static final Color	INVALID		= Color.RED;
+
 	private class Message extends Op
 	{
 		public Message(String msg)
@@ -65,7 +73,7 @@ public class ForumMessageBuilder
 		}
 	}
 
-	enum Style
+	public enum Style
 	{
 		QUOTE,
 		SPOILER,
@@ -84,13 +92,13 @@ public class ForumMessageBuilder
 	private Set<Style>	currentlyActive;
 	private List<Op>	operations;
 
-	public ForumMessageBuilder()
+	public ForumMessage()
 	{
 		this.currentlyActive = new LinkedHashSet<>();
 		this.operations = new ArrayList<>();
 	}
 
-	public ForumMessageBuilder add(String txt)
+	public ForumMessage add(String txt)
 	{
 		if (this.currentlyActive.contains(Style.LIST))
 			this.startStyle(Style.LISTITEM);
@@ -100,6 +108,81 @@ public class ForumMessageBuilder
 		return this;
 	}
 
+	/**
+	 * ends any currently in-progress styles.
+	 * 
+	 * @return this message for chaining
+	 */
+	public ForumMessage stopAll()
+	{
+		// by stopping the oldest style, we stop them all.
+		if (!currentlyActive.isEmpty())
+			this.stopStyle(currentlyActive.iterator().next());
+		return this;
+	}
+
+	/**
+	 * <p>
+	 * Given another forum message, adds that one's contents to this one. This
+	 * is done by treating every operation supplied by the other message as a
+	 * new operation triggered on this message. So, in effect; adding another
+	 * message has the same effect as adding that message's contents
+	 * individually. This means that if the current message at the start has
+	 * some style going, additional start-style operations for the previously
+	 * active style will be ignored. Additionally, the other message's stop
+	 * style commands will stop the currently going styles.
+	 * </p>
+	 * <p>
+	 * This operation does not effect the other message specified.
+	 * </p>
+	 * 
+	 * @param otherMessage
+	 *            the other message whose contents are to be added to this one
+	 * @return this message for chaining
+	 */
+	public ForumMessage add(ForumMessage otherMessage)
+	{
+		for (Op o : otherMessage.operations)
+		{
+			if (o instanceof Message)
+				operations.add(o);
+			if (o instanceof StopStyle)
+				this.stopStyle(o.getStyle());
+			if (o instanceof StartStyle)
+				this.startStyle(o.getStyle(), o.getParams());
+		}
+		return this;
+	}
+
+	/**
+	 * @return the number of raw text segments in this message
+	 */
+	public int getTxtCount()
+	{
+		return (int) this.operations.stream().filter(o -> o instanceof Message).count();
+	}
+
+	public boolean hasTextSegments()
+	{
+		return this.operations.stream().filter(o -> o instanceof Message).findFirst().isPresent();
+	}
+
+	@Override
+	public ForumMessage clone()
+	{
+		ForumMessage res = new ForumMessage();
+		this.operations.forEach(res.operations::add);
+		this.currentlyActive.forEach(res.currentlyActive::add);
+		return res;
+	}
+
+	/**
+	 * Given the specified encoder, encodes this message as a string. This
+	 * allows
+	 * 
+	 * @param encoder
+	 * @return
+	 */
 	public String formatString(ForumMessageEncoder encoder)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -116,49 +199,49 @@ public class ForumMessageBuilder
 		return sb.toString();
 	}
 
-	public ForumMessageBuilder startBold()
+	public ForumMessage startBold()
 	{
 		this.startStyle(Style.BOLD);
 		return this;
 	}
 
-	public ForumMessageBuilder startCodeBlock()
+	public ForumMessage startCodeBlock()
 	{
 		this.startStyle(Style.CODE);
 		return this;
 	}
 
-	public ForumMessageBuilder startColor(Color color)
+	public ForumMessage startColor(Color color)
 	{
 		this.startStyle(Style.BOLD, Integer.toString(color.getRGB() % 0xFFFFFF, 16));
 		return this;
 	}
 
-	public ForumMessageBuilder startHeader()
+	public ForumMessage startHeader()
 	{
 		this.startStyle(Style.HEADER);
 		return this;
 	}
 
-	public ForumMessageBuilder startItalic()
+	public ForumMessage startItalic()
 	{
 		this.startStyle(Style.ITALIC);
 		return this;
 	}
 
-	public ForumMessageBuilder startQuote(String author)
+	public ForumMessage startQuote(String author)
 	{
 		this.startStyle(Style.QUOTE, author);
 		return this;
 	}
 
-	public ForumMessageBuilder startSpoiler(String title)
+	public ForumMessage startSpoiler(String title)
 	{
 		this.startStyle(Style.SPOILER, title);
 		return this;
 	}
 
-	public ForumMessageBuilder startStrike()
+	public ForumMessage startStrike()
 	{
 		this.startStyle(Style.STRIKE);
 		return this;
@@ -172,55 +255,55 @@ public class ForumMessageBuilder
 		this.operations.add(new StartStyle(s, params));
 	}
 
-	public ForumMessageBuilder startURL(String link)
+	public ForumMessage startURL(String link)
 	{
 		this.startStyle(Style.URL, link);
 		return this;
 	}
 
-	public ForumMessageBuilder stopBold()
+	public ForumMessage stopBold()
 	{
 		this.stopStyle(Style.BOLD);
 		return this;
 	}
 
-	public ForumMessageBuilder stopCodeBlock()
+	public ForumMessage stopCodeBlock()
 	{
 		this.stopStyle(Style.CODE);
 		return this;
 	}
 
-	public ForumMessageBuilder stopColor()
+	public ForumMessage stopColor()
 	{
 		this.stopStyle(Style.COLOR);
 		return this;
 	}
 
-	public ForumMessageBuilder stopHeader()
+	public ForumMessage stopHeader()
 	{
 		this.stopStyle(Style.HEADER);
 		return this;
 	}
 
-	public ForumMessageBuilder stopItalic()
+	public ForumMessage stopItalic()
 	{
 		this.stopStyle(Style.ITALIC);
 		return this;
 	}
 
-	public ForumMessageBuilder stopQuote()
+	public ForumMessage stopQuote()
 	{
 		this.stopStyle(Style.QUOTE);
 		return this;
 	}
 
-	public ForumMessageBuilder stopSpoiler()
+	public ForumMessage stopSpoiler()
 	{
 		this.stopStyle(Style.SPOILER);
 		return this;
 	}
 
-	public ForumMessageBuilder stopStrike()
+	public ForumMessage stopStrike()
 	{
 		this.stopStyle(Style.STRIKE);
 		return this;
@@ -276,9 +359,25 @@ public class ForumMessageBuilder
 		}
 	}
 
-	public ForumMessageBuilder stopURL()
+	/**
+	 * Stops the current URL style
+	 * 
+	 * @return this message for chaining
+	 */
+	public ForumMessage stopURL()
 	{
 		this.stopStyle(Style.URL);
 		return this;
+	}
+
+	/**
+	 * Returns a simple forum message consisting of just the specified text.
+	 * 
+	 * @param text
+	 * @return a forum message of that text
+	 */
+	public static ForumMessage of(String text)
+	{
+		return new ForumMessage().add(text);
 	}
 }

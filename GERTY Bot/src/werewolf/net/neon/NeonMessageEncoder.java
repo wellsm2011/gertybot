@@ -1,70 +1,46 @@
 package werewolf.net.neon;
 
-import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 import werewolf.net.ForumMessageEncoder;
+import werewolf.net.ForumMessage.Style;
 
 public class NeonMessageEncoder extends ForumMessageEncoder
 {
-	@Override
-	protected String encodeBold(String msg)
+	private Map<Style, Tags> map;
+
+	public NeonMessageEncoder()
 	{
-		return "[b]" + msg + "[/b]";
+		this.map = new HashMap<>();
+		this.map.put(Style.QUOTE, new Tags("[quote=%s]", "[/quote]"));
+		this.map.put(Style.SPOILER, new Tags("[size=200]%s[/size][spoiler]", "[/spoiler]"));
+		this.map.put(Style.STRIKE, new Tags("[s]", "[/s]"));
+		this.map.put(Style.URL, new Tags("[url=%s]", "[/url]"));
+		this.map.put(Style.BOLD, new Tags("[b]", "[/b]"));
+		this.map.put(Style.ITALIC, new Tags("[i]", "[/i]"));
+		this.map.put(Style.COLOR, new Tags("[color=#%s]", "[/color]"));
+		this.map.put(Style.HEADER, new Tags("[size=200]", "[/size]"));
+		this.map.put(Style.UNDERLINE, new Tags("", ""));
+		this.map.put(Style.CODE, new Tags("[code]", "[/code]"));
+		/*
+		 * FIXME make sure this is the correct NEON format for lists. Not my job
+		 * =p
+		 */
+		this.map.put(Style.LIST, new Tags("[list]", "[/list]"));
+		this.map.put(Style.LISTITEM, new Tags("[*]", ""));
 	}
 
 	@Override
-	protected String encodeCodeblock(String msg)
-	{
-		return "[code]" + msg + "[/code]";
-	}
-
-	@Override
-	protected String encodeColor(String msg, Color color)
-	{
-		String rgb = Integer.toString(color.getRGB() % 0xFFFFFF, 16);
-		return "[color=#" + rgb + "]" + msg + "[/color]";
-	}
-
-	@Override
-	protected String encodeHeader(String msg)
-	{
-		return "[size=200]" + msg + "[/size]";
-	}
-
-	@Override
-	protected String encodeItalic(String msg)
-	{
-		return "[i]" + msg + "[/i]";
-	}
-
-	@Override
-	protected String encodeQuote(String msg, String author)
-	{
-		return "[quote=" + author + "]" + msg + "[/quote]";
-	}
-
-	@Override
-	protected String encodeSpoiler(String msg, String title)
-	{
-		return this.encodeHeader(title) + "[spoiler]" + msg + "[/spoiler]";
-	}
-
-	@Override
-	protected String encodeStrike(String msg)
-	{
-		return "[s]" + msg + "[/s]";
-	}
-
-	@Override
-	protected String encodeUrl(String msg, String url)
-	{
-		return "[url=" + url + "]" + msg + "[/url]";
-	}
-
-	@Override
-	protected String escape(String msg)
+	public String escape(String msg)
 	{
 		return msg;
+	}
+
+	@Override
+	protected Map<Style, Tags> getTagMap()
+	{
+		return map;
 	}
 
 }

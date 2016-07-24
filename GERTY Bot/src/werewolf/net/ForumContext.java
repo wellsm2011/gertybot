@@ -26,7 +26,6 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.JavaScriptErrorListener;
 
 import werewolf.game.WerewolfGame_OLD;
-import werewolf.net.msg.ForumMessageElement;
 
 public abstract class ForumContext implements Serializable, Runnable
 {
@@ -107,9 +106,9 @@ public abstract class ForumContext implements Serializable, Runnable
 	protected final WebClient	CLIENT				= new WebClient(BrowserVersion.FIREFOX_38);
 	protected double			REQUEST_INTERVAL	= 2;
 	// Seconds between posts and PM submissions.
-	protected double			POST_INTERVAL		= 45;
-	private long				lastPageRequest		= System.currentTimeMillis() - (long) (this.REQUEST_INTERVAL * 500);
-	private long				lastPostSubmission	= System.currentTimeMillis() - (long) (this.POST_INTERVAL * 500);
+	protected double	POST_INTERVAL		= 45;
+	private long		lastPageRequest		= System.currentTimeMillis() - (long) (this.REQUEST_INTERVAL * 500);
+	private long		lastPostSubmission	= System.currentTimeMillis() - (long) (this.POST_INTERVAL * 500);
 
 	public ForumContext()
 	{
@@ -499,7 +498,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 * @throws IOException
 	 *             If any of the underlying network calls throw an error.
 	 */
-	protected abstract void makePm(HtmlPage page, String[] to, String[] bcc, String subject, ForumMessageElement body) throws IOException;
+	protected abstract void makePm(HtmlPage page, String[] to, String[] bcc, String subject, ForumMessage body) throws IOException;
 
 	/**
 	 * Sends a new PM.
@@ -515,7 +514,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 * @throws IOException
 	 *             If any of the underlying network calls throw an error.
 	 */
-	public void makePm(String[] to, String[] bcc, String subject, ForumMessageElement body) throws IOException
+	public void makePm(String[] to, String[] bcc, String subject, ForumMessage body) throws IOException
 	{
 		this.makePm(this.getComposeMessagePage(), to, bcc, subject, body);
 	}
@@ -531,7 +530,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 *             If the given page is not a forum post page or if any of the
 	 *             underlying network calls throw an error.
 	 */
-	protected void makePost(HtmlPage postPage, ForumMessageElement body) throws IOException
+	protected void makePost(HtmlPage postPage, ForumMessage body) throws IOException
 	{
 		this.makePost(postPage, body, "");
 	}
@@ -547,7 +546,7 @@ public abstract class ForumContext implements Serializable, Runnable
 	 *             If the given page is not a forum post page or if any of the
 	 *             underlying network calls throw an error.
 	 */
-	protected abstract void makePost(HtmlPage postPage, final ForumMessageElement body, final String subject) throws IOException;
+	protected abstract void makePost(HtmlPage postPage, final ForumMessage body, final String subject) throws IOException;
 
 	/**
 	 * Called when a post must be made (be it a post to a thread, a PM, an edit,

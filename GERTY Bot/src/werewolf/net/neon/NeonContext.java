@@ -16,12 +16,12 @@ import werewolf.Utils;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumInbox;
 import werewolf.net.ForumLogin;
+import werewolf.net.ForumMessage;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUserDatabase;
 import werewolf.net.GameRecord;
 import werewolf.net.HostingSignups;
 import werewolf.net.PrivateMessage;
-import werewolf.net.msg.ForumMessageElement;
 
 public class NeonContext extends ForumContext
 {
@@ -110,11 +110,11 @@ public class NeonContext extends ForumContext
 			// Don't want to click that!
 			for (Object obj : sidLink)
 			{
-				HtmlAnchor link = (HtmlAnchor) obj;
-				if (!link.asText().contains("FAQ"))
-					continue;
-				link.click();
-				break;
+			HtmlAnchor link = (HtmlAnchor) obj;
+			if (!link.asText().contains("FAQ"))
+			continue;
+			link.click();
+			break;
 			}
 		return true;
 	}
@@ -286,7 +286,7 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
-	public void makePm(HtmlPage pmPage, String[] to, String[] bcc, String subject, ForumMessageElement body) throws IOException
+	public void makePm(HtmlPage pmPage, String[] to, String[] bcc, String subject, ForumMessage body) throws IOException
 	{
 		String formName = "postform";
 
@@ -304,7 +304,7 @@ public class NeonContext extends ForumContext
 
 			HtmlElement message = form.getElementsByAttribute("textarea", "name", "message").get(0);
 			message.click();
-			message.type(NeonContext.ENCODER.encodeMessage(body));
+			message.type(body.formatString(NeonContext.ENCODER));
 			this.pagePostLock();
 			pmPage = ((HtmlElement) pmPage.getFirstByXPath("//input[@name='post' and @class='btnmain']")).click();
 			// TODO: Check to ensure PM was sent successfully.
@@ -314,7 +314,7 @@ public class NeonContext extends ForumContext
 	}
 
 	@Override
-	public void makePost(HtmlPage postPage, final ForumMessageElement body, final String subject) throws IOException
+	public void makePost(HtmlPage postPage, final ForumMessage body, final String subject) throws IOException
 	{
 		String formName = "postform";
 		List<HtmlForm> forms = postPage.getForms();
@@ -328,7 +328,7 @@ public class NeonContext extends ForumContext
 				form.getInputByName("subject").setValueAttribute(subject);
 			HtmlElement message = form.getElementsByAttribute("textarea", "name", "message").get(0);
 			message.click();
-			message.type(NeonContext.ENCODER.encodeMessage(body));
+			message.type(body.formatString(NeonContext.ENCODER));
 
 			this.pagePostLock();
 			postPage = form.getInputByName("post").click();

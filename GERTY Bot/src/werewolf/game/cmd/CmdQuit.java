@@ -3,6 +3,7 @@ package werewolf.game.cmd;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
+import werewolf.net.ForumMessage;
 
 public class CmdQuit extends GameCommand
 {
@@ -10,7 +11,7 @@ public class CmdQuit extends GameCommand
 	{
 		super(game);
 		this.name = "quit";
-		this.info = "Removes you from the game. Can only be used during Pregame.";
+		this.info = ForumMessage.of("Removes you from the game. Can only be used during Pregame.");
 		this.usage = "";
 		this.match = "quit|out|leave";
 		this.mustBeTrue = new Requirement[]

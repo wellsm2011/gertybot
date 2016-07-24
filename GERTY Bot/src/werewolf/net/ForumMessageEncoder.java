@@ -1,159 +1,119 @@
 package werewolf.net;
 
-import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
 
-import werewolf.net.msg.ForumMessageBold;
-import werewolf.net.msg.ForumMessageCodeblock;
-import werewolf.net.msg.ForumMessageColor;
-import werewolf.net.msg.ForumMessageContainer;
-import werewolf.net.msg.ForumMessageElement;
-import werewolf.net.msg.ForumMessageItalic;
-import werewolf.net.msg.ForumMessageQuote;
-import werewolf.net.msg.ForumMessageSpoiler;
-import werewolf.net.msg.ForumMessageStrike;
-import werewolf.net.msg.ForumMessageString;
-import werewolf.net.msg.ForumMessageUrl;
+import werewolf.net.ForumMessage.Style;
 
-/**
- * This class handles messages passed from the game package. Classes that extend
- * this class implement functionality that translates rich text to a plaintext
- * output. For example, a BBCode implementation of this class might translate
- * bold text to become [b]text[/b] while an html implementation might translate
- * it to &lt;b&gt;text&lt;/b&gt;.
- * 
- * @author Michael Wells
- */
 public abstract class ForumMessageEncoder
 {
-	private static final Logger				LOGGER		= Logger.getLogger(ForumMessageEncoder.class.getName());
-	/**
-	 * The default implementation, which eliminates richtext. Suitable for
-	 * console or logfile output.
-	 */
-	public static final ForumMessageEncoder	PLAINTEXT	= new ForumMessageEncoder()
+	protected class Tags
 	{
-		@Override
-		protected String encodeBold(String msg)
+		private String	opening;
+		private String	closing;
+
+		public Tags(String opening, String closing)
 		{
-			return msg;
+			this.opening = opening;
+			this.closing = closing;
 		}
 
-		@Override
-		protected String encodeCodeblock(String msg)
+		public String getClosing()
 		{
-			return msg;
+			return this.closing;
 		}
 
-		@Override
-		protected String encodeColor(String msg, Color color)
+		public String getOpening()
 		{
-			return msg;
+			return this.opening;
 		}
-
-		@Override
-		protected String encodeHeader(String msg)
-		{
-			return msg.toUpperCase();
-		}
-
-		@Override
-		protected String encodeItalic(String msg)
-		{
-			return msg;
-		}
-
-		@Override
-		protected String encodeQuote(String msg, String author)
-		{
-			if (msg.contains("\n"))
-				return "Quote (" + author + "):\n\t" + msg.replaceAll("\n", "\n\t");
-			return "\"" + msg + "\" (" + author + ")";
-		}
-
-		@Override
-		protected String encodeSpoiler(String msg, String title)
-		{
-			return this.encodeHeader(title) + ":\n" + msg;
-		}
-
-		@Override
-		protected String encodeStrike(String msg)
-		{
-			return msg;
-		}
-
-		@Override
-		protected String encodeUrl(String msg, String url)
-		{
-			return msg + "<" + url + ">";
-		}
-
-		@Override
-		protected String escape(String msg)
-		{
-			return msg;
-		}
-
-	};
-
-	protected abstract String encodeBold(String msg);
-
-	protected abstract String encodeCodeblock(String msg);
-
-	protected abstract String encodeColor(String msg, Color color);
-
-	protected abstract String encodeHeader(String msg);
-
-	protected abstract String encodeItalic(String msg);
-
-	/**
-	 * Function to perform the encoding of a forum message element.
-	 * 
-	 * @param msg
-	 *            The message to encode.
-	 * @return The encoded form of the given message, as a String.
-	 */
-	public String encodeMessage(ForumMessageElement msg)
-	{
-		if (this != ForumMessageEncoder.PLAINTEXT && ForumMessageEncoder.LOGGER.isLoggable(Level.FINE))
-			ForumMessageEncoder.LOGGER.fine("Encoding Message: " + ForumMessageEncoder.PLAINTEXT.encodeMessage(msg));
-
-		// Figure out which element we're dealing with and call the
-		// associated implementation-specific function.
-		return msg.toString((elem, string) -> {
-			if (elem instanceof ForumMessageContainer)
-				return string;	// Container is just a grouping.
-			if (elem instanceof ForumMessageString)
-				return this.escape(((ForumMessageString) elem).getMsg());
-			if (elem instanceof ForumMessageBold)
-				return this.encodeBold(string);
-			if (elem instanceof ForumMessageItalic)
-				return this.encodeItalic(string);
-			if (elem instanceof ForumMessageStrike)
-				return this.encodeStrike(string);
-			if (elem instanceof ForumMessageSpoiler)
-				return this.encodeSpoiler(string, ((ForumMessageSpoiler) elem).getTitle());
-			if (elem instanceof ForumMessageCodeblock)
-				return this.encodeCodeblock(string);
-			if (elem instanceof ForumMessageQuote)
-				return this.encodeQuote(string, ((ForumMessageQuote) elem).getAuthor());
-			if (elem instanceof ForumMessageColor)
-				return this.encodeColor(string, ((ForumMessageColor) elem).getColor());
-			if (elem instanceof ForumMessageUrl)
-				return this.encodeUrl(string, ((ForumMessageUrl) elem).getUrl());
-			throw new IllegalArgumentException("Unknown element type in message: " + elem.getClass().toString());
-		});
 	}
 
-	protected abstract String encodeQuote(String msg, String author);
+	public static final ForumMessageEncoder PLAINTEXT = new ForumMessageEncoder()
+	{
+		private Map<Style, Tags> map;
 
-	protected abstract String encodeSpoiler(String msg, String title);
+		@Override
+		public String escape(String msg)
+		{
+			return msg;
+		}
 
-	protected abstract String encodeStrike(String msg);
+		@Override
+		protected Map<Style, Tags> getTagMap()
+		{
+			if (this.map == null)
+				this.initMap();
+			return this.map;
+		}
 
-	protected abstract String encodeUrl(String msg, String url);
+		private void initMap()
+		{
+			this.map = new HashMap<>();
+			this.map.put(Style.QUOTE, new Tags("Quote (%s):\n", ""));
+			this.map.put(Style.SPOILER, new Tags("[[%s]]:\n", ""));
+			this.map.put(Style.STRIKE, new Tags("", ""));
+			this.map.put(Style.URL, new Tags("", "<%s>"));
+			this.map.put(Style.BOLD, new Tags("", ""));
+			this.map.put(Style.ITALIC, new Tags("", ""));
+			this.map.put(Style.COLOR, new Tags("", ""));
+			this.map.put(Style.HEADER, new Tags("\n\n", "\n\n"));
+			this.map.put(Style.UNDERLINE, new Tags("", ""));
+			this.map.put(Style.CODE, new Tags("\n", "\n"));
+			this.map.put(Style.LIST, new Tags("--------", "--------"));
+			this.map.put(Style.LISTITEM, new Tags("(O)", "\n"));
+		}
+	};
 
-	protected abstract String escape(String msg);
+	public static final ForumMessageEncoder DEBUG = new ForumMessageEncoder()
+	{
+		private Map<Style, Tags> map;
+
+		@Override
+		public String escape(String msg)
+		{
+			return msg;
+		}
+
+		@Override
+		protected Map<Style, Tags> getTagMap()
+		{
+			if (this.map == null)
+				this.initMap();
+			return this.map;
+		}
+
+		private void initMap()
+		{
+			this.map = new HashMap<>();
+			this.map.put(Style.QUOTE, new Tags("<START_QUOTE[%s]>", "<STOP_QUOTE>"));
+			this.map.put(Style.SPOILER, new Tags("<START_SPOILER[%s]>", "<STOP_SPOILER>"));
+			this.map.put(Style.STRIKE, new Tags("<START_STRIKE>", "<STOP_STRIKE>"));
+			this.map.put(Style.URL, new Tags("<START_URL[%s]>", "<STOP_URL>"));
+			this.map.put(Style.BOLD, new Tags("<START_BOLD>", "<STOP_BOLD>"));
+			this.map.put(Style.ITALIC, new Tags("<START_ITALIC>", "<STOP_ITALIC>"));
+			this.map.put(Style.COLOR, new Tags("<START_COLOR[%s]>", "STOP_COLOR"));
+			this.map.put(Style.HEADER, new Tags("START_HEADER", "STOP_HEADER"));
+			this.map.put(Style.UNDERLINE, new Tags("START_UNDERLINE", "STOP_UNDERLINE"));
+			this.map.put(Style.CODE, new Tags("START_CODE", "STOP_CODE"));
+			this.map.put(Style.LIST, new Tags("STOP_LIST", "START_LIST"));
+			this.map.put(Style.LISTITEM, new Tags("START_LISTITEM", "STOP_LISTITEM"));
+		}
+	};
+
+	public abstract String escape(String msg);
+
+	public String getClosing(Style style, Object... in)
+	{
+		String tag = this.getTagMap().get(style).getClosing();
+		return String.format(tag, in);
+	}
+
+	public String getOpening(Style style, Object... in)
+	{
+		String tag = this.getTagMap().get(style).getOpening();
+		return String.format(tag, in);
+	}
+
+	protected abstract Map<Style, Tags> getTagMap();
 }

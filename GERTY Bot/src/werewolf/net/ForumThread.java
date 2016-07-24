@@ -8,8 +8,6 @@ import java.util.logging.Logger;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-import werewolf.net.msg.ForumMessageElement;
-
 public abstract class ForumThread implements Serializable
 {
 	private static final Logger	LOGGER				= Logger.getLogger(ForumThread.class.getName());
@@ -172,7 +170,7 @@ public abstract class ForumThread implements Serializable
 
 	protected abstract String parseThreadTitle(HtmlPage page);
 
-	public void post(ForumMessageElement message) throws IOException
+	public void post(ForumMessage message) throws IOException
 	{
 		this.getContext().makePost(this.getContext().getThreadReplyPage(this.boardId, this.threadId), message);
 	}

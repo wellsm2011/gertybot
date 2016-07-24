@@ -2,14 +2,9 @@ package werewolf.game;
 
 import java.util.logging.Logger;
 
+import werewolf.net.ForumMessage;
 import werewolf.net.ForumPost;
 import werewolf.net.ForumUser;
-import werewolf.net.msg.ForumMessageColor;
-import werewolf.net.msg.ForumMessageContainer;
-import werewolf.net.msg.ForumMessageElement;
-import werewolf.net.msg.ForumMessageStrike;
-import werewolf.net.msg.ForumMessageString;
-import werewolf.net.msg.ForumMessageUrl;
 
 public class Player extends ForumUser
 {
@@ -17,12 +12,12 @@ public class Player extends ForumUser
 
 	private static final long serialVersionUID = 4363493461063986117L;
 
-	private boolean					alive		= true;
-	private boolean					modkilled	= false;
-	private int						injured		= 0;
-	private ForumMessageContainer	data		= new ForumMessageContainer();
-	private ForumPost				joinPost;
-	private WerewolfGame			game;
+	private boolean			alive		= true;
+	private boolean			modkilled	= false;
+	private int				injured		= 0;
+	private ForumMessage	data		= new ForumMessage();
+	private ForumPost		joinPost;
+	private WerewolfGame	game;
 
 	/**
 	 * Creates a new player with the given forum user and join post.
@@ -44,7 +39,7 @@ public class Player extends ForumUser
 	/**
 	 * @return A log of the events that have happened to this player.
 	 */
-	public ForumMessageElement getData()
+	public ForumMessage getData()
 	{
 		return this.data;
 	}
@@ -61,13 +56,14 @@ public class Player extends ForumUser
 	 * @return A forum message formatted to reflect the player's current status
 	 *         (alive / dead / injured).
 	 */
-	public ForumMessageElement getMessageName()
+	public ForumMessage getMessageName()
 	{
-		ForumMessageElement name = new ForumMessageString(this.getName());
+		ForumMessage name = new ForumMessage();
 		if (!this.alive)
-			name = new ForumMessageStrike(new ForumMessageColor(ForumMessageColor.DEAD, name));
+			name.startStrike().startColor(ForumMessage.DEAD);
 		else if (this.injured > 0)
-			name = new ForumMessageColor(ForumMessageColor.DEAD, name);
+			name.startColor(ForumMessage.DEAD);
+		name.add(this.getName()).stopColor().stopStrike();
 		return name;
 	}
 
@@ -114,7 +110,7 @@ public class Player extends ForumUser
 	 * @param evt
 	 *            The event surrounding this player's death.
 	 */
-	public void kill(ForumMessageElement evt, int round, ForumPost origin)
+	public void kill(ForumMessage evt, int round, ForumPost origin)
 	{
 		this.logEvent(evt, round, origin);
 		this.alive = false;
@@ -126,12 +122,12 @@ public class Player extends ForumUser
 	 * @param origin
 	 *            The original post which caused or documented this event.
 	 */
-	public void logEvent(ForumMessageElement evt, ForumPost origin)
+	public void logEvent(ForumMessage evt, ForumPost origin)
 	{
-		evt = new ForumMessageUrl(origin.getUrl(), evt);
-		if (!this.data.getChildren().isEmpty())
-			this.data.append(", ");
-		this.data.append(evt);
+		evt = new ForumMessage().startURL(origin.getUrl()).add(evt).stopURL();
+		if (this.data.hasTextSegments())
+			this.data.add(", ");
+		this.data.add(evt);
 	}
 
 	/**
@@ -142,9 +138,9 @@ public class Player extends ForumUser
 	 * @param origin
 	 *            The original post which caused or documented this event.
 	 */
-	public void logEvent(ForumMessageElement evt, int round, ForumPost origin)
+	public void logEvent(ForumMessage evt, int round, ForumPost origin)
 	{
-		evt.append(" R" + round);
+		evt.add(" R" + round);
 		this.logEvent(evt, origin);
 	}
 
@@ -171,7 +167,7 @@ public class Player extends ForumUser
 	 *            The event surrounding this player's death.
 	 * @return False if the player was already alive, true otherwise.
 	 */
-	public void revive(ForumMessageElement evt, int round, ForumPost origin)
+	public void revive(ForumMessage evt, int round, ForumPost origin)
 	{
 		if (this.alive)
 			throw new IllegalArgumentException("Player already alive.");

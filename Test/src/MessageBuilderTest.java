@@ -1,12 +1,12 @@
-import werewolf.experimental.ForumMessageBuilder;
-import werewolf.experimental.ForumMessageEncoder;
-import werewolf.experimental.NeonMessageEncoder;
+import werewolf.net.ForumMessage;
+import werewolf.net.ForumMessageEncoder;
+import werewolf.net.neon.NeonMessageEncoder;
 
 public class MessageBuilderTest
 {
 	public static void main(String[] args)
 	{
-		ForumMessageBuilder b = new ForumMessageBuilder();
+		ForumMessage b = new ForumMessage();
 
 		b.add("normal text").startBold().add(" bolded ").startItalic().add("and normal").stopBold();
 		b.add("\nThis should be normal, after the bold and italc were stopped");

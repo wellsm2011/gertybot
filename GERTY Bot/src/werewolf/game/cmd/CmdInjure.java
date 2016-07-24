@@ -5,6 +5,7 @@ import java.util.List;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
+import werewolf.net.ForumMessage;
 
 public class CmdInjure extends GameCommand
 {
@@ -13,7 +14,7 @@ public class CmdInjure extends GameCommand
 	{
 		super(game);
 		this.name = "injure";
-		this.info = "Injures a target player for a set number of rounds. Defaults to 1 round, but a specific # may be added. Only usable by a host";
+		this.info = ForumMessage.of("Injures a target player for a set number of rounds. Defaults to 1 round, but a specific # may be added. Only usable by a host");
 		this.usage = "player[, rounds]";
 		this.match = "injure|hospitalize";
 		this.mustBeTrue = new Requirement[]
