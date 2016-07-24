@@ -53,6 +53,11 @@ public abstract class VoteConfiguration
 	 */
 	public abstract Predicate<? super Vote> getDisplayFilter(RoundRecord rec);
 
+	/**
+	 * @param rec
+	 *            The record of votes to map.
+	 * @return A function which returns the power of a given vote.
+	 */
 	public abstract ToIntFunction<? super Vote> getVoteValueMapping(RoundRecord rec);
 
 }
