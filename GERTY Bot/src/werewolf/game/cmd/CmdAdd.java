@@ -3,8 +3,8 @@ package werewolf.game.cmd;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.Message;
 import werewolf.net.ForumUser;
+import werewolf.net.Message;
 
 public class CmdAdd extends GameCommand
 {

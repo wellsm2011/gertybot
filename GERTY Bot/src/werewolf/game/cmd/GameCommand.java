@@ -6,8 +6,8 @@ import werewolf.game.GamePhase;
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.Message;
 import werewolf.net.ForumUser;
+import werewolf.net.Message;
 
 public abstract class GameCommand
 {
@@ -93,7 +93,7 @@ public abstract class GameCommand
 	// Usage: player[:<alive|dead>], string[:<option1>|<option2>|<...>],
 	// number[:<min>,<max>]
 	protected String		name		= "UNKNOWN";
-	protected Message	info		= Message.of("No information found for command.");
+	protected Message		info		= Message.of("No information found for command.");
 	protected String		usage		= "";
 	protected String		match		= ".*";
 	protected Requirement[]	mustBeTrue	= new Requirement[0];

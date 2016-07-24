@@ -1,5 +1,5 @@
 import werewolf.net.ForumMessage;
-import werewolf.net.ForumMessageEncoder;
+import werewolf.net.MessageEncoder;
 import werewolf.net.neon.NeonMessageEncoder;
 
 public class MessageBuilderTest
@@ -14,8 +14,8 @@ public class MessageBuilderTest
 		b.startBold().add("that is bolded!").stopBold().add("in only certain places").stopURL();
 		b.add("with only the correct bits of the url being stopped.\n");
 
-		System.out.println(b.formatString(ForumMessageEncoder.DEBUG));
-		System.out.println(b.formatString(ForumMessageEncoder.PLAINTEXT));
+		System.out.println(b.formatString(MessageEncoder.DEBUG));
+		System.out.println(b.formatString(MessageEncoder.PLAINTEXT));
 		System.out.println(b.formatString(new NeonMessageEncoder()));
 
 	}

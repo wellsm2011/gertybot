@@ -2,21 +2,21 @@ package werewolf.game;
 
 import java.util.logging.Logger;
 
-import werewolf.net.Message;
 import werewolf.net.ForumPost;
 import werewolf.net.ForumUser;
+import werewolf.net.Message;
 
 public class Player extends ForumUser
 {
 	private final static Logger	LOGGER				= Logger.getLogger(Player.class.getName());
 	private static final long	serialVersionUID	= 4363493461063986117L;
 
-	private boolean				alive				= true;
-	private boolean				modkilled			= false;
-	private int					injured				= 0;
-	private ForumPost			joinPost;
-	private Message				data				= new Message();
-	private WerewolfGame		game;
+	private boolean			alive		= true;
+	private boolean			modkilled	= false;
+	private int				injured		= 0;
+	private ForumPost		joinPost;
+	private Message			data		= new Message();
+	private WerewolfGame	game;
 
 	/**
 	 * Creates a new player with the given forum user and join post.

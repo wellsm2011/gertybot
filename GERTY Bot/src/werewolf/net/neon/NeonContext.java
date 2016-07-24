@@ -16,11 +16,11 @@ import werewolf.Utils;
 import werewolf.net.ForumContext;
 import werewolf.net.ForumInbox;
 import werewolf.net.ForumLogin;
-import werewolf.net.Message;
 import werewolf.net.ForumThread;
 import werewolf.net.ForumUserDatabase;
 import werewolf.net.GameRecord;
 import werewolf.net.HostingSignups;
+import werewolf.net.Message;
 import werewolf.net.PrivateMessage;
 
 public class NeonContext extends ForumContext

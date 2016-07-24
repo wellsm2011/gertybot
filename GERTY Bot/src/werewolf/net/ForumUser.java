@@ -124,6 +124,12 @@ public class ForumUser implements User
 		return true;
 	}
 
+	@Override
+	public int compareTo(User a)
+	{
+		return this.getName().compareTo(a.getName());
+	}
+
 	/**
 	 * Returns true if this use has the same user id as the given user.
 	 * 
@@ -242,11 +248,5 @@ public class ForumUser implements User
 	public String toString()
 	{
 		return this.name + "(id=" + this.userId + ", context=" + this.context + ")";
-	}
-
-	@Override
-	public int compareTo(User a)
-	{
-		return this.getName().compareTo(a.getName());
 	}
 }

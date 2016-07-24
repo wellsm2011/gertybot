@@ -3,7 +3,6 @@ package werewolf.game;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.TreeMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +41,7 @@ public class VoteManager implements Serializable
 		private List<Vote>											record		= new ArrayList<>();
 
 		private Predicate<Vote> displayFilter = v -> {
-			ListIterator<Vote> iter = record.listIterator(record.size());
+			ListIterator<Vote> iter = this.record.listIterator(this.record.size());
 			Vote cur = iter.previous();
 			while (iter.hasNext())
 				if (v.getVoter().equals(cur.getVoter()))
@@ -97,12 +95,12 @@ public class VoteManager implements Serializable
 				 * the number of votes, as well as whether the users are static
 				 * or player users.
 				 */
-				Pair<User, Integer> key = new Pair<>(u, (int) getVotesTargetedAt(u).count());
+				Pair<User, Integer> key = new Pair<>(u, (int) this.getVotesTargetedAt(u).count());
 				/*
 				 * Generates a collection of all of the users who voted for this
 				 * user, in order of their votes.
 				 */
-				Set<Player> voters = getVotesTargetedAt(u).map(v -> v.getVoter()).collect(Collectors.toCollection(LinkedHashSet::new));
+				Set<Player> voters = this.getVotesTargetedAt(u).map(v -> v.getVoter()).collect(Collectors.toCollection(LinkedHashSet::new));
 				perUserTally.put(key, voters);
 			}
 			return perUserTally;

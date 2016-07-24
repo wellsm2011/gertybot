@@ -12,14 +12,6 @@ import java.util.Set;
 
 public class Message
 {
-	private class RawText extends Op
-	{
-		public RawText(String msg)
-		{
-			super(null, msg);
-		}
-	}
-
 	private abstract class Op
 	{
 		private Style		style;
@@ -46,6 +38,14 @@ public class Message
 		public Style getStyle()
 		{
 			return this.style;
+		}
+	}
+
+	private class RawText extends Op
+	{
+		public RawText(String msg)
+		{
+			super(null, msg);
 		}
 	}
 
@@ -169,7 +169,7 @@ public class Message
 	 * @param encoder
 	 * @return
 	 */
-	public String formatString(ForumMessageEncoder encoder)
+	public String formatString(MessageEncoder encoder)
 	{
 		StringBuilder sb = new StringBuilder();
 

@@ -36,8 +36,8 @@ public class ModManager
 	{
 		if (!ModManager.initalized)
 			ModManager.initalize();
-		List<ForumUser> remove = new LinkedList<ForumUser>(mods);
-		List<ForumUser> add = new LinkedList<ForumUser>(users);
+		List<ForumUser> remove = new LinkedList<>(ModManager.mods);
+		List<ForumUser> add = new LinkedList<>(users);
 		remove.removeAll(users);
 		/*
 		 * Only remove players who are currently mods, but not in the new mod

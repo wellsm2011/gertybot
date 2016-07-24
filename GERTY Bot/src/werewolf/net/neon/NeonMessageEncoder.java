@@ -3,10 +3,10 @@ package werewolf.net.neon;
 import java.util.HashMap;
 import java.util.Map;
 
+import werewolf.net.MessageEncoder;
 import werewolf.net.Message.Style;
-import werewolf.net.ForumMessageEncoder;
 
-public class NeonMessageEncoder extends ForumMessageEncoder
+public class NeonMessageEncoder extends MessageEncoder
 {
 	private Map<Style, Tags> map;
 

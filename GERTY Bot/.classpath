@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/HtmlUnit 2.18"/>
 	<classpathentry kind="src" output="target/classes" path="src">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -17,6 +16,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/JodaTime 2.9"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HtmlUnit 2.18"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JodaTime 2.9"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

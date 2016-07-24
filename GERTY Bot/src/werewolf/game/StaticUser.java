@@ -3,8 +3,6 @@ package werewolf.game;
 import java.util.LinkedList;
 import java.util.List;
 
-import werewolf.net.ForumUser;
-
 public class StaticUser implements User
 {
 	// private final static Logger LOGGER =

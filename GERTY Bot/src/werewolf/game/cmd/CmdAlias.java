@@ -4,8 +4,8 @@ import java.util.List;
 
 import werewolf.game.WerewolfGame;
 import werewolf.net.Command;
-import werewolf.net.Message;
 import werewolf.net.ForumUser;
+import werewolf.net.Message;
 
 public class CmdAlias extends GameCommand
 {
