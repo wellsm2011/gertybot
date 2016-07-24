@@ -27,21 +27,16 @@ public class RoundRecord implements Serializable
 {
 	private static final long serialVersionUID = -2976634157210100218L;
 	/*
-	 * By default, display the last vote made by each player and lynch
-	 * everyone in a tie.
+	 * By default, display the last vote made by each player and lynch everyone
+	 * in a tie.
 	 */
-	private RoundRecord								previous;
-	private List<Vote>								record		= new ArrayList<>();
-	private VoteConfiguration						config;
+	private RoundRecord			previous;
+	private List<Vote>			record	= new ArrayList<>();
+	private VoteConfiguration	config;
 
 	public RoundRecord()
 	{
 		this(VoteConfiguration.getDefault());
-	}
-
-	public RoundRecord(VoteConfiguration config)
-	{
-		this(config, null);
 	}
 
 	public RoundRecord(RoundRecord previous)
@@ -49,10 +44,25 @@ public class RoundRecord implements Serializable
 		this(previous.config.copy(), previous);
 	}
 
+	public RoundRecord(VoteConfiguration config)
+	{
+		this(config, null);
+	}
+
 	public RoundRecord(VoteConfiguration config, RoundRecord previous)
 	{
 		this.previous = previous;
 		this.config = config;
+	}
+
+	public List<Vote> getRecord()
+	{
+		return Collections.unmodifiableList(this.record);
+	}
+
+	public ListIterator<Vote> getReverseIterator()
+	{
+		return this.getRecord().listIterator(this.record.size());
 	}
 
 	public int getRound()
@@ -65,8 +75,8 @@ public class RoundRecord implements Serializable
 	public Map<Pair<User, Integer>, Set<Player>> getUserTally()
 	{
 		/**
-		 * Map of players and counts to sets of voters. This is sorted based
-		 * off the type of user, the user, and the count.
+		 * Map of players and counts to sets of voters. This is sorted based off
+		 * the type of user, the user, and the count.
 		 */
 		Map<Pair<User, Integer>, Set<Player>> perUserTally = new TreeMap<>((a, b) -> {
 			if (a.getA() instanceof Player && !(b.getA() instanceof Player))
@@ -84,12 +94,12 @@ public class RoundRecord implements Serializable
 		for (User u : this.record.stream().map(v -> v.getVoter()).distinct().collect(Collectors.toList()))
 		{
 			/*
-			 * Count the number of votes for this user, and add that to a
-			 * pair which is used as a key for the map. The map is sorted by
-			 * the number of votes, as well as whether the users are static
-			 * or player users.
+			 * Count the number of votes for this user, and add that to a pair
+			 * which is used as a key for the map. The map is sorted by the
+			 * number of votes, as well as whether the users are static or
+			 * player users.
 			 */
-			Pair<User, Integer> key = new Pair<>(u, this.getVotesTargetedAt(u).mapToInt(this.config.getVoteValueMapping(this)).sum() );
+			Pair<User, Integer> key = new Pair<>(u, this.getVotesTargetedAt(u).mapToInt(this.config.getVoteValueMapping(this)).sum());
 			/*
 			 * Generates a collection of all of the users who voted for this
 			 * user, in order of their votes.
@@ -106,8 +116,7 @@ public class RoundRecord implements Serializable
 	 * 
 	 * @param u
 	 *            the user to find votes for
-	 * @return a stream of display-able votes targeted at the user in
-	 *         question
+	 * @return a stream of display-able votes targeted at the user in question
 	 */
 	private Stream<Vote> getVotesTargetedAt(User u)
 	{
@@ -122,15 +131,5 @@ public class RoundRecord implements Serializable
 	public void record(Vote vote)
 	{
 		this.record.add(vote);
-	}
-
-	public List<Vote> getRecord()
-	{
-		return Collections.unmodifiableList(record);
-	}
-
-	public ListIterator<Vote> getReverseIterator()
-	{
-		return getRecord().listIterator(record.size());
 	}
 }

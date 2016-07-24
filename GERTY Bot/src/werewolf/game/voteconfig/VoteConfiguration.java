@@ -15,6 +15,13 @@ public abstract class VoteConfiguration
 		{
 
 			@Override
+			public VoteConfiguration copy()
+			{
+				// Since we're not state-ful in any way...
+				return this;
+			}
+
+			@Override
 			public Predicate<? super Vote> getDisplayFilter(RoundRecord rec)
 			{
 				return v -> {
@@ -33,13 +40,6 @@ public abstract class VoteConfiguration
 				return v -> 1;
 			}
 
-			@Override
-			public VoteConfiguration copy()
-			{
-				// Since we're not state-ful in any way...
-				return this;
-			}
-
 		};
 	}
 
@@ -48,7 +48,8 @@ public abstract class VoteConfiguration
 	/**
 	 * @param rec
 	 *            The record of votes to filter on.
-	 * @return A function to
+	 * @return A Predicate which returns true if a given vote should be
+	 *         displayed.
 	 */
 	public abstract Predicate<? super Vote> getDisplayFilter(RoundRecord rec);
 
