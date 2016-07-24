@@ -7,6 +7,13 @@ import werewolf.net.Message;
 import werewolf.net.Message.Style;
 import werewolf.net.MessageEncoder;
 
+/**
+ * Basic HTML message encoder. Uses a few css tricks to get things like spoilers
+ * working nicely, probably more styling should be done to make things more
+ * customizable based on the CSS, but currently this is functional.
+ * 
+ * @author Andrew Binns
+ */
 public class HTMLMessageEncoder extends MessageEncoder
 {
 	private Map<Style, Tags> map;
@@ -26,12 +33,12 @@ public class HTMLMessageEncoder extends MessageEncoder
 	}
 
 	/**
-	 * Seperated off due to long length. This uses a nifty little CSS trick to
+	 * Separated off due to long length. This uses a nifty little CSS trick to
 	 * get around using ID's to show/hide an element, resulting in a clean, and
 	 * portable spoiler result. The css could be centralized if there was desire
 	 * eventually, but doesn't really make sense if we want the
-	 * {@link Message#formatString(MessageEncoder)} to work exactly as
-	 * it does currently.
+	 * {@link Message#formatString(MessageEncoder)} to work exactly as it does
+	 * currently.
 	 */
 	private static final String SPOILER_START =
 			//@formatter:off
@@ -45,6 +52,10 @@ public class HTMLMessageEncoder extends MessageEncoder
 			+ "<div class=\"spoiler\"><div>";
 			//@formatter:on
 
+	/**
+	 * Initialize the basic tag structure, this handles laying out the tag
+	 * pairings. see {@link #SPOILER_START} for more details and stuff.
+	 */
 	private void initMap()
 	{
 		this.map = new HashMap<>();
