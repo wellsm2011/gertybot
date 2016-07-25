@@ -1,23 +1,29 @@
 package werewolf.game.cmd;
 
 import werewolf.game.WerewolfGame;
-import werewolf.net.Command;
+import werewolf.game.cmd.GameCommand.Requirement;
+import werewolf.net.ParsedCommand;
+import werewolf.net.Message;
 
 public class CmdStory extends GameCommand
 {
 
-	@Override
-	protected boolean execute(Command cmd)
+	public CmdStory(WerewolfGame game)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		super(game);
+		this.name = "story";
+		this.info = Message.of("Revives a deceased player. Only usable by a host.");
+		this.usage = "[title]";
+		this.match = "story(post)?|flag|title";
+		this.mustBeTrue = new Requirement[]
+		{ Requirement.HOST };
+		this.mustBeFalse = new Requirement[]
+		{ Requirement.ALIVE };
 	}
 
 	@Override
-	protected void execute(WerewolfGame game, Command cmd)
+	protected boolean execute(ParsedCommand cmd) throws InvalidatonException, IndexOutOfBoundsException
 	{
-		// TODO Auto-generated method stub
-
+		
 	}
-
 }

@@ -2,7 +2,7 @@ package werewolf.game.cmd;
 
 import werewolf.game.Player;
 import werewolf.game.WerewolfGame;
-import werewolf.net.Command;
+import werewolf.net.ParsedCommand;
 import werewolf.net.Message;
 
 public class CmdRemove extends GameCommand
@@ -15,11 +15,11 @@ public class CmdRemove extends GameCommand
 		this.usage = "player";
 		this.match = "remove";
 		this.mustBeTrue = new Requirement[]
-		{ Requirement.HOST, Requirement.PLAYER };
+		{ Requirement.HOST, Requirement.PREGAME };
 	}
 
 	@Override
-	protected boolean execute(Command cmd)
+	protected boolean execute(ParsedCommand cmd)
 	{
 		Player target = this.game.getPlayer(cmd.getParamString());
 		if (target == null)
@@ -28,6 +28,7 @@ public class CmdRemove extends GameCommand
 			return false;
 		}
 
+		this.game.removePlayer(target);
 		// TODO - Finish when there's a remove command
 		// this.game.;
 		return true;
